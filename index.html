@@ -1,11 +1,362 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Mohammad Kfelati</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mohammad Kfelati | Senior Full Stack Developer</title>
+  <meta name="description" content="Senior Full Stack Developer & ICT Manager. Laravel, NestJS, React, DevOps, Cloud & Infrastructure." />
+
+  <style>
+    :root{
+      --bg:#0b0f19;
+      --card:#121a2a;
+      --muted:#a9b1c6;
+      --text:#eef2ff;
+      --accent:#7c3aed;
+      --accent2:#22c55e;
+      --border:rgba(255,255,255,.08);
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --radius:18px;
+      --max:1040px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background: radial-gradient(1000px 600px at 10% 10%, rgba(124,58,237,.22), transparent 60%),
+                  radial-gradient(900px 500px at 90% 20%, rgba(34,197,94,.16), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.6;
+    }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:var(--max); margin:0 auto; padding:24px}
+    .nav{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(11,15,25,.55);
+      border-bottom:1px solid var(--border);
+    }
+    .nav .wrap{display:flex; align-items:center; justify-content:space-between; gap:12px}
+    .brand{display:flex; flex-direction:column}
+    .brand b{font-size:16px; letter-spacing:.2px}
+    .brand span{font-size:12px; color:var(--muted)}
+    .menu{display:flex; gap:14px; flex-wrap:wrap; justify-content:flex-end}
+    .menu a{
+      font-size:13px; color:var(--muted);
+      padding:8px 10px; border-radius:10px;
+      border:1px solid transparent;
+    }
+    .menu a:hover{color:var(--text); border-color:var(--border); background:rgba(255,255,255,.03)}
+    .hero{padding:34px 0 10px}
+    .grid{display:grid; grid-template-columns: 1.3fr .7fr; gap:18px}
+    @media(max-width:920px){ .grid{grid-template-columns:1fr} .menu{justify-content:flex-start} }
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:18px;
+    }
+    .headline{font-size:34px; line-height:1.15; margin:0 0 8px}
+    .subtitle{margin:0 0 14px; color:var(--muted)}
+    .chips{display:flex; flex-wrap:wrap; gap:8px; margin:12px 0 0}
+    .chip{
+      font-size:12px; color:var(--muted);
+      padding:6px 10px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background:rgba(255,255,255,.02);
+    }
+    .actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px}
+    .btn{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.03);
+      font-size:13px;
+      color:var(--text);
+    }
+    .btn:hover{border-color:rgba(124,58,237,.55); background:rgba(124,58,237,.10)}
+    .btn.primary{
+      background:linear-gradient(135deg, rgba(124,58,237,.85), rgba(124,58,237,.45));
+      border-color:rgba(124,58,237,.55);
+    }
+    .btn.primary:hover{filter:brightness(1.05)}
+    .muted{color:var(--muted)}
+    h2{
+      margin:26px 0 10px;
+      font-size:18px;
+      letter-spacing:.2px;
+    }
+    .two{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+    @media(max-width:920px){ .two{grid-template-columns:1fr} }
+    .list{display:flex; flex-direction:column; gap:10px}
+    .item{
+      background:rgba(255,255,255,.02);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:12px;
+    }
+    .item b{display:block; font-size:14px}
+    .item small{color:var(--muted)}
+    .tags{margin-top:8px; display:flex; flex-wrap:wrap; gap:8px}
+    .tag{
+      font-size:12px;
+      padding:5px 8px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      color:var(--muted);
+    }
+    .kpi{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
+    @media(max-width:920px){ .kpi{grid-template-columns:1fr} }
+    .k{
+      padding:12px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.02);
+    }
+    .k b{font-size:16px}
+    .k span{display:block; color:var(--muted); font-size:12px; margin-top:3px}
+    footer{
+      margin:26px 0 18px;
+      color:var(--muted);
+      font-size:12px;
+      text-align:center;
+    }
+    .divider{height:1px; background:var(--border); margin:14px 0}
+  </style>
 </head>
+
 <body>
-  <h1>Mohammad Kfelati</h1>
-  <p>Senior Full Stack Developer & ICT Manager</p>
+  <!-- NAV -->
+  <div class="nav">
+    <div class="wrap">
+      <div class="brand">
+        <b>Mohammad Kfelati</b>
+        <span>Senior Full Stack Developer • ICT Manager</span>
+      </div>
+
+      <div class="menu">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <!-- HERO -->
+    <section class="hero grid">
+      <div class="card">
+        <h1 class="headline">Backend Systems, Full-Stack Delivery, and ICT Infrastructure.</h1>
+        <p class="subtitle">
+          14+ years building reliable web systems and leading ICT operations across NGO, startup, and enterprise environments.
+          Strong in <b>Laravel</b>, <b>NestJS</b>, <b>React</b>, APIs, and cloud/hybrid infrastructure.
+        </p>
+
+        <div class="actions">
+          <!-- عدّل الروابط تحت حسب معلوماتك -->
+          <a class="btn primary" href="cv/MohammadKfelati-Senior-Fullstack-ICT.pdf" target="_blank" rel="noopener">📄 Download CV</a>
+          <a class="btn" href="https://linkedin.com/in/mohammadkfelati" target="_blank" rel="noopener">💼 LinkedIn</a>
+          <a class="btn" href="mailto:mohammad.kfelati@gmail.com">✉️ Email</a>
+          <a class="btn" href="https://github.com/Mohammadk88" target="_blank" rel="noopener">🐙 GitHub</a>
+        </div>
+
+        <div class="chips">
+          <span class="chip">Laravel • PHP</span>
+          <span class="chip">NestJS • Node.js</span>
+          <span class="chip">React • Vue</span>
+          <span class="chip">PostgreSQL • MySQL</span>
+          <span class="chip">Docker • CI/CD</span>
+          <span class="chip">ICT • Cloud • Security</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 style="margin-top:0">Quick Info</h2>
+        <div class="kpi">
+          <div class="k"><b>Location</b><span>Istanbul, Türkiye</span></div>
+          <div class="k"><b>Open to</b><span>Remote • EU • Gulf</span></div>
+          <div class="k"><b>Focus</b><span>Backend • Systems • Delivery</span></div>
+        </div>
+        <div class="divider"></div>
+        <p class="muted" style="margin:0">
+          Tip: keep this page simple. Recruiters skim fast. Let the CV do the heavy lifting.
+        </p>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <h2>About</h2>
+      <div class="card">
+        <p style="margin:0" class="muted">
+          I build scalable backend systems, clean APIs, and production-ready web platforms—while also managing ICT infrastructure
+          (networks, cloud storage, hybrid servers, access security, and asset lifecycle). I care about stability, clarity, and shipping.
+        </p>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <h2>Skills</h2>
+      <div class="two">
+        <div class="card">
+          <b>Backend & Database</b>
+          <div class="tags">
+            <span class="tag">PHP • Laravel</span>
+            <span class="tag">Node.js • NestJS</span>
+            <span class="tag">REST APIs</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">MySQL</span>
+          </div>
+          <div class="divider"></div>
+          <b>Frontend & Mobile</b>
+          <div class="tags">
+            <span class="tag">React</span>
+            <span class="tag">Vue</span>
+            <span class="tag">HTML/CSS/JS</span>
+            <span class="tag">Flutter</span>
+            <span class="tag">React Native</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <b>Infrastructure & DevOps</b>
+          <div class="tags">
+            <span class="tag">Linux</span>
+            <span class="tag">Windows Server</span>
+            <span class="tag">Docker</span>
+            <span class="tag">CI/CD</span>
+            <span class="tag">Networking (TCP/IP, NAT)</span>
+            <span class="tag">Cloud Storage • Hybrid Systems</span>
+            <span class="tag">Info Security</span>
+            <span class="tag">Inventory & Asset Mgmt</span>
+          </div>
+          <div class="divider"></div>
+          <b>Leadership</b>
+          <div class="tags">
+            <span class="tag">Team Leadership</span>
+            <span class="tag">Sprint Planning</span>
+            <span class="tag">Code Review</span>
+            <span class="tag">Cross-functional Collaboration</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience">
+      <h2>Experience (Highlights)</h2>
+      <div class="list">
+        <div class="item">
+          <b>ICT Officer — Islamic Relief Turkey (NGO-International)</b>
+          <small>Istanbul, Türkiye • Feb 2022 – Present</small>
+          <div class="tags">
+            <span class="tag">ICT Infrastructure</span><span class="tag">Cloud/Hybrid</span>
+            <span class="tag">Networks</span><span class="tag">Security</span>
+          </div>
+        </div>
+
+        <div class="item">
+          <b>Full Stack Developer — PaketMan</b>
+          <small>Istanbul, Türkiye • Jul 2021 – Dec 2022</small>
+          <div class="tags">
+            <span class="tag">Laravel</span><span class="tag">REST APIs</span><span class="tag">Dashboards</span>
+          </div>
+        </div>
+
+        <div class="item">
+          <b>Backend Team Lead (Remote) — Naya Technomedia</b>
+          <small>UAE • Dec 2020 – Dec 2021</small>
+          <div class="tags">
+            <span class="tag">Laravel</span><span class="tag">Architecture</span><span class="tag">Leadership</span>
+          </div>
+        </div>
+
+        <div class="item">
+          <b>Full Stack & Mobile Developer — Ethraa (Maqsafy)</b>
+          <small>Istanbul, Türkiye • Feb 2020 – Aug 2020</small>
+          <div class="tags">
+            <span class="tag">Wallet System</span><span class="tag">Edu Platform</span><span class="tag">Mobile</span>
+          </div>
+        </div>
+
+        <div class="item">
+          <b>Full Stack Developer & Team Lead (Remote) — Service Area</b>
+          <small>Saudi Arabia • Jan 2018 – Jan 2020</small>
+          <div class="tags">
+            <span class="tag">School Platform</span><span class="tag">Integrations</span><span class="tag">Data Tools</span>
+          </div>
+        </div>
+
+        <div class="item">
+          <b>IT Manager & System Administrator — Syria Media Group (NGO)</b>
+          <small>Gaziantep, Türkiye • Aug 2016 – Oct 2017</small>
+          <div class="tags">
+            <span class="tag">IT Ops</span><span class="tag">Networks</span><span class="tag">Systems</span>
+          </div>
+        </div>
+
+        <div class="item">
+          <b>Earlier Experience — ICT, Digital Security & Programming</b>
+          <small>Syria & Türkiye • Sep 2008 – Aug 2016 • Details on LinkedIn</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <h2>Projects</h2>
+      <div class="two">
+        <div class="card">
+          <b>Ask.Dentist (SaaS)</b>
+          <p class="muted" style="margin:8px 0 0">Multi-tenant platform: backend APIs + mobile apps + admin dashboards.</p>
+          <div class="tags">
+            <span class="tag">Laravel</span><span class="tag">NestJS</span><span class="tag">Flutter</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <b>AEAP / Appointment Executive Agent</b>
+          <p class="muted" style="margin:8px 0 0">AI agent concept for scheduling workflows and daily task reminders.</p>
+          <div class="tags">
+            <span class="tag">AI</span><span class="tag">Automation</span><span class="tag">Workflow</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="muted" style="margin-top:10px">
+        (بدنا نبدّل هاي البطاقات لاحقاً بمشاريعك “اللي بدك تفرجيها” + روابط GitHub محترمة.)
+      </p>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <h2>Contact</h2>
+      <div class="card">
+        <p class="muted" style="margin:0 0 10px">
+          Fastest way: email. I respond quickly for serious opportunities.
+        </p>
+        <div class="actions">
+          <a class="btn primary" href="mailto:mohammad.kfelati@gmail.com">✉️ mohammad.kfelati@gmail.com</a>
+          <a class="btn" href="tel:+905317255372">📞 +90 531 725 5372</a>
+          <a class="btn" href="https://linkedin.com/in/mohammadkfelati" target="_blank" rel="noopener">💼 LinkedIn</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      © <span id="y"></span> Mohammad Kfelati • Built with plain HTML (because speed wins) ⚡
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
