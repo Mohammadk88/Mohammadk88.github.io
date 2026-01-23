@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohammad Kfelati - Senior Full-Stack Developer & ICT Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --secondary: #0f172a;
+            --accent: #f59e0b;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+            overflow-x: hidden;
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .lang-switcher {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .lang-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--border);
+            background: transparent;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .lang-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/></svg>');
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            to { transform: translateY(-100px); }
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: slideDown 0.8s ease-out 0.2s both;
+        }
+
+        .hero .description {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            opacity: 0.85;
+            animation: slideDown 0.8s ease-out 0.4s both;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: slideDown 0.8s ease-out 0.6s both;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: var(--primary);
+        }
+
+        /* Stats Section */
+        .stats {
+            background: var(--secondary);
+            color: white;
+            padding: 3rem 2rem;
+        }
+
+        .stats-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            color: var(--secondary);
+            position: relative;
+        }
+
+        section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        /* Experience Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--primary);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            padding-left: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border: 4px solid white;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px var(--bg-alt);
+        }
+
+        .timeline-item h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-item .company {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.3rem;
+        }
+
+        .timeline-item .period {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-item ul {
+            margin-left: 1.5rem;
+            color: var(--text-light);
+        }
+
+        .timeline-item li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-category {
+            background: var(--bg-alt);
+            padding: 2rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .skill-category h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-tag {
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--bg-alt);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .project-card .project-header {
+            background: var(--primary);
+            color: white;
+            padding: 1.5rem;
+        }
+
+        .project-card h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .project-card .project-body {
+            padding: 1.5rem;
+        }
+
+        .project-card .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tech-badge {
+            background: var(--primary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+        }
+
+        .project-links {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .project-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: var(--bg-alt);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+
+        .contact-item:hover {
+            transform: translateX(10px);
+        }
+
+        .contact-item i {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .contact-item a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .timeline {
+                padding-left: 1rem;
+            }
+
+            .timeline-item {
+                padding-left: 1.5rem;
+            }
+
+            section {
+                padding: 3rem 1rem;
+            }
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">MK</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" data-en="Home" data-ar="الرئيسية" data-tr="Ana Sayfa">Home</a></li>
+                <li><a href="#experience" data-en="Experience" data-ar="الخبرات" data-tr="Deneyim">Experience</a></li>
+                <li><a href="#skills" data-en="Skills" data-ar="المهارات" data-tr="Yetenekler">Skills</a></li>
+                <li><a href="#projects" data-en="Projects" data-ar="المشاريع" data-tr="Projeler">Projects</a></li>
+                <li><a href="#contact" data-en="Contact" data-ar="تواصل" data-tr="İletişim">Contact</a></li>
+            </ul>
+            <div class="lang-switcher">
+                <button class="lang-btn active" onclick="switchLang('en')">EN</button>
+                <button class="lang-btn" onclick="switchLang('ar')">AR</button>
+                <button class="lang-btn" onclick="switchLang('tr')">TR</button>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1 data-en="Mohammad Kfelati" data-ar="محمد كفلاتي" data-tr="Mohammad Kfelati">Mohammad Kfelati</h1>
+            <p class="subtitle" data-en="Senior Full-Stack Developer & ICT Manager" data-ar="مطور Full-Stack أول ومدير تقنية معلومات" data-tr="Kıdemli Full-Stack Geliştirici & BİT Yöneticisi">Senior Full-Stack Developer & ICT Manager</p>
+            <p class="description" data-en="14+ years of experience building scalable systems with Laravel, React, and AI integration. Expert in ICT infrastructure and team leadership." data-ar="أكثر من 14 سنة خبرة في بناء أنظمة قابلة للتوسع باستخدام Laravel و React ودمج الذكاء الاصطناعي. خبير في البنية التحتية لتقنية المعلومات وقيادة الفرق." data-tr="Laravel, React ve AI entegrasyonu ile ölçeklenebilir sistemler kurma konusunda 14+ yıl deneyim. BİT altyapısı ve ekip liderliğinde uzman.">14+ years of experience building scalable systems with Laravel, React, and AI integration. Expert in ICT infrastructure and team leadership.</p>
+            <div class="cta-buttons">
+                <a href="#contact" class="btn btn-primary">
+                    <i class="fas fa-envelope"></i>
+                    <span data-en="Hire Me" data-ar="وظفني" data-tr="Beni İşe Al">Hire Me</span>
+                </a>
+                <a href="https://mohammadk88.github.io/Mohammadk88.github.io/assets/MohammadKfelati-CV.pdf" download class="btn btn-secondary">
+                    <i class="fas fa-download"></i>
+                    <span data-en="Download CV" data-ar="تحميل السيرة الذاتية" data-tr="CV İndir">Download CV</span>
+                </a>
+                <a href="https://linkedin.com/in/mohammadkfelati" target="_blank" class="btn btn-secondary">
+                    <i class="fab fa-linkedin"></i>
+                    <span>LinkedIn</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <div class="stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>14+</h3>
+                <p data-en="Years Experience" data-ar="سنة خبرة" data-tr="Yıl Deneyim">Years Experience</p>
+            </div>
+            <div class="stat-item">
+                <h3>50+</h3>
+                <p data-en="Projects Delivered" data-ar="مشروع منجز" data-tr="Teslim Edilen Proje">Projects Delivered</p>
+            </div>
+            <div class="stat-item">
+                <h3>10+</h3>
+                <p data-en="Technologies" data-ar="تقنية" data-tr="Teknoloji">Technologies</p>
+            </div>
+            <div class="stat-item">
+                <h3>100%</h3>
+                <p data-en="Client Satisfaction" data-ar="رضا العملاء" data-tr="Müşteri Memnuniyeti">Client Satisfaction</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Experience Section -->
+    <section id="experience">
+        <h2 data-en="Professional Experience" data-ar="الخبرة المهنية" data-tr="Profesyonel Deneyim">Professional Experience</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3 data-en="ICT Officer" data-ar="مسؤول تقنية المعلومات" data-tr="BİT Görevlisi">ICT Officer</h3>
+                <p class="company">Islamic Relief Turkey (NGO)</p>
+                <p class="period">Feb 2022 - Present | Istanbul, Türkiye</p>
+                <ul>
+                    <li data-en="Managing ICT infrastructure across on-premise and cloud environments" data-ar="إدارة البنية التحتية لتقنية المعلومات عبر البيئات المحلية والسحابية" data-tr="Şirket içi ve bulut ortamlarında BİT altyapısını yönetme">Managing ICT infrastructure across on-premise and cloud environments</li>
+                    <li data-en="Administering networks, cloud storage, and hybrid server systems" data-ar="إدارة الشبكات والتخزين السحابي وأنظمة الخوادم الهجينة" data-tr="Ağları, bulut depolamayı ve hibrit sunucu sistemlerini yönetme">Administering networks, cloud storage, and hybrid server systems</li>
+                    <li data-en="Ensuring secure access, data protection, and system reliability" data-ar="ضمان الوصول الآمن وحماية البيانات وموثوقية النظام" data-tr="Güvenli erişim, veri koruma ve sistem güvenilirliğini sağlama">Ensuring secure access, data protection, and system reliability</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item">
+                <h3 data-en="Full Stack Developer" data-ar="مطور Full Stack" data-tr="Full Stack Geliştirici">Full Stack Developer</h3>
+                <p class="company">PaketMan</p>
+                <p class="period">Jul 2021 - Dec 2022 | Istanbul, Türkiye</p>
+                <ul>
+                    <li data-en="Developed dashboards and management systems for restaurants" data-ar="تطوير لوحات المعلومات وأنظمة الإدارة للمطاعم" data-tr="Restoranlar için kontrol panelleri ve yönetim sistemleri geliştirme">Developed dashboards and management systems for restaurants</li>
+                    <li data-en="Built backend services and REST APIs using Laravel" data-ar="بناء خدمات الواجهة الخلفية وواجهات برمجة التطبيقات REST باستخدام Laravel" data-tr="Laravel kullanarak backend servisleri ve REST API'ları oluşturma">Built backend services and REST APIs using Laravel</li>
+                    <li data-en="Integrated mobile functionality to streamline operations" data-ar="دمج الوظائف المحمولة لتبسيط العمليات" data-tr="İşlemleri kolaylaştırmak için mobil işlevsellik entegrasyonu">Integrated mobile functionality to streamline operations</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item">
+                <h3 data-en="Backend Team Leader" data-ar="قائد فريق الواجهة الخلفية" data-tr="Backend Ekip Lideri">Backend Team Leader</h3>
+                <p class="company">Naya Technomedia (Remote)</p>
+                <p class="period">Dec 2020 - Dec 2021 | UAE</p>
+                <ul>
+                    <li data-en="Led backend development team and task distribution" data-ar="قيادة فريق تطوير الواجهة الخلفية وتوزيع المهام" data-tr="Backend geliştirme ekibini ve görev dağılımını yönetme">Led backend development team and task distribution</li>
+                    <li data-en="Planned sprints and ensured code quality" data-ar="تخطيط السبرينتات وضمان جودة الكود" data-tr="Sprint'leri planlama ve kod kalitesini sağlama">Planned sprints and ensured code quality</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item">
+                <h3 data-en="Full Stack Developer & Team Lead" data-ar="مطور Full Stack وقائد فريق" data-tr="Full Stack Geliştirici & Ekip Lideri">Full Stack Developer & Team Lead</h3>
+                <p class="company">Service Area (Remote)</p>
+                <p class="period">Jan 2018 - Jan 2020 | Saudi Arabia</p>
+                <ul>
+                    <li data-en="Contributed to ViewClass school management platform" data-ar="المساهمة في منصة ViewClass لإدارة المدارس" data-tr="ViewClass okul yönetim platformuna katkıda bulunma">Contributed to ViewClass school management platform</li>
+                    <li data-en="Worked on backend integrations and supporting data tools" data-ar="العمل على عمليات التكامل الخلفية وأدوات دعم البيانات" data-tr="Backend entegrasyonları ve destekleyici veri araçları üzerinde çalışma">Worked on backend integrations and supporting data tools</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <h2 data-en="Technical Skills" data-ar="المهارات التقنية" data-tr="Teknik Yetenekler">Technical Skills</h2>
+        <div class="skills-grid">
+            <div class="skill-category">
+                <h3><i class="fas fa-code"></i> <span data-en="Backend Development" data-ar="تطوير الواجهة الخلفية" data-tr="Backend Geliştirme">Backend Development</span></h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">PHP</span>
+                    <span class="skill-tag">Laravel</span>
+                    <span class="skill-tag">Node.js</span>
+                    <span class="skill-tag">NestJS</span>
+                    <span class="skill-tag">REST APIs</span>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3><i class="fas fa-database"></i> <span data-en="Database & Storage" data-ar="قواعد البيانات والتخزين" data-tr="Veritabanı & Depolama">Database & Storage</span></h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">PostgreSQL</span>
+                    <span class="skill-tag">MySQL</span>
+                    <span class="skill-tag">Prisma</span>
+                    <span class="skill-tag">Cloud Storage</span>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3><i class="fas fa-laptop-code"></i> <span data-en="Frontend & Mobile" data-ar="الواجهة الأمامية والموبايل" data-tr="Frontend & Mobil">Frontend & Mobile</span></h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">React</span>
+                    <span class="skill-tag">Vue.js</span>
+                    <span class="skill-tag">Flutter</span>
+                    <span class="skill-tag">React Native</span>
+                    <span class="skill-tag">HTML/CSS/JS</span>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3><i class="fas fa-server"></i> <span data-en="ICT & Infrastructure" data-ar="تقنية المعلومات والبنية التحتية" data-tr="BİT & Altyapı">ICT & Infrastructure</span></h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Linux Server</span>
+                    <span class="skill-tag">Windows Server</span>
+                    <span class="skill-tag">Network Admin</span>
+                    <span class="skill-tag">CCNA</span>
+                    <span class="skill-tag">Docker</span>
+                    <span class="skill-tag">CI/CD</span>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3><i class="fas fa-shield-alt"></i> <span data-en="Security" data-ar="الأمن السيبراني" data-tr="Güvenlik">Security</span></h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Information Security</span>
+                    <span class="skill-tag">Encryption</span>
+                    <span class="skill-tag">Authentication</span>
+                    <span class="skill-tag">Data Protection</span>
+                </div>
+            </div>
+
+            <div class="skill-category">
+                <h3><i class="fas fa-users"></i> <span data-en="Leadership" data-ar="القيادة" data-tr="Liderlik">Leadership</span></h3>
+                <div class="skill-tags">
+                    <span class="skill-tag">Team Leadership</span>
+                    <span class="skill-tag">Sprint Planning</span>
+                    <span class="skill-tag">Code Review</span>
+                    <span class="skill-tag">Mentoring</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <h2 data-en="Featured Projects" data-ar="المشاريع المميزة" data-tr="Öne Çıkan Projeler">Featured Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <div class="project-header">
+                    <h3>ViewClass</h3>
+                    <p data-en="School Management Platform" data-ar="منصة إدارة المدارس" data-tr="Okul Yönetim Platformu">School Management Platform</p>
+                </div>
+                <div class="project-body">
+                    <p data-en="Comprehensive platform for students, parents, and staff management with real-time communication and academic tracking." data-ar="منصة شاملة لإدارة الطلاب وأولياء الأمور والموظفين مع التواصل الفوري وتتبع الأداء الأكاديمي." data-tr="Öğrenciler, veliler ve personel yönetimi için gerçek zamanlı iletişim ve akademik takip ile kapsamlı platform.">Comprehensive platform for students, parents, and staff management with real-time communication and academic tracking.</p>
+                    <div class="tech-stack">
+                        <span class="tech-badge">Laravel</span>
+                        <span class="tech-badge">Vue.js</span>
+                        <span class="tech-badge">MySQL</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://www.viewclass.com" target="_blank"><i class="fas fa-external-link-alt"></i> <span data-en="Visit Site" data-ar="زيارة الموقع" data-tr="Siteyi Ziyaret Et">Visit Site</span></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <h3>Maqsafi Platform</h3>
+                    <p data-en="Digital Wallet & Education System" data-ar="محفظة رقمية ونظام تعليمي" data-tr="Dijital Cüzdan & Eğitim Sistemi">Digital Wallet & Education System</p>
+                </div>
+                <div class="project-body">
+                    <p data-en="School cafeteria digital wallet system with educational platform integration and mobile app support." data-ar="نظام محفظة رقمية لكافتيريا المدرسة مع تكامل منصة تعليمية ودعم تطبيق الموبايل." data-tr="Eğitim platformu entegrasyonu ve mobil uygulama desteği ile okul kafeteryası dijital cüzdan sistemi.">School cafeteria digital wallet system with educational platform integration and mobile app support.</p>
+                    <div class="tech-stack">
+                        <span class="tech-badge">Laravel</span>
+                        <span class="tech-badge">React Native</span>
+                        <span class="tech-badge">Vue.js</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://maqsafi.com" target="_blank"><i class="fas fa-external-link-alt"></i> Maqsafi</a>
+                        <a href="https://academy.maqsafi.com" target="_blank"><i class="fas fa-graduation-cap"></i> Academy</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <h3>PaketMan</h3>
+                    <p data-en="Restaurant Management System" data-ar="نظام إدارة المطاعم" data-tr="Restoran Yönetim Sistemi">Restaurant Management System</p>
+                </div>
+                <div class="project-body">
+                    <p data-en="Complete restaurant and admin dashboard with order management, inventory tracking, and analytics." data-ar="لوحة تحكم كاملة للمطاعم والإدارة مع إدارة الطلبات وتتبع المخزون والتحليلات." data-tr="Sipariş yönetimi, envanter takibi ve analitik ile eksiksiz restoran ve yönetici kontrol paneli.">Complete restaurant and admin dashboard with order management, inventory tracking, and analytics.</p>
+                    <div class="tech-stack">
+                        <span class="tech-badge">Laravel</span>
+                        <span class="tech-badge">REST API</span>
+                        <span class="tech-badge">PostgreSQL</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="project-header">
+                    <h3 data-en="ICT Infrastructure Projects" data-ar="مشاريع البنية التحتية التقنية" data-tr="BİT Altyapı Projeleri">ICT Infrastructure Projects</h3>
+                    <p data-en="Enterprise Solutions" data-ar="حلول المؤسسات" data-tr="Kurumsal Çözümler">Enterprise Solutions</p>
+                </div>
+                <div class="project-body">
+                    <p data-en="Designed and implemented hybrid cloud infrastructure, network security, and backup systems for NGO operations." data-ar="تصميم وتنفيذ البنية التحتية السحابية الهجينة والأمن السيبراني وأنظمة النسخ الاحتياطي لعمليات المنظمات غير الحكومية." data-tr="NGO operasyonları için hibrit bulut altyapısı, ağ güvenliği ve yedekleme sistemleri tasarımı ve uygulaması.">Designed and implemented hybrid cloud infrastructure, network security, and backup systems for NGO operations.</p>
+                    <div class="tech-stack">
+                        <span class="tech-badge">Linux</span>
+                        <span class="tech-badge">Windows Server</span>
+                        <span class="tech-badge">Docker</span>
+                        <span class="tech-badge">Cloud</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2 data-en="Get In Touch" data-ar="تواصل معي" data-tr="İletişime Geç">Get In Touch</h2>
+        <p style="text-align: center; margin-bottom: 2rem; color: var(--text-light); font-size: 1.1rem;">
+            <span data-en="Looking for a reliable developer? Let's discuss your project!" data-ar="تبحث عن مطور موثوق؟ دعنا نناقش مشروعك!" data-tr="Güvenilir bir geliştirici mi arıyorsunuz? Projenizi tartışalım!">Looking for a reliable developer? Let's discuss your project!</span>
+        </p>
+        <div class="contact-grid">
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                <div>
+                    <h4>Email</h4>
+                    <a href="mailto:mohammad.kfelati@gmail.com">mohammad.kfelati@gmail.com</a>
+                </div>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-phone"></i>
+                <div>
+                    <h4 data-en="Phone" data-ar="الهاتف" data-tr="Telefon">Phone</h4>
+                    <a href="tel:+905317255372">+90 531 725 5372</a>
+                </div>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div>
+                    <h4 data-en="Location" data-ar="الموقع" data-tr="Konum">Location</h4>
+                    <p>Istanbul, Türkiye</p>
+                </div>
+            </div>
+            <div class="contact-item">
+                <i class="fab fa-linkedin"></i>
+                <div>
+                    <h4>LinkedIn</h4>
+                    <a href="https://linkedin.com/in/mohammadkfelati" target="_blank">mohammadkfelati</a>
+                </div>
+            </div>
+            <div class="contact-item">
+                <i class="fab fa-github"></i>
+                <div>
+                    <h4>GitHub</h4>
+                    <a href="https://github.com/Mohammadk88" target="_blank">Mohammadk88</a>
+                </div>
+            </div>
+            <div class="contact-item">
+                <i class="fas fa-globe"></i>
+                <div>
+                    <h4 data-en="Portfolio" data-ar="معرض الأعمال" data-tr="Portföy">Portfolio</h4>
+                    <a href="https://mohammadk88.github.io" target="_blank">mohammadk88.github.io</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-links">
+            <a href="https://linkedin.com/in/mohammadkfelati" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/Mohammadk88" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="mailto:mohammad.kfelati@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="tel:+905317255372"><i class="fas fa-phone"></i></a>
+        </div>
+        <p>&copy; <span id="year"></span> Mohammad Kfelati. <span data-en="All rights reserved." data-ar="جميع الحقوق محفوظة." data-tr="Tüm hakları saklıdır.">All rights reserved.</span></p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;">
+            <span data-en="Built with passion for creating amazing digital experiences" data-ar="مبني بشغف لإنشاء تجارب رقمية مذهلة" data-tr="İnanılmaz dijital deneyimler yaratma tutkusuyla inşa edilmiştir">Built with passion for creating amazing digital experiences</span>
+        </p>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        // Language Switcher
+        const translations = {
+            en: {
+                // Already in HTML as default
+            },
+            ar: {
+                dir: 'rtl'
+            },
+            tr: {
+                // Turkish translations
+            }
+        };
+
+        function switchLang(lang) {
+            // Update active button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Update all translatable elements
+            document.querySelectorAll('[data-' + lang + ']').forEach(el => {
+                el.textContent = el.getAttribute('data-' + lang);
+            });
+
+            // Handle RTL for Arabic
+            if (lang === 'ar') {
+                document.body.setAttribute('dir', 'rtl');
+            } else {
+                document.body.setAttribute('dir', 'ltr');
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    document.getElementById('navLinks').classList.remove('active');
+                }
+            });
+        });
+
+        // Update year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Add scroll animation for elements
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe timeline items and project cards
+        document.querySelectorAll('.timeline-item, .project-card, .skill-category').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Active nav link on scroll
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const sections = document.querySelectorAll('section');
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
