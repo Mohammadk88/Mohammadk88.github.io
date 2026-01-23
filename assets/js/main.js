@@ -1,22 +1,9 @@
-(() => {
-  const year = document.getElementById("year");
-  if (year) year.textContent = new Date().getFullYear();
+const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  const burger = document.getElementById("burger");
-  const nav = document.getElementById("nav");
+const burger = document.getElementById('burger');
+const menu = document.querySelector('.menu');
 
-  if (burger && nav) {
-    burger.addEventListener("click", () => {
-      const isOpen = nav.classList.toggle("is-open");
-      burger.setAttribute("aria-expanded", isOpen ? "true" : "false");
-    });
-
-    // close menu after clicking a link (mobile)
-    nav.querySelectorAll("a").forEach(a => {
-      a.addEventListener("click", () => {
-        nav.classList.remove("is-open");
-        burger.setAttribute("aria-expanded", "false");
-      });
-    });
-  }
-})();
+if (burger && menu) {
+  burger.addEventListener('click', () => menu.classList.toggle('open'));
+}
