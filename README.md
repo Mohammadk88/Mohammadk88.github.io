@@ -1,6 +1,7 @@
 # 👋 Hi, I'm Mohammad Kfelati
 
-Senior Full Stack Developer & ICT Manager with 14+ years of experience in backend systems, cloud infrastructure, and scalable platforms.
+Senior Full-Stack Developer & ICT Consultant | Systems & AI Integration
+ with 14+ years of experience in backend systems, cloud infrastructure, and scalable platforms.
 
 ## 🔧 Tech Stack
 - Laravel, NestJS, React, Vue
@@ -19,3 +20,4 @@ Senior Full Stack Developer & ICT Manager with 14+ years of experience in backen
 ## 🔗 Contact
 - LinkedIn: https://linkedin.com/in/mohammadkfelati
 - Email: mohammad.kfelati@gmail.com
+
