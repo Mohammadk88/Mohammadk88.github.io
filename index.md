@@ -1,5 +1,5 @@
 # Mohammad Kfelati
-**Senior Full Stack Developer & ICT Manager**
+**Senior Senior Full-Stack Developer & ICT Consultant | Systems & AI Integration**
 
 I build scalable backend systems, cloud infrastructure, and reliable platforms for NGOs and enterprises.
 
@@ -18,3 +18,4 @@ https://github.com/MohammadKfelati/cv/Mohammad-Kfelati-CV.md
 ## Contact
 - Email: mohammad.kfelati@gmail.com  
 - LinkedIn: linkedin.com/in/mohammadkfelati
+
