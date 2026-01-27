@@ -1,5 +1,5 @@
 # Mohammad Kfelati
-**Senior Full Stack Developer & ICT Manager**  
+**Senior Full-Stack Developer & ICT Consultant | Systems & AI Integration**  
 Systems • Backend • Infrastructure • AI Integration  
 
 📍 Istanbul, Türkiye | 🌍 Remote / Open to Relocation  
@@ -9,8 +9,7 @@ Systems • Backend • Infrastructure • AI Integration
 ---
 
 ## Summary
-Senior Full Stack Developer and ICT Manager with 14+ years of experience designing, building, and managing scalable web systems and ICT infrastructure. Strong background in Laravel, NestJS, and backend architecture, with hands-on experience integrating AI-assisted tools into real-world platforms. Proven ability to lead teams and deliver reliable solutions across NGO and enterprise environments.
-
+Senior Full-Stack Developer& ICT Consultant | Systems & AI Integration with 14+ years of experience designing, building, and managing scalable web systems with AI assisted tools and integrations. Strong background in Laravel, React, and ICT infrastructure, with hands on experience integrating AI solutions into real world platforms. Proven ability to lead technical teams, architect robust systems, and deliver reliable solutions across NGO and enterprise environments.
 ---
 
 ## Core Skills
