@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>متابعة الزبائن — مشروعي</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  --bg: #0a0b0f;
+  --surface: #111218;
+  --card: #15161f;
+  --border: #1e2030;
+  --border2: #272940;
+  --accent: #5b6ef5;
+  --accent-soft: rgba(91,110,245,0.12);
+  --gold: #f0b429;
+  --gold-soft: rgba(240,180,41,0.12);
+  --green: #26c97a;
+  --green-soft: rgba(38,201,122,0.12);
+  --red: #f04a5e;
+  --red-soft: rgba(240,74,94,0.12);
+  --orange: #ff6b35;
+  --orange-soft: rgba(255,107,53,0.12);
+  --purple: #9b6dff;
+  --purple-soft: rgba(155,109,255,0.12);
+  --wa: #25d366;
+  --wa-soft: rgba(37,211,102,0.12);
+  --text: #e8eaf5;
+  --text2: #7a80a0;
+  --text3: #3a3f58;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'IBM Plex Sans Arabic', sans-serif;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--bg); color:var(--text); font-family:var(--sans); min-height:100vh; padding:24px; }
+
+.header { display:flex; align-items:center; justify-content:space-between; margin-bottom:28px; padding-bottom:20px; border-bottom:1px solid var(--border); gap:12px; flex-wrap:wrap; }
+.header-title { display:flex; align-items:center; gap:12px; }
+.logo-mark { width:38px; height:38px; background:var(--accent-soft); border:1px solid var(--accent); display:flex; align-items:center; justify-content:center; font-size:18px; }
+.title-text h1 { font-size:18px; font-weight:700; }
+.title-text p { font-size:12px; color:var(--text2); margin-top:2px; }
+.header-actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+
+.btn-primary { background:var(--accent); color:#fff; border:none; padding:8px 18px; font-family:var(--sans); font-size:13px; font-weight:600; cursor:pointer; transition:all .15s; }
+.btn-primary:hover { opacity:.85; }
+.btn-secondary { background:transparent; color:var(--text2); border:1px solid var(--border2); padding:8px 16px; font-family:var(--sans); font-size:13px; cursor:pointer; transition:all .15s; }
+.btn-secondary:hover { border-color:var(--accent); color:var(--accent); }
+.btn-wa { background:var(--wa-soft); color:var(--wa); border:1px solid rgba(37,211,102,.3); padding:8px 16px; font-family:var(--sans); font-size:13px; cursor:pointer; transition:all .15s; }
+.btn-wa:hover { background:var(--wa); color:#fff; }
+
+.stats-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:24px; }
+.stat-card { background:var(--card); border:1px solid var(--border); padding:16px 18px; position:relative; overflow:hidden; cursor:pointer; transition:border-color .15s; }
+.stat-card:hover { border-color:var(--border2); }
+.stat-card.active        { border-color:var(--accent);  background:var(--accent-soft); }
+.stat-card.active-gold   { border-color:var(--gold);    background:var(--gold-soft); }
+.stat-card.active-green  { border-color:var(--green);   background:var(--green-soft); }
+.stat-card.active-orange { border-color:var(--orange);  background:var(--orange-soft); }
+.stat-card.active-purple { border-color:var(--purple);  background:var(--purple-soft); }
+.stat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
+.stat-card.c-all::before      { background:var(--accent); }
+.stat-card.c-asked::before    { background:var(--gold); }
+.stat-card.c-hesitant::before { background:var(--orange); }
+.stat-card.c-ready::before    { background:var(--green); }
+.stat-card.c-bought::before   { background:var(--purple); }
+.stat-label { font-size:11px; color:var(--text2); margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+.stat-dot { width:6px; height:6px; border-radius:50%; }
+.stat-num { font-size:28px; font-weight:700; line-height:1; }
+.c-all .stat-num      { color:var(--accent); }
+.c-asked .stat-num    { color:var(--gold); }
+.c-hesitant .stat-num { color:var(--orange); }
+.c-ready .stat-num    { color:var(--green); }
+.c-bought .stat-num   { color:var(--purple); }
+.stat-sub { font-size:11px; color:var(--text3); margin-top:4px; font-family:var(--mono); }
+
+.followup-bar { background:rgba(240,180,41,.08); border:1px solid rgba(240,180,41,.25); padding:12px 16px; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.followup-bar-text { font-size:13px; color:var(--gold); }
+.followup-bar-count { font-family:var(--mono); font-size:11px; background:var(--gold); color:#000; padding:2px 8px; font-weight:700; }
+
+.toolbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; gap:12px; flex-wrap:wrap; }
+.search-box { display:flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--border); padding:8px 14px; flex:1; max-width:280px; transition:border-color .15s; }
+.search-box:focus-within { border-color:var(--accent); }
+.search-box input { background:none; border:none; outline:none; color:var(--text); font-family:var(--sans); font-size:13px; width:100%; }
+.search-box input::placeholder { color:var(--text3); }
+.filter-tabs { display:flex; gap:4px; }
+.filter-tab { font-family:var(--mono); font-size:10px; padding:6px 12px; border:1px solid var(--border); background:transparent; color:var(--text2); cursor:pointer; transition:all .15s; letter-spacing:1px; text-transform:uppercase; }
+.filter-tab:hover { border-color:var(--border2); color:var(--text); }
+.filter-tab.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+
+.table-wrap { background:var(--card); border:1px solid var(--border); overflow:hidden; }
+.table-head { display:grid; grid-template-columns:2fr 1.2fr 1fr 1.3fr 1.1fr 1.4fr 1fr 1.3fr; background:var(--surface); border-bottom:1px solid var(--border); padding:10px 16px; gap:10px; }
+.th { font-family:var(--mono); font-size:9px; color:var(--text3); letter-spacing:2px; text-transform:uppercase; }
+.table-body { min-height:200px; }
+.table-row { display:grid; grid-template-columns:2fr 1.2fr 1fr 1.3fr 1.1fr 1.4fr 1fr 1.3fr; padding:13px 16px; gap:10px; border-bottom:1px solid var(--border); align-items:center; transition:background .1s; }
+.table-row:last-child { border-bottom:none; }
+.table-row:hover { background:rgba(255,255,255,.02); }
+.td { font-size:13px; color:var(--text); }
+.td-sub { font-size:11px; color:var(--text2); margin-top:2px; }
+
+.platform-badge { display:inline-flex; align-items:center; gap:5px; font-size:11px; padding:3px 8px; border:1px solid var(--border2); color:var(--text2); }
+.badge { display:inline-block; font-size:10px; padding:3px 10px; font-weight:600; }
+.badge-asked    { background:var(--gold-soft);   color:var(--gold);   border:1px solid rgba(240,180,41,.3); }
+.badge-hesitant { background:var(--orange-soft);  color:var(--orange); border:1px solid rgba(255,107,53,.3); }
+.badge-ready    { background:var(--green-soft);   color:var(--green);  border:1px solid rgba(38,201,122,.3); }
+.badge-bought   { background:var(--purple-soft);  color:var(--purple); border:1px solid rgba(155,109,255,.3); }
+
+.status-dot { display:inline-flex; align-items:center; gap:6px; font-size:12px; }
+.dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.dot-done    { background:var(--green); }
+.dot-pending { background:var(--gold); box-shadow:0 0 6px var(--gold); }
+.dot-urgent  { background:var(--red);  box-shadow:0 0 6px var(--red); }
+
+.action-btn { background:transparent; border:1px solid var(--border2); color:var(--text2); padding:4px 8px; font-size:11px; font-family:var(--sans); cursor:pointer; transition:all .15s; }
+.action-btn:hover { border-color:var(--accent); color:var(--accent); }
+.action-btn.wa-btn  { border-color:rgba(37,211,102,.3); color:var(--wa); font-size:15px; padding:3px 9px; }
+.action-btn.wa-btn:hover  { background:var(--wa); color:#fff; border-color:var(--wa); }
+.action-btn.del-btn { border-color:rgba(240,74,94,.2); color:var(--red); }
+.action-btn.del-btn:hover { background:var(--red); color:#fff; }
+
+.empty-state { text-align:center; padding:60px 20px; color:var(--text3); }
+.empty-state p { font-size:14px; margin-top:8px; }
+
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.75); z-index:1000; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .2s; padding:16px; }
+.modal-overlay.open { opacity:1; pointer-events:all; }
+.modal { background:var(--surface); border:1px solid var(--border2); width:540px; max-width:100%; max-height:90vh; overflow-y:auto; }
+.modal-header { padding:20px 24px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+.modal-title { font-size:16px; font-weight:700; }
+.modal-close { background:none; border:none; color:var(--text2); font-size:22px; cursor:pointer; line-height:1; padding:0 4px; }
+.modal-close:hover { color:var(--text); }
+.modal-body { padding:24px; }
+.form-group { margin-bottom:18px; }
+.form-label { font-size:11px; color:var(--text2); margin-bottom:6px; display:block; font-family:var(--mono); letter-spacing:1px; text-transform:uppercase; }
+.form-input,.form-select,.form-textarea { width:100%; background:var(--card); border:1px solid var(--border2); color:var(--text); font-family:var(--sans); font-size:13px; padding:10px 14px; outline:none; transition:border-color .15s; }
+.form-input:focus,.form-select:focus,.form-textarea:focus { border-color:var(--accent); }
+.form-select option { background:var(--surface); }
+.form-textarea { resize:vertical; min-height:80px; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.modal-footer { padding:16px 24px; border-top:1px solid var(--border); display:flex; gap:8px; justify-content:flex-end; }
+
+/* WA MODAL */
+.wa-modal { width:480px; }
+.wa-phone-display { background:var(--card); border:1px solid var(--border); padding:12px 16px; margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+.wa-phone-num  { font-family:var(--mono); font-size:14px; color:var(--wa); }
+.wa-phone-name { font-size:13px; color:var(--text2); }
+
+.tpl-section-label { font-size:11px; color:var(--text2); margin-bottom:8px; font-family:var(--mono); letter-spacing:1px; text-transform:uppercase; }
+.templates-list { display:flex; flex-direction:column; gap:6px; margin-bottom:14px; max-height:200px; overflow-y:auto; }
+.tpl-item { background:var(--card); border:1px solid var(--border); padding:10px 14px; cursor:pointer; transition:all .15s; }
+.tpl-item:hover  { border-color:var(--wa); }
+.tpl-item.selected { border-color:var(--wa); background:var(--wa-soft); }
+.tpl-name { font-size:11px; font-weight:600; color:var(--wa); margin-bottom:3px; font-family:var(--mono); }
+.tpl-text { font-size:12px; color:var(--text2); line-height:1.5; }
+
+.wa-compose { background:var(--card); border:1px solid var(--border); padding:14px; margin-bottom:12px; }
+.wa-compose-label { font-size:11px; color:var(--text2); margin-bottom:8px; font-family:var(--mono); letter-spacing:1px; text-transform:uppercase; }
+.wa-textarea { width:100%; background:transparent; border:none; outline:none; color:var(--text); font-family:var(--sans); font-size:13px; resize:vertical; min-height:100px; line-height:1.7; }
+.wa-send-btn { width:100%; background:var(--wa); color:#fff; border:none; padding:12px; font-family:var(--sans); font-size:14px; font-weight:700; cursor:pointer; transition:opacity .15s; display:flex; align-items:center; justify-content:center; gap:8px; }
+.wa-send-btn:hover { opacity:.88; }
+
+/* TPL MANAGER */
+.tpl-manager { width:500px; }
+.tpl-manager-list { display:flex; flex-direction:column; gap:8px; max-height:280px; overflow-y:auto; margin-bottom:16px; }
+.tpl-manager-item { background:var(--card); border:1px solid var(--border); padding:12px 14px; display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+.tpl-manager-body { flex:1; }
+.tpl-manager-name { font-size:12px; font-weight:600; color:var(--accent); margin-bottom:4px; }
+.tpl-manager-text { font-size:12px; color:var(--text2); line-height:1.5; }
+.divider { height:1px; background:var(--border); margin:16px 0; }
+.add-tpl-title { font-size:13px; font-weight:600; margin-bottom:12px; }
+
+.toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--green); color:#fff; padding:10px 22px; font-size:13px; font-weight:600; z-index:2000; transition:transform .3s ease; white-space:nowrap; }
+.toast.show { transform:translateX(-50%) translateY(0); }
+
+::-webkit-scrollbar { width:4px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--border2); }
+
+@media(max-width:900px) {
+  .stats-grid { grid-template-columns:repeat(3,1fr); }
+  .table-head,.table-row { grid-template-columns:2fr 1fr 1fr 1fr 1.2fr; }
+}
+@media(max-width:600px) {
+  body { padding:12px; }
+  .stats-grid { grid-template-columns:repeat(2,1fr); }
+  .form-row { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-title">
+    <div class="logo-mark">📋</div>
+    <div class="title-text">
+      <h1>متابعة الزبائن</h1>
+      <p>واتساب · إنستغرام · مشروعي الصغير</p>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="btn-wa" onclick="openTplManager()">⚙ قوالب الرسائل</button>
+    <button class="btn-secondary" onclick="exportCSV()">⬇ تصدير CSV</button>
+    <button class="btn-primary" onclick="openModal()">+ زبون جديد</button>
+  </div>
+</div>
+
+<div class="followup-bar" id="followupBar" style="display:none">
+  <span class="followup-bar-text">⏰ عندك زبائن يحتاجون متابعة اليوم</span>
+  <span class="followup-bar-count" id="followupCount">0</span>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card c-all"      onclick="filterBy('all')"    id="stat-all">      <div class="stat-label"><span class="stat-dot" style="background:var(--accent)"></span>الكل</div>            <div class="stat-num" id="count-all">0</div><div class="stat-sub">زبون</div></div>
+  <div class="stat-card c-asked"    onclick="filterBy('سأل')"    id="stat-asked">    <div class="stat-label"><span class="stat-dot" style="background:var(--gold)"></span>سأل عن السعر</div>    <div class="stat-num" id="count-asked">0</div><div class="stat-sub">يحتاج 48 ساعة</div></div>
+  <div class="stat-card c-hesitant" onclick="filterBy('متردد')"  id="stat-hesitant"> <div class="stat-label"><span class="stat-dot" style="background:var(--orange)"></span>متردد</div>          <div class="stat-num" id="count-hesitant">0</div><div class="stat-sub">يحتاج دفعة</div></div>
+  <div class="stat-card c-ready"    onclick="filterBy('جاهز')"   id="stat-ready">    <div class="stat-label"><span class="stat-dot" style="background:var(--green)"></span>جاهز يشتري</div>    <div class="stat-num" id="count-ready">0</div><div class="stat-sub">لا تتأخر عليه</div></div>
+  <div class="stat-card c-bought"   onclick="filterBy('اشترى')"  id="stat-bought">   <div class="stat-label"><span class="stat-dot" style="background:var(--purple)"></span>اشترى</div>          <div class="stat-num" id="count-bought">0</div><div class="stat-sub">متابعة بعد أسبوعين</div></div>
+</div>
+
+<div class="toolbar">
+  <div class="search-box">
+    <span>🔍</span>
+    <input type="text" placeholder="ابحث باسم الزبون..." id="searchInput" oninput="renderTable()">
+  </div>
+  <div class="filter-tabs">
+    <button class="filter-tab active" onclick="setPlatform('all',this)">الكل</button>
+    <button class="filter-tab" onclick="setPlatform('واتساب',this)">واتساب</button>
+    <button class="filter-tab" onclick="setPlatform('إنستغرام',this)">إنستغرام</button>
+  </div>
+</div>
+
+<div class="table-wrap">
+  <div class="table-head">
+    <div class="th">الاسم</div>
+    <div class="th">واتساب</div>
+    <div class="th">المنصة</div>
+    <div class="th">آخر طلب</div>
+    <div class="th">التصنيف</div>
+    <div class="th">المتابعة</div>
+    <div class="th">الحالة</div>
+    <div class="th">إجراءات</div>
+  </div>
+  <div class="table-body" id="tableBody"></div>
+</div>
+
+<!-- CUSTOMER MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeOutside(event,'modalOverlay')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">زبون جديد</div>
+      <button class="modal-close" onclick="closeModal('modalOverlay')">×</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="editId">
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">الاسم *</label><input type="text" class="form-input" id="f-name" placeholder="اسم الزبون"></div>
+        <div class="form-group"><label class="form-label">رقم الواتساب</label><input type="text" class="form-input" id="f-phone" placeholder="9665xxxxxxxx"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">المنصة</label><select class="form-select" id="f-platform"><option value="واتساب">واتساب</option><option value="إنستغرام">إنستغرام</option><option value="الاثنين">الاثنين</option></select></div>
+        <div class="form-group"><label class="form-label">التصنيف *</label><select class="form-select" id="f-status" onchange="autoFollowup()"><option value="سأل">سأل عن السعر</option><option value="متردد">متردد</option><option value="جاهز">جاهز يشتري</option><option value="اشترى">اشترى</option></select></div>
+      </div>
+      <div class="form-group"><label class="form-label">آخر طلب / منتج</label><input type="text" class="form-input" id="f-order" placeholder="شمعة، خرز، كوب خزف..."></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">تاريخ آخر تواصل</label><input type="date" class="form-input" id="f-lastContact"></div>
+        <div class="form-group"><label class="form-label">تاريخ المتابعة</label><input type="date" class="form-input" id="f-followup"></div>
+      </div>
+      <div class="form-group"><label class="form-label">ملاحظة</label><textarea class="form-textarea" id="f-note" placeholder="أي تفصيل مهم..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modalOverlay')">إلغاء</button>
+      <button class="btn-primary" onclick="saveCustomer()">حفظ</button>
+    </div>
+  </div>
+</div>
+
+<!-- WHATSAPP MODAL -->
+<div class="modal-overlay" id="waOverlay" onclick="closeOutside(event,'waOverlay')">
+  <div class="modal wa-modal">
+    <div class="modal-header">
+      <div class="modal-title">📱 إرسال على واتساب</div>
+      <button class="modal-close" onclick="closeModal('waOverlay')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="wa-phone-display">
+        <span style="font-size:22px">📱</span>
+        <div>
+          <div class="wa-phone-num"  id="wa-phone-display">—</div>
+          <div class="wa-phone-name" id="wa-name-display">—</div>
+        </div>
+      </div>
+      <div class="tpl-section-label">اختر قالب</div>
+      <div class="templates-list" id="tplList"></div>
+      <div class="wa-compose">
+        <div class="wa-compose-label">الرسالة</div>
+        <textarea class="wa-textarea" id="waMessage" placeholder="اكتب رسالتك أو اختر قالب من فوق..."></textarea>
+      </div>
+      <button class="wa-send-btn" onclick="sendWhatsApp()">📤 فتح واتساب وإرسال</button>
+    </div>
+  </div>
+</div>
+
+<!-- TEMPLATES MANAGER -->
+<div class="modal-overlay" id="tplOverlay" onclick="closeOutside(event,'tplOverlay')">
+  <div class="modal tpl-manager">
+    <div class="modal-header">
+      <div class="modal-title">⚙ إدارة قوالب الرسائل</div>
+      <button class="modal-close" onclick="closeModal('tplOverlay')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="tpl-manager-list" id="tplManagerList"></div>
+      <div class="divider"></div>
+      <div class="add-tpl-title">+ إضافة قالب جديد</div>
+      <div class="form-group">
+        <label class="form-label">اسم القالب</label>
+        <input type="text" class="form-input" id="tpl-name-input" placeholder="مثال: تذكير أسبوعين">
+      </div>
+      <div class="form-group">
+        <label class="form-label">نص الرسالة — استخدم {اسم} لاسم الزبون تلقائياً</label>
+        <textarea class="form-textarea" id="tpl-text-input" placeholder="هلا {اسم}، عندي شغل جديد فكرت فيك..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('tplOverlay')">إغلاق</button>
+      <button class="btn-primary" onclick="addTemplate()">حفظ القالب</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let customers = JSON.parse(localStorage.getItem('crm_v2_customers') || 'null');
+let templates  = JSON.parse(localStorage.getItem('crm_v2_templates') || 'null');
+
+const defaultTemplates = [
+  { id:1, name:'سلام بعد الطلب',    text:'السلام عليكم {اسم} 🌸\nكيف وصلك الطلب؟ رأيك يهمني كتير.' },
+  { id:2, name:'تذكير أسبوعين',     text:'هلا {اسم} 😊\nعندي شغل جديد طلع هالأسبوع — فكرت فيك لأن ذوقك منيح.' },
+  { id:3, name:'خصم 10%',           text:'هلا {اسم} 🎁\nلو عجبك الشغل، صورة على story بتساعدني كتير.\nوعندي خصم 10% على طلبك الجاي 😊' },
+  { id:4, name:'متابعة 48 ساعة',    text:'هلا {اسم}\nبس أتأكد — وصلك جواب عن سؤالك؟ في شي ثاني أقدر أساعدك فيه؟' },
+];
+
+const defaultCustomers = (()=>{
+  const fmt = d => d.toISOString().split('T')[0];
+  const add = (d,n) => { const x=new Date(d); x.setDate(x.getDate()+n); return x; };
+  const t = new Date();
+  return [
+    { id:1, name:'خالد العمري',   phone:'966501234567', platform:'واتساب',   order:'شمعة عطرية',    status:'اشترى',  lastContact:fmt(add(t,-14)), followup:fmt(t),        note:'راضي كتير عن المنتج',    followupDone:false },
+    { id:2, name:'منى الشمري',    phone:'966557654321', platform:'إنستغرام', order:'طقم خرز أزرق',  status:'سأل',    lastContact:fmt(add(t,-1)),  followup:fmt(add(t,1)), note:'سألت عن السعر وما ردت',  followupDone:false },
+    { id:3, name:'فيصل الزهراني',phone:'966509876543', platform:'واتساب',   order:'كوب خزف',       status:'متردد',  lastContact:fmt(add(t,-3)),  followup:fmt(add(t,2)), note:'قال بيفكر',               followupDone:false },
+    { id:4, name:'ريم القحطاني',  phone:'966551234987', platform:'إنستغرام', order:'شمعة + خرز',    status:'جاهز',   lastContact:fmt(t),          followup:fmt(t),        note:'قالت رح تطلب اليوم',     followupDone:false },
+    { id:5, name:'نواف السالم',   phone:'966503456789', platform:'واتساب',   order:'ورد خزف فنجان', status:'اشترى',  lastContact:fmt(add(t,-7)),  followup:fmt(add(t,7)), note:'طلب قطعتين',              followupDone:false },
+    { id:6, name:'لمى العتيبي',   phone:'966556789012', platform:'إنستغرام', order:'خرز يد',         status:'سأل',    lastContact:fmt(add(t,-2)),  followup:fmt(t),        note:'',                        followupDone:false },
+  ];
+})();
+
+if (!customers) { customers = defaultCustomers; saveData(); }
+if (!templates)  { templates  = defaultTemplates; saveTemplates(); }
+
+let currentFilter='all', currentPlatform='all', editingId=null, waTargetId=null;
+
+function saveData()      { localStorage.setItem('crm_v2_customers', JSON.stringify(customers)); }
+function saveTemplates() { localStorage.setItem('crm_v2_templates', JSON.stringify(templates)); }
+
+// ── RENDER ────────────────────────────────────────────
+function renderTable() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = customers.filter(c =>
+    (currentFilter==='all'||c.status===currentFilter) &&
+    (currentPlatform==='all'||c.platform===currentPlatform) &&
+    (!search||c.name.toLowerCase().includes(search)||(c.phone||'').includes(search))
+  );
+  updateStats();
+  const body = document.getElementById('tableBody');
+  if (!filtered.length) { body.innerHTML='<div class="empty-state"><div style="font-size:32px">📋</div><p>ما في زبائن — ضيف أول زبون</p></div>'; return; }
+  body.innerHTML = filtered.map(c=>`
+    <div class="table-row">
+      <div class="td"><div style="font-weight:600">${c.name}</div><div class="td-sub">${c.note?c.note.substring(0,30)+(c.note.length>30?'…':''):'—'}</div></div>
+      <div class="td" style="font-family:var(--mono);font-size:11px;color:var(--text2)">${c.phone?'+'+c.phone:'—'}</div>
+      <div class="td"><span class="platform-badge">${c.platform==='واتساب'?'📱':'📸'} ${c.platform}</span></div>
+      <div class="td"><div>${c.order||'—'}</div><div class="td-sub">${c.lastContact||''}</div></div>
+      <div class="td">${getBadge(c.status)}</div>
+      <div class="td">${getFollowupStatus(c)}</div>
+      <div class="td">${!c.followupDone&&c.followup?`<button class="action-btn" onclick="markDone(${c.id})">✓ تم</button>`:'<span style="color:var(--text3);font-size:12px">—</span>'}</div>
+      <div class="td" style="display:flex;gap:5px;align-items:center">
+        ${c.phone?`<button class="action-btn wa-btn" onclick="openWA(${c.id})" title="إرسال واتساب">📱</button>`:''}
+        <button class="action-btn" onclick="openModal(${c.id})" title="تعديل">✏</button>
+        <button class="action-btn del-btn" onclick="deleteCustomer(${c.id})" title="حذف">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function getBadge(s) {
+  const m={'سأل':'badge-asked','متردد':'badge-hesitant','جاهز':'badge-ready','اشترى':'badge-bought'};
+  return `<span class="badge ${m[s]||''}">${s}</span>`;
+}
+
+function getFollowupStatus(c) {
+  if (c.followupDone) return '<span class="status-dot"><span class="dot dot-done"></span>تم ✓</span>';
+  if (!c.followup) return '<span style="color:var(--text3);font-size:12px">—</span>';
+  const today=new Date(); today.setHours(0,0,0,0);
+  const fu=new Date(c.followup); fu.setHours(0,0,0,0);
+  if (fu<today)  return '<span class="status-dot"><span class="dot dot-urgent"></span>متأخر!</span>';
+  if (fu.getTime()===today.getTime()) return '<span class="status-dot"><span class="dot dot-pending"></span>اليوم</span>';
+  return `<span class="status-dot"><span class="dot" style="background:var(--text3)"></span>${c.followup}</span>`;
+}
+
+function updateStats() {
+  const today=new Date(); today.setHours(0,0,0,0);
+  document.getElementById('count-all').textContent      = customers.length;
+  document.getElementById('count-asked').textContent    = customers.filter(c=>c.status==='سأل').length;
+  document.getElementById('count-hesitant').textContent = customers.filter(c=>c.status==='متردد').length;
+  document.getElementById('count-ready').textContent    = customers.filter(c=>c.status==='جاهز').length;
+  document.getElementById('count-bought').textContent   = customers.filter(c=>c.status==='اشترى').length;
+  const urgent = customers.filter(c=>{
+    if(c.followupDone||!c.followup) return false;
+    const fu=new Date(c.followup); fu.setHours(0,0,0,0); return fu<=today;
+  }).length;
+  const bar=document.getElementById('followupBar');
+  if(urgent>0){bar.style.display='flex';document.getElementById('followupCount').textContent=urgent+' زبون';}
+  else bar.style.display='none';
+}
+
+// ── FILTER ────────────────────────────────────────────
+function filterBy(f) {
+  currentFilter=f;
+  document.querySelectorAll('.stat-card').forEach(c=>{c.classList.remove('active','active-gold','active-green','active-orange','active-purple');});
+  const cm={all:'active','سأل':'active-gold','متردد':'active-orange','جاهز':'active-green','اشترى':'active-purple'};
+  const im={all:'stat-all','سأل':'stat-asked','متردد':'stat-hesitant','جاهز':'stat-ready','اشترى':'stat-bought'};
+  document.getElementById(im[f])?.classList.add(cm[f]);
+  renderTable();
+}
+function setPlatform(p,btn) { currentPlatform=p; document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active')); btn.classList.add('active'); renderTable(); }
+
+// ── CUSTOMER MODAL ────────────────────────────────────
+function openModal(id=null) {
+  editingId=id;
+  document.getElementById('modalTitle').textContent = id?'تعديل الزبون':'زبون جديد';
+  const today=new Date().toISOString().split('T')[0];
+  if(id){
+    const c=customers.find(x=>x.id===id);
+    document.getElementById('f-name').value=c.name; document.getElementById('f-phone').value=c.phone||'';
+    document.getElementById('f-platform').value=c.platform; document.getElementById('f-status').value=c.status;
+    document.getElementById('f-order').value=c.order||''; document.getElementById('f-lastContact').value=c.lastContact||'';
+    document.getElementById('f-followup').value=c.followup||''; document.getElementById('f-note').value=c.note||'';
+  } else {
+    ['f-name','f-phone','f-order','f-note'].forEach(i=>document.getElementById(i).value='');
+    document.getElementById('f-platform').value='واتساب'; document.getElementById('f-status').value='سأل';
+    document.getElementById('f-lastContact').value=today;
+    const fu=new Date(); fu.setDate(fu.getDate()+2); document.getElementById('f-followup').value=fu.toISOString().split('T')[0];
+  }
+  document.getElementById('modalOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('f-name').focus(),100);
+}
+
+function autoFollowup() {
+  const days={'سأل':2,'متردد':2,'جاهز':0,'اشترى':14};
+  const n=days[document.getElementById('f-status').value]||2;
+  const fu=new Date(); fu.setDate(fu.getDate()+n); document.getElementById('f-followup').value=fu.toISOString().split('T')[0];
+}
+
+function saveCustomer() {
+  const name=document.getElementById('f-name').value.trim();
+  if(!name){showToast('الاسم مطلوب ⚠');return;}
+  const data={name,phone:document.getElementById('f-phone').value.trim().replace(/\D/g,''),platform:document.getElementById('f-platform').value,status:document.getElementById('f-status').value,order:document.getElementById('f-order').value.trim(),lastContact:document.getElementById('f-lastContact').value,followup:document.getElementById('f-followup').value,note:document.getElementById('f-note').value.trim(),followupDone:false};
+  if(editingId){const idx=customers.findIndex(c=>c.id===editingId);data.followupDone=customers[idx].followupDone;customers[idx]={...customers[idx],...data};showToast('تم التعديل ✓');}
+  else{data.id=Date.now();customers.push(data);showToast('تمت الإضافة ✓');}
+  saveData();closeModal('modalOverlay');renderTable();
+}
+
+function deleteCustomer(id){if(!confirm('تأكيد الحذف؟'))return;customers=customers.filter(c=>c.id!==id);saveData();renderTable();showToast('تم الحذف');}
+function markDone(id){const c=customers.find(x=>x.id===id);if(c){c.followupDone=true;saveData();renderTable();showToast('تم تسجيل المتابعة ✓');}}
+
+// ── WHATSAPP ──────────────────────────────────────────
+function openWA(id) {
+  waTargetId=id;
+  const c=customers.find(x=>x.id===id);
+  document.getElementById('wa-phone-display').textContent='+'+c.phone;
+  document.getElementById('wa-name-display').textContent=c.name;
+  document.getElementById('waMessage').value='';
+  renderTplList();
+  document.getElementById('waOverlay').classList.add('open');
+}
+
+function renderTplList() {
+  const c=customers.find(x=>x.id===waTargetId);
+  document.getElementById('tplList').innerHTML = templates.length
+    ? templates.map(t=>`
+        <div class="tpl-item" onclick="selectTpl(${t.id})" id="tpl-${t.id}">
+          <div class="tpl-name">${t.name}</div>
+          <div class="tpl-text">${t.text.replace(/\{اسم\}/g,c?'<strong style="color:var(--wa)">'+c.name+'</strong>':'{اسم}')}</div>
+        </div>`).join('')
+    : '<div style="color:var(--text3);font-size:13px;padding:8px">ما في قوالب — أضف من ⚙ قوالب الرسائل</div>';
+}
+
+function selectTpl(id) {
+  const c=customers.find(x=>x.id===waTargetId);
+  const t=templates.find(x=>x.id===id);
+  if(!t)return;
+  document.querySelectorAll('.tpl-item').forEach(el=>el.classList.remove('selected'));
+  document.getElementById('tpl-'+id)?.classList.add('selected');
+  document.getElementById('waMessage').value=t.text.replace(/\{اسم\}/g,c?.name||'');
+}
+
+function sendWhatsApp() {
+  const c=customers.find(x=>x.id===waTargetId);
+  const msg=document.getElementById('waMessage').value.trim();
+  if(!msg){showToast('اكتب رسالة أولاً ⚠');return;}
+  if(!c?.phone){showToast('ما في رقم لهذا الزبون ⚠');return;}
+  window.open(`https://wa.me/${c.phone}?text=${encodeURIComponent(msg)}`,'_blank');
+  closeModal('waOverlay');
+  showToast('تم فتح واتساب ✓');
+}
+
+// ── TEMPLATES MANAGER ─────────────────────────────────
+function openTplManager(){renderTplManager();document.getElementById('tplOverlay').classList.add('open');}
+
+function renderTplManager() {
+  document.getElementById('tplManagerList').innerHTML = templates.length
+    ? templates.map(t=>`
+        <div class="tpl-manager-item">
+          <div class="tpl-manager-body"><div class="tpl-manager-name">${t.name}</div><div class="tpl-manager-text">${t.text}</div></div>
+          <button class="action-btn del-btn" onclick="deleteTpl(${t.id})">✕</button>
+        </div>`).join('')
+    : '<div style="color:var(--text3);font-size:13px;padding:8px">ما في قوالب بعد</div>';
+}
+
+function addTemplate() {
+  const name=document.getElementById('tpl-name-input').value.trim();
+  const text=document.getElementById('tpl-text-input').value.trim();
+  if(!name||!text){showToast('الاسم والنص مطلوبين ⚠');return;}
+  templates.push({id:Date.now(),name,text});saveTemplates();
+  document.getElementById('tpl-name-input').value='';document.getElementById('tpl-text-input').value='';
+  renderTplManager();showToast('تم إضافة القالب ✓');
+}
+
+function deleteTpl(id){if(!confirm('حذف القالب؟'))return;templates=templates.filter(t=>t.id!==id);saveTemplates();renderTplManager();showToast('تم الحذف');}
+
+// ── EXPORT ────────────────────────────────────────────
+function exportCSV() {
+  const h=['الاسم','الواتساب','المنصة','آخر طلب','التصنيف','تاريخ المتابعة','الحالة','ملاحظة'];
+  const r=customers.map(c=>[c.name,c.phone,c.platform,c.order,c.status,c.followup,c.followupDone?'تم':'معلق',c.note].map(x=>`"${x||''}"`).join(','));
+  const csv='\uFEFF'+[h.join(','),...r].join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download='زبائن_'+new Date().toISOString().split('T')[0]+'.csv'; a.click();
+  showToast('تم التصدير ✓');
+}
+
+// ── HELPERS ───────────────────────────────────────────
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function closeOutside(e,id){if(e.target===document.getElementById(id))closeModal(id);}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+filterBy('all');
+</script>
+</body>
+</html>
