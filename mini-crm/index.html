@@ -191,6 +191,18 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
 ::-webkit-scrollbar-track { background:var(--bg); }
 ::-webkit-scrollbar-thumb { background:var(--border2); }
 
+/* DEV CREDIT */
+.dev-top { display:flex; align-items:center; justify-content:space-between; padding:6px 0; margin-bottom:20px; border-bottom:1px solid var(--border); }
+.dev-top-name { font-family:var(--mono); font-size:11px; color:var(--text3); letter-spacing:1px; }
+.dev-top-name strong { color:var(--accent); }
+.dev-top-tag { font-family:var(--mono); font-size:9px; color:var(--text3); letter-spacing:2px; text-transform:uppercase; border:1px solid var(--border2); padding:3px 8px; }
+.dev-footer { margin-top:40px; padding-top:18px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+.dev-footer-left { display:flex; align-items:center; gap:10px; }
+.dev-footer-avatar { width:34px; height:34px; background:var(--accent-soft); border:1px solid var(--accent); display:flex; align-items:center; justify-content:center; font-size:15px; border-radius:50%; flex-shrink:0; }
+.dev-footer-name { font-size:13px; font-weight:700; color:var(--text); }
+.dev-footer-sub  { font-size:11px; color:var(--text2); font-family:var(--mono); margin-top:2px; letter-spacing:.5px; }
+.dev-footer-right { font-size:10px; color:var(--text3); font-family:var(--mono); letter-spacing:1px; text-align:left; line-height:1.9; }
+
 @media(max-width:900px) {
   .stats-grid { grid-template-columns:repeat(3,1fr); }
   .table-wrap { overflow-x:auto; }
@@ -255,6 +267,11 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
 </style>
 </head>
 <body>
+
+<div class="dev-top">
+  <span class="dev-top-name">Built by <strong>Mohammad Kfelati</strong> · محمد قفيلاتي</span>
+  <span class="dev-top-tag">Full-Stack Developer · AI & Automation</span>
+</div>
 
 <div class="header">
   <div class="header-title">
@@ -453,6 +470,20 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
     <div class="modal-footer">
       <button class="btn-primary" onclick="closeModal('trustOverlay')">فهمت ✓</button>
     </div>
+  </div>
+</div>
+
+<div class="dev-footer">
+  <div class="dev-footer-left">
+    <div class="dev-footer-avatar">👨‍💻</div>
+    <div>
+      <div class="dev-footer-name">Mohammad Kfelati</div>
+      <div class="dev-footer-sub">محمد قفيلاتي · Full-Stack Developer & ICT Consultant</div>
+    </div>
+  </div>
+  <div class="dev-footer-right">
+    BUILT WITH ♥ FOR SMALL BUSINESSES<br>
+    AI & AUTOMATION · ISTANBUL 2026
   </div>
 </div>
 
