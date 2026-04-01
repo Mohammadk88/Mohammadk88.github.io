@@ -123,6 +123,20 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
 .empty-state { text-align:center; padding:60px 20px; color:var(--text3); }
 .empty-state p { font-size:14px; margin-top:8px; }
 
+/* TRUST SHIELD */
+.trust-bar { display:flex; align-items:center; gap:16px; background:rgba(38,201,122,0.05); border:1px solid rgba(38,201,122,0.18); padding:11px 18px; margin-bottom:24px; flex-wrap:wrap; }
+.trust-shield-icon { width:34px; height:34px; background:rgba(38,201,122,0.12); border:1px solid rgba(38,201,122,0.3); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+.trust-pills { display:flex; gap:6px; flex-wrap:wrap; flex:1; }
+.trust-pill { display:inline-flex; align-items:center; gap:5px; background:rgba(38,201,122,0.08); border:1px solid rgba(38,201,122,0.2); padding:4px 10px; font-size:11px; color:var(--green); font-family:var(--mono); }
+.trust-info-btn { background:none; border:1px solid var(--border); color:var(--text3); font-size:11px; cursor:pointer; font-family:var(--mono); letter-spacing:1px; text-transform:uppercase; padding:4px 10px; transition:all .15s; flex-shrink:0; }
+.trust-info-btn:hover { border-color:var(--green); color:var(--green); }
+.trust-modal { width:480px; }
+.trust-section { margin-bottom:20px; }
+.trust-section-title { font-size:13px; font-weight:700; color:var(--green); margin-bottom:8px; display:flex; align-items:center; gap:8px; }
+.trust-section-body { font-size:13px; color:var(--text2); line-height:1.9; }
+.trust-badge-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.trust-badge { display:inline-flex; align-items:center; gap:6px; background:var(--green-soft); border:1px solid rgba(38,201,122,.25); padding:6px 14px; font-size:12px; color:var(--green); }
+
 .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.75); z-index:1000; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .2s; padding:16px; }
 .modal-overlay.open { opacity:1; pointer-events:all; }
 .modal { background:var(--surface); border:1px solid var(--border2); width:540px; max-width:100%; max-height:90vh; overflow-y:auto; }
@@ -179,12 +193,64 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
 
 @media(max-width:900px) {
   .stats-grid { grid-template-columns:repeat(3,1fr); }
-  .table-head,.table-row { grid-template-columns:2fr 1fr 1fr 1fr 1.2fr; }
+  .table-wrap { overflow-x:auto; }
+  .table-head,.table-row { grid-template-columns:2fr 1fr 1fr 1fr 1.2fr; min-width:600px; }
 }
+
 @media(max-width:600px) {
-  body { padding:12px; }
-  .stats-grid { grid-template-columns:repeat(2,1fr); }
+  body { padding:10px; }
+  .stats-grid { grid-template-columns:repeat(2,1fr); gap:8px; }
+  .stat-card { padding:12px 14px; }
+  .stat-num { font-size:22px; }
   .form-row { grid-template-columns:1fr; }
+
+  /* header stack */
+  .header { flex-direction:column; align-items:flex-start; gap:12px; margin-bottom:16px; padding-bottom:14px; }
+  .header-actions { width:100%; display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+  .header-actions .btn-wa { grid-column:1/-1; }
+
+  /* trust bar stack */
+  .trust-bar { flex-direction:column; align-items:flex-start; gap:10px; padding:12px 14px; }
+  .trust-pills { gap:5px; }
+  .trust-pill { font-size:10px; padding:3px 8px; }
+  .trust-info-btn { align-self:flex-end; }
+
+  /* followup bar */
+  .followup-bar { flex-direction:column; align-items:flex-start; gap:6px; }
+
+  /* toolbar */
+  .toolbar { flex-direction:column; align-items:stretch; gap:8px; }
+  .search-box { max-width:100%; }
+  .filter-tabs { justify-content:stretch; }
+  .filter-tab { flex:1; text-align:center; }
+
+  /* table → card layout on mobile */
+  .table-wrap { border:none; background:transparent; overflow:visible; }
+  .table-head { display:none !important; }
+  .table-body { display:flex; flex-direction:column; gap:10px; min-height:unset; }
+  .table-row {
+    display:flex !important;
+    flex-direction:column !important;
+    gap:8px !important;
+    padding:14px !important;
+    background:var(--card) !important;
+    border:1px solid var(--border) !important;
+    grid-template-columns:unset !important;
+    min-width:unset !important;
+  }
+  .table-row .td:nth-child(1) { font-size:15px; font-weight:700; border-bottom:1px solid var(--border); padding-bottom:8px; }
+  .table-row .td:nth-child(2) { display:none; }
+  .table-row .td:nth-child(8) { border-top:1px solid var(--border); padding-top:8px; margin-top:2px; }
+  .table-row .td:nth-child(8) { display:flex !important; flex-direction:row !important; gap:6px; }
+  .action-btn { padding:7px 14px; font-size:12px; flex:1; text-align:center; }
+  .action-btn.wa-btn { font-size:16px; flex:0 0 44px; }
+
+  /* modals full screen on mobile */
+  .modal-overlay { padding:0; align-items:flex-end; }
+  .modal { width:100%; max-width:100%; border-radius:0; max-height:92vh; border-left:none; border-right:none; border-bottom:none; }
+  .wa-modal,.trust-modal,.tpl-manager { width:100%; }
+  .trust-badge-row { gap:6px; }
+  .trust-badge { font-size:11px; padding:5px 10px; }
 }
 </style>
 </head>
@@ -208,6 +274,18 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
 <div class="followup-bar" id="followupBar" style="display:none">
   <span class="followup-bar-text">⏰ عندك زبائن يحتاجون متابعة اليوم</span>
   <span class="followup-bar-count" id="followupCount">0</span>
+</div>
+
+<!-- TRUST SHIELD -->
+<div class="trust-bar">
+  <div class="trust-shield-icon">🛡</div>
+  <div class="trust-pills">
+    <span class="trust-pill">✓ بياناتك على جهازك فقط</span>
+    <span class="trust-pill">✓ لا إنترنت · لا سيرفر</span>
+    <span class="trust-pill">✓ لا مشاركة مع أي أحد</span>
+    <span class="trust-pill">✓ حتى المطور لا يراها</span>
+  </div>
+  <button class="trust-info-btn" onclick="openTrustModal()">كيف؟ ←</button>
 </div>
 
 <div class="stats-grid">
@@ -328,6 +406,56 @@ body { background:var(--bg); color:var(--text); font-family:var(--sans); min-hei
   </div>
 </div>
 
+<!-- TRUST MODAL -->
+<div class="modal-overlay" id="trustOverlay" onclick="closeOutside(event,'trustOverlay')">
+  <div class="modal trust-modal">
+    <div class="modal-header">
+      <div class="modal-title">🛡 خصوصيتك وأمان بياناتك</div>
+      <button class="modal-close" onclick="closeModal('trustOverlay')">×</button>
+    </div>
+    <div class="modal-body">
+
+      <div class="trust-section">
+        <div class="trust-section-title">🔒 أين تُحفظ بياناتك؟</div>
+        <div class="trust-section-body">
+          كل البيانات التي تدخلها — أسماء الزبائن، أرقامهم، ملاحظاتك — تُحفظ فقط في <strong style="color:var(--text)">متصفحك على جهازك الشخصي</strong> باستخدام تقنية localStorage.<br><br>
+          لا يوجد سيرفر. لا قاعدة بيانات خارجية. لا اتصال بالإنترنت أثناء الاستخدام.
+        </div>
+      </div>
+
+      <div class="trust-section">
+        <div class="trust-section-title">👁 هل يستطيع أحد رؤية بياناتك؟</div>
+        <div class="trust-section-body">
+          لا. لا أحد — ولا حتى المطور الذي بنى هذه الأداة — يمكنه الوصول إلى بياناتك.<br><br>
+          البيانات محفوظة محلياً على جهازك فقط، ولا تُرسل لأي مكان في أي وقت.
+        </div>
+      </div>
+
+      <div class="trust-section">
+        <div class="trust-section-title">🗑 كيف تحذف بياناتك؟</div>
+        <div class="trust-section-body">
+          يمكنك مسح كل بياناتك في أي وقت بمسح بيانات المتصفح (Clear Site Data) أو بالضغط على زر "مسح كل البيانات" أدناه.
+        </div>
+        <div style="margin-top:12px">
+          <button class="action-btn del-btn" style="padding:8px 16px;font-size:12px" onclick="clearAllData()">🗑 مسح كل البيانات نهائياً</button>
+        </div>
+      </div>
+
+      <div class="trust-badge-row">
+        <span class="trust-badge">✓ لا تتبع</span>
+        <span class="trust-badge">✓ لا إعلانات</span>
+        <span class="trust-badge">✓ لا مشاركة بيانات</span>
+        <span class="trust-badge">✓ لا سيرفر خارجي</span>
+        <span class="trust-badge">✓ مفتوح المصدر للفحص</span>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn-primary" onclick="closeModal('trustOverlay')">فهمت ✓</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -376,15 +504,15 @@ function renderTable() {
   if (!filtered.length) { body.innerHTML='<div class="empty-state"><div style="font-size:32px">📋</div><p>ما في زبائن — ضيف أول زبون</p></div>'; return; }
   body.innerHTML = filtered.map(c=>`
     <div class="table-row">
-      <div class="td"><div style="font-weight:600">${c.name}</div><div class="td-sub">${c.note?c.note.substring(0,30)+(c.note.length>30?'…':''):'—'}</div></div>
+      <div class="td"><div style="font-weight:600">${c.name}</div><div class="td-sub">${c.note?c.note.substring(0,28)+(c.note.length>28?'…':''):'—'}</div></div>
       <div class="td" style="font-family:var(--mono);font-size:11px;color:var(--text2)">${c.phone?'+'+c.phone:'—'}</div>
       <div class="td"><span class="platform-badge">${c.platform==='واتساب'?'📱':'📸'} ${c.platform}</span></div>
-      <div class="td"><div>${c.order||'—'}</div><div class="td-sub">${c.lastContact||''}</div></div>
+      <div class="td"><div style="font-size:13px">${c.order||'—'}</div><div class="td-sub">${c.lastContact||''}</div></div>
       <div class="td">${getBadge(c.status)}</div>
       <div class="td">${getFollowupStatus(c)}</div>
       <div class="td">${!c.followupDone&&c.followup?`<button class="action-btn" onclick="markDone(${c.id})">✓ تم</button>`:'<span style="color:var(--text3);font-size:12px">—</span>'}</div>
-      <div class="td" style="display:flex;gap:5px;align-items:center">
-        ${c.phone?`<button class="action-btn wa-btn" onclick="openWA(${c.id})" title="إرسال واتساب">📱</button>`:''}
+      <div class="td" style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
+        ${c.phone?`<button class="action-btn wa-btn" onclick="openWA(${c.id})" title="واتساب">📱</button>`:''}
         <button class="action-btn" onclick="openModal(${c.id})" title="تعديل">✏</button>
         <button class="action-btn del-btn" onclick="deleteCustomer(${c.id})" title="حذف">✕</button>
       </div>
@@ -553,6 +681,8 @@ function exportCSV() {
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 function closeOutside(e,id){if(e.target===document.getElementById(id))closeModal(id);}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+function openTrustModal(){document.getElementById('trustOverlay').classList.add('open');}
+function clearAllData(){if(!confirm('رح تُمسح كل البيانات نهائياً. متأكد؟'))return;localStorage.removeItem('crm_v2_customers');localStorage.removeItem('crm_v2_templates');customers=defaultCustomers;templates=defaultTemplates;saveData();saveTemplates();closeModal('trustOverlay');renderTable();showToast('تم مسح كل البيانات');}
 
 filterBy('all');
 </script>
