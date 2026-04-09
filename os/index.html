@@ -640,6 +640,72 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 @media(max-width:768px){
   .sl-toggle-right{display:flex;background:var(--blue-bg);border:1px solid var(--blue-border);color:var(--blue);padding:5px 11px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;font-family:'DM Mono',monospace}
 }
+
+/* ══ QUICK ACTION BUTTONS ══ */
+.qab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:14px 8px;border-radius:10px;cursor:pointer;border:1px solid var(--border2);background:var(--surface);transition:all .15s;text-align:center}
+.qab:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.qab-icon{font-size:22px;line-height:1}
+.qab-label{font-size:12px;font-weight:800;font-family:'Cairo',sans-serif;color:var(--text)}
+.qab-sub{font-size:9px;color:var(--text2);font-family:'DM Mono',monospace;letter-spacing:.5px}
+.qab-li{background:rgba(0,119,181,.1);border-color:rgba(0,119,181,.3)}
+.qab-li:hover{background:rgba(0,119,181,.2);border-color:var(--li)}
+.qab-fb{background:rgba(24,119,242,.1);border-color:rgba(24,119,242,.3)}
+.qab-fb:hover{background:rgba(24,119,242,.2);border-color:var(--fb)}
+.qab-blog{background:rgba(245,200,66,.08);border-color:rgba(245,200,66,.3)}
+.qab-blog:hover{background:rgba(245,200,66,.18);border-color:var(--yellow)}
+.qab-reel{background:rgba(232,69,69,.08);border-color:rgba(232,69,69,.3)}
+.qab-reel:hover{background:rgba(232,69,69,.18);border-color:var(--red)}
+.qab-ideas{background:linear-gradient(135deg,rgba(124,92,252,.15),rgba(252,92,125,.1));border-color:rgba(124,92,252,.35)}
+.qab-ideas:hover{background:rgba(124,92,252,.25);border-color:var(--accent)}
+.qab-myidea{background:rgba(45,209,122,.08);border-color:rgba(45,209,122,.3)}
+.qab-myidea:hover{background:rgba(45,209,122,.18);border-color:var(--green)}
+
+/* ══ MY IDEA MODAL ══ */
+.mi-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:700;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+.mi-overlay.open{display:flex}
+.mi-modal{background:var(--surface);border:1px solid var(--border2);border-radius:14px;width:520px;max-width:96vw;overflow:hidden}
+@media(max-width:768px){.mi-modal{border-radius:16px 16px 0 0;position:fixed;bottom:0;left:0;right:0;width:100%;max-height:90dvh;overflow-y:auto}}
+@media(max-width:768px){.mi-overlay{align-items:flex-end}}
+.mi-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.mi-title{font-size:15px;font-weight:800;font-family:'Cairo',sans-serif}
+.mi-close{background:var(--surface2);border:1px solid var(--border2);color:var(--text2);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:14px}
+.mi-body{padding:18px 20px;display:flex;flex-direction:column;gap:12px}
+.mi-lbl{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2);margin-bottom:5px;display:block;font-family:'DM Mono',monospace}
+.mi-input{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:7px;color:var(--text);padding:10px 12px;font-size:13px;font-family:'Cairo',sans-serif;outline:none;direction:rtl;transition:border-color .15s}
+.mi-input:focus,.mi-textarea:focus{border-color:var(--accent)}
+.mi-textarea{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:7px;color:var(--text);padding:10px 12px;font-size:13px;font-family:'Cairo',sans-serif;outline:none;resize:vertical;min-height:80px;direction:rtl;transition:border-color .15s}
+.mi-type-row{display:flex;gap:6px;flex-wrap:wrap}
+.mi-type-chip{padding:6px 12px;border-radius:5px;border:1px solid var(--border2);cursor:pointer;font-size:11px;font-weight:700;color:var(--text2);background:var(--surface2);transition:all .15s;font-family:'Cairo',sans-serif}
+.mi-type-chip.on{background:rgba(124,92,252,.2);border-color:var(--accent);color:var(--accent)}
+.mi-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.mi-btn{padding:9px 16px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif;transition:all .15s;border:none}
+.mi-btn-gen{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+.mi-btn-claude{background:rgba(214,158,46,.12);color:#d69e2e;border:1px solid rgba(214,158,46,.3)!important}
+.mi-btn-gpt{background:rgba(16,163,127,.12);color:#10a37f;border:1px solid rgba(16,163,127,.3)!important}
+.mi-btn-cancel{background:var(--surface2);color:var(--text2);border:1px solid var(--border2)!important}
+
+/* ══ IDEA GENERATOR MODAL ══ */
+.ig-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:700;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+.ig-overlay.open{display:flex}
+.ig-modal{background:var(--surface);border:1px solid var(--border2);border-radius:14px;width:580px;max-width:96vw;max-height:88vh;overflow:hidden;display:flex;flex-direction:column}
+@media(max-width:768px){.ig-modal,.mi-modal{width:100%;border-radius:16px 16px 0 0;position:fixed;bottom:0;max-height:90dvh}.ig-overlay,.mi-overlay{align-items:flex-end}}
+.ig-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.ig-body{padding:14px 20px;overflow-y:auto;flex:1}
+.ig-filter-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.ig-card{background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.ig-card:hover{border-color:var(--accent);background:rgba(124,92,252,.08)}
+.ig-card-hook{font-size:13px;font-weight:700;font-family:'Cairo',sans-serif;line-height:1.4;flex:1}
+.ig-card-meta{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.ig-tag{font-size:9px;padding:2px 7px;border-radius:3px;font-family:'DM Mono',monospace;font-weight:700;background:var(--surface3);color:var(--text2);border:1px solid var(--border)}
+.ig-use-btn{background:rgba(124,92,252,.15);border:1px solid rgba(124,92,252,.3);color:var(--accent);padding:5px 10px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;font-family:'DM Mono',monospace;flex-shrink:0;white-space:nowrap;transition:all .15s}
+.ig-use-btn:hover{background:rgba(124,92,252,.3)}
+.ig-gen-btn{width:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;padding:11px;border-radius:8px;font-size:13px;font-weight:800;cursor:pointer;font-family:'Cairo',sans-serif;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .2s}
+.ig-gen-btn:hover{opacity:.85}
+.ig-gen-btn:disabled{opacity:.5;cursor:not-allowed}
+.ig-empty{text-align:center;padding:30px;color:var(--text2);font-family:'Cairo',sans-serif;font-size:13px}
+
+/* Mobile quick actions */
+@media(max-width:768px){#quick-actions-row{grid-template-columns:repeat(2,1fr)!important}.qab{padding:11px 6px}.qab-icon{font-size:18px}.qab-label{font-size:11px}}
 </style>
 </head>
 <body>
@@ -658,6 +724,70 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <button class="add-btn" onclick="openModal()">+ جدّد بوست</button>
   </div>
 </header>
+
+<!-- ══ MY IDEA MODAL ══ -->
+<div class="mi-overlay" id="mi-overlay" onclick="if(event.target===this)closeMiModal()">
+  <div class="mi-modal">
+    <div class="mi-header">
+      <div class="mi-title">✏️ عندي فكرة — ولّد المحتوى</div>
+      <button class="mi-close" onclick="closeMiModal()">✕</button>
+    </div>
+    <div class="mi-body">
+      <div>
+        <label class="mi-lbl">الفكرة / الموضوع</label>
+        <input class="mi-input" id="mi-hook" type="text" placeholder="مثال: كيف وفّرت ساعتين يومياً باستخدام AI...">
+      </div>
+      <div>
+        <label class="mi-lbl">تفاصيل إضافية (اختياري)</label>
+        <textarea class="mi-textarea" id="mi-details" placeholder="الزاوية، القصة، النقاط الرئيسية..."></textarea>
+      </div>
+      <div>
+        <label class="mi-lbl">نوع المحتوى</label>
+        <div class="mi-type-row" id="mi-type-row">
+          <div class="mi-type-chip on" data-ct="reel" onclick="miSelectType(this,'reel')">🎬 Reel/Short</div>
+          <div class="mi-type-chip" data-ct="linkedin" onclick="miSelectType(this,'linkedin')">💼 LinkedIn Post</div>
+          <div class="mi-type-chip" data-ct="facebook" onclick="miSelectType(this,'facebook')">👥 Facebook Post</div>
+          <div class="mi-type-chip" data-ct="carousel" onclick="miSelectType(this,'carousel')">📊 Carousel</div>
+          <div class="mi-type-chip" data-ct="blog" onclick="miSelectType(this,'blog')">✍️ مقال مدونة</div>
+          <div class="mi-type-chip" data-ct="longvideo" onclick="miSelectType(this,'longvideo')">▶ فيديو طويل</div>
+        </div>
+      </div>
+    </div>
+    <div class="mi-footer">
+      <button class="mi-btn mi-btn-cancel" onclick="closeMiModal()">إلغاء</button>
+      <button class="mi-btn mi-btn-claude" onclick="miOpenAI('claude')">🟠 Claude</button>
+      <button class="mi-btn mi-btn-gpt" onclick="miOpenAI('gpt')">🟢 GPT</button>
+      <button class="mi-btn mi-btn-gen" onclick="miGenerateWithSL()">⚡ ولّد الآن</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ IDEA GENERATOR MODAL ══ -->
+<div class="ig-overlay" id="ig-overlay" onclick="if(event.target===this)closeIgModal()">
+  <div class="ig-modal">
+    <div class="ig-header">
+      <div style="font-size:15px;font-weight:800;font-family:'Cairo',sans-serif">💡 مولّد الأفكار</div>
+      <button class="mi-close" onclick="closeIgModal()">✕</button>
+    </div>
+    <div class="ig-body">
+      <div class="ig-filter-row">
+        <div class="pf-btn active" onclick="igFilterPlatform('all',this)">الكل</div>
+        <div class="pf-btn" onclick="igFilterPlatform('reel',this)">🎬 Reels</div>
+        <div class="pf-btn" onclick="igFilterPlatform('linkedin',this)">💼 LinkedIn</div>
+        <div class="pf-btn" onclick="igFilterPlatform('facebook',this)">👥 Facebook</div>
+        <div class="pf-btn" onclick="igFilterPlatform('carousel',this)">📊 Carousel</div>
+      </div>
+      <button class="ig-gen-btn" id="ig-gen-btn" onclick="igGenerateIdeas()">
+        <div class="sl-spin" id="ig-spin"></div>
+        <span id="ig-gen-txt">⚡ ولّد 5 أفكار جديدة بـ Gemini</span>
+      </button>
+      <div id="ig-ideas-list">
+        <div class="ig-empty">اضغط "ولّد أفكار" للحصول على أفكار مخصصة لنيشك<br><span style="font-size:11px;color:var(--text2)">أو اختار من الأفكار الجاهزة أدناه</span></div>
+      </div>
+      <div id="ig-saved-ideas"></div>
+    </div>
+  </div>
+</div>
 
 <!-- ═══ BOTTOM NAV (mobile) ═══ -->
 <nav class="bottom-nav" id="bottom-nav">
@@ -737,6 +867,43 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <!-- ─── TODAY PAGE ─── -->
     <div class="page active" id="page-today">
       <div id="today-hero-area"></div>
+
+      <!-- ── QUICK ACTION BUTTONS ── -->
+      <div class="section-title">إنشاء سريع</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px" id="quick-actions-row">
+        <!-- Row 1: Post types -->
+        <button class="qab qab-li" onclick="quickOpenSL('linkedin')">
+          <span class="qab-icon">💼</span>
+          <div class="qab-label">LinkedIn Post</div>
+          <div class="qab-sub">بوست احترافي</div>
+        </button>
+        <button class="qab qab-fb" onclick="quickOpenSL('facebook')">
+          <span class="qab-icon">👥</span>
+          <div class="qab-label">Facebook Post</div>
+          <div class="qab-sub">بوست شخصي</div>
+        </button>
+        <button class="qab qab-blog" onclick="quickOpenSL('blog')">
+          <span class="qab-icon">✍️</span>
+          <div class="qab-label">مقال مدونة</div>
+          <div class="qab-sub">Article / Blog</div>
+        </button>
+        <!-- Row 2: Generate + My Idea -->
+        <button class="qab qab-reel" onclick="quickOpenSL('reel')">
+          <span class="qab-icon">🎬</span>
+          <div class="qab-label">Reel / Short</div>
+          <div class="qab-sub">سكريبت فيديو</div>
+        </button>
+        <button class="qab qab-ideas" onclick="openIdeaGenerator()">
+          <span class="qab-icon">💡</span>
+          <div class="qab-label">ولّد أفكار</div>
+          <div class="qab-sub">5 أفكار جديدة</div>
+        </button>
+        <button class="qab qab-myidea" onclick="openMyIdeaModal()">
+          <span class="qab-icon">✏️</span>
+          <div class="qab-label">عندي فكرة</div>
+          <div class="qab-sub">أنا بكتب</div>
+        </button>
+      </div>
 
       <div class="section-title">أزرار AI السريعة — اضغط ← نسخ ← افتح الشات</div>
       <div id="ai-prompts-today" class="prompt-grid" style="margin-bottom:20px"></div>
@@ -2804,6 +2971,304 @@ if (bnMore) {
 }
 
 // ── Initialize ──
+// ════════════════════════════════════════════════════════
+// QUICK ACTION BUTTONS
+// ════════════════════════════════════════════════════════
+
+// Blog prompt IDs to add to PROMPTS
+PROMPTS['blog_post'] = {
+  title: 'مقال مدونة',
+  type: 'post',
+  context: () => 'مقال مدونة عن AI/Automation للمشاريع الصغيرة',
+  prompt: (day, hook) => `أنت كاتب محتوى عربي خبير. اكتب مقال مدونة احترافي لمحمد قفيلاتي.
+
+النيش: ${SL.niche}
+الأسلوب: ${SL.voice}
+الموضوع: ${hook || 'AI وأتمتة للمشاريع الصغيرة'}
+
+هيكل المقال:
+- العنوان الرئيسي (جذاب + SEO)
+- مقدمة: مشكلة أو موقف حقيقي (150 كلمة)
+- الجسم: 3 أقسام رئيسية مع أمثلة عملية
+- خلاصة + CTA
+
+القواعد:
+- لهجة فصحى مريحة (مش ثقيلة)
+- أمثلة حقيقية من تجربة محمد
+- 600-900 كلمة
+- فقرات قصيرة (3-4 جمل)
+- بدون كليشيهات تسويقية`
+};
+
+function quickOpenSL(ct) {
+  const ctMap = {
+    linkedin: { label: 'LinkedIn Post', icon: '💼' },
+    facebook: { label: 'Facebook Post', icon: '👥' },
+    blog:     { label: 'مقال مدونة', icon: '✍️' },
+    reel:     { label: 'Reel / Short', icon: '🎬' },
+  };
+  const info = ctMap[ct] || { label: ct, icon: '✨' };
+  const today = new Date();
+  const dow = today.getDay();
+  const sched = WEEKLY_SCHEDULE[dow];
+
+  openScriptLab({
+    hook: `${info.icon} ${info.label} — ${sched.name}`,
+    angle: `محتوى يومي لـ ${info.label}`,
+    contentType: ct === 'blog' ? 'blog' : ct,
+    platform: ct === 'linkedin' ? 'LinkedIn' : ct === 'facebook' ? 'Facebook' : 'YouTube Shorts',
+    format: ct === 'blog' ? 'Blog Post' : ct === 'reel' ? 'Short 20-30s' : 'Post'
+  });
+
+  // If blog, switch to custom prompt
+  if (ct === 'blog') {
+    setTimeout(() => {
+      if (SL.currentContentType !== 'blog') {
+        SL.currentContentType = 'blog';
+        // Add blog to SL content types if not there
+        const ct28 = document.querySelector('.sl-ct-chip[data-ct="blog"]');
+        if (!ct28) {
+          const row = document.querySelector('.sl-content-type-row');
+          if (row) {
+            const el = document.createElement('div');
+            el.className = 'sl-ct-chip on';
+            el.dataset.ct = 'blog';
+            el.textContent = '✍️ مقال';
+            el.onclick = function() { slSelectContentType(this, 'blog'); };
+            row.appendChild(el);
+          }
+        }
+      }
+    }, 200);
+  }
+}
+
+// ── MY IDEA MODAL ──
+let miCurrentType = 'reel';
+
+function openMyIdeaModal() {
+  document.getElementById('mi-overlay').classList.add('open');
+  document.getElementById('mi-hook').value = '';
+  document.getElementById('mi-details').value = '';
+  miCurrentType = 'reel';
+  document.querySelectorAll('.mi-type-chip').forEach(c => c.classList.remove('on'));
+  document.querySelector('.mi-type-chip[data-ct="reel"]')?.classList.add('on');
+  setTimeout(() => document.getElementById('mi-hook').focus(), 200);
+}
+
+function closeMiModal() {
+  document.getElementById('mi-overlay').classList.remove('open');
+}
+
+function miSelectType(el, ct) {
+  document.querySelectorAll('.mi-type-chip').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+  miCurrentType = ct;
+}
+
+function miGetIdea() {
+  const hook = document.getElementById('mi-hook')?.value?.trim();
+  const details = document.getElementById('mi-details')?.value?.trim();
+  if (!hook) { showToast('⚠️ أدخل الفكرة أولاً'); return null; }
+  return {
+    hook,
+    angle: details || '',
+    contentType: miCurrentType,
+    platform: miCurrentType === 'linkedin' ? 'LinkedIn' : miCurrentType === 'facebook' ? 'Facebook' : 'YouTube Shorts',
+    format: miCurrentType === 'carousel' ? 'Carousel' : miCurrentType.includes('video') || miCurrentType === 'blog' ? 'Long' : 'Short 20-30s'
+  };
+}
+
+function miGenerateWithSL() {
+  const idea = miGetIdea();
+  if (!idea) return;
+  closeMiModal();
+  openScriptLab(idea);
+}
+
+function miOpenAI(ai) {
+  const idea = miGetIdea();
+  if (!idea) return;
+  closeMiModal();
+  // Build prompt from idea
+  const prompts = { reel: 'reel_script', linkedin: 'caption_li', facebook: 'caption_fb', carousel: 'carousel_script', blog: 'blog_post', longvideo: 'long_video_script' };
+  const pid = prompts[idea.contentType] || 'reel_script';
+  openScriptLab(idea);
+  setTimeout(() => slOpenAI(ai), 400);
+}
+
+// ── IDEA GENERATOR MODAL ──
+let igCurrentFilter = 'all';
+let igGeneratedIdeas = [];
+
+function openIdeaGenerator() {
+  document.getElementById('ig-overlay').classList.add('open');
+  igRenderSavedIdeas();
+}
+
+function closeIgModal() {
+  document.getElementById('ig-overlay').classList.remove('open');
+}
+
+function igFilterPlatform(f, el) {
+  document.querySelectorAll('.ig-filter-row .pf-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  igCurrentFilter = f;
+  igRenderIdeas(igGeneratedIdeas);
+}
+
+async function igGenerateIdeas() {
+  const btn = document.getElementById('ig-gen-btn');
+  const spin = document.getElementById('ig-spin');
+  const txt = document.getElementById('ig-gen-txt');
+  const list = document.getElementById('ig-ideas-list');
+
+  if (!SL.geminiKey) {
+    // Show static ideas from PLAN_28
+    igGeneratedIdeas = PLAN_28.slice(0, 5).map(p => ({
+      hook: p.hook,
+      angle: p.pillarName,
+      platform: p.format.includes('Carousel') ? 'carousel' : p.format.includes('طويل') || p.format.includes('Long') ? 'longvideo' : 'reel',
+      heat: '🔥🔥🔥',
+      pillar: p.pillarName
+    }));
+    igRenderIdeas(igGeneratedIdeas);
+    showToast('💡 أفكار من خطة 28 يوم — أضف Gemini Key لأفكار مخصصة');
+    return;
+  }
+
+  btn.disabled = true;
+  spin.style.display = 'block';
+  txt.textContent = 'جاري التوليد...';
+  list.innerHTML = '<div class="ig-empty">جاري توليد أفكار مخصصة لنيشك...</div>';
+
+  const today = new Date();
+  const dow = WEEKLY_SCHEDULE[today.getDay()];
+  const sys = `أنت مستشار محتوى عربي. أنشئ 5 أفكار محتوى مخصصة.
+النيش: ${SL.niche}
+الأسلوب: ${SL.voice}
+اليوم: ${dow?.name || 'اليوم'}
+لا تستخدم علامات اقتباس مزدوجة في قيم JSON. JSON فقط:
+{"ideas":[{"hook":"نص","angle":"نص","platform":"reel|linkedin|facebook|carousel|blog","heat":"🔥🔥🔥","pillar":"نص"}]}`;
+
+  try {
+    const res = slParseJSON(await slCallGemini(sys, `اليوم هو ${dow?.name}. ولّد 5 أفكار متنوعة: 2 Reels، 1 LinkedIn، 1 Facebook، 1 Carousel أو Blog`));
+    igGeneratedIdeas = res.ideas || [];
+    igRenderIdeas(igGeneratedIdeas);
+  } catch(e) {
+    list.innerHTML = `<div class="ig-empty" style="color:var(--red)">${e.message}</div>`;
+  } finally {
+    btn.disabled = false;
+    spin.style.display = 'none';
+    txt.textContent = '⚡ ولّد 5 أفكار جديدة بـ Gemini';
+  }
+}
+
+function igRenderIdeas(ideas) {
+  const list = document.getElementById('ig-ideas-list');
+  if (!ideas || !ideas.length) { list.innerHTML = '<div class="ig-empty">لا أفكار — اضغط ولّد</div>'; return; }
+  const filtered = igCurrentFilter === 'all' ? ideas : ideas.filter(i => i.platform === igCurrentFilter);
+  if (!filtered.length) { list.innerHTML = '<div class="ig-empty">لا أفكار لهذا النوع</div>'; return; }
+  let html = '';
+  filtered.forEach(idea => {
+    const pColors = { reel:'var(--red)', linkedin:'var(--li)', facebook:'var(--fb)', carousel:'var(--teal)', blog:'var(--yellow)', longvideo:'var(--red)' };
+    const pNames = { reel:'Reel', linkedin:'LinkedIn', facebook:'Facebook', carousel:'Carousel', blog:'Blog', longvideo:'فيديو طويل' };
+    const col = pColors[idea.platform] || 'var(--accent)';
+    html += `<div class="ig-card">
+      <div style="flex:1">
+        <div class="ig-card-hook">${idea.hook}</div>
+        <div class="ig-card-meta">
+          <span class="ig-tag" style="background:${col}22;color:${col};border-color:${col}44">${pNames[idea.platform]||idea.platform}</span>
+          ${idea.pillar ? `<span class="ig-tag">${idea.pillar}</span>` : ''}
+          ${idea.heat ? `<span class="ig-tag">${idea.heat}</span>` : ''}
+        </div>
+      </div>
+      <button class="ig-use-btn" onclick="igUseIdea(${JSON.stringify(idea).replace(/"/g,'&quot;')})">⚡ استخدم</button>
+    </div>`;
+  });
+  list.innerHTML = html;
+}
+
+function igRenderSavedIdeas() {
+  const saved = document.getElementById('ig-saved-ideas');
+  if (!saved) return;
+  // Show first 5 ideas from bank
+  const bankIdeas = ideas.slice(0, 5);
+  if (!bankIdeas.length) { saved.innerHTML = ''; return; }
+  let html = `<div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text2);font-family:'DM Mono',monospace;margin:10px 0 8px;display:flex;align-items:center;gap:6px"><span style="width:3px;height:10px;background:var(--accent);display:inline-block;border-radius:2px"></span>من بنك الأفكار</div>`;
+  bankIdeas.forEach(idea => {
+    html += `<div class="ig-card">
+      <div style="flex:1">
+        <div class="ig-card-hook">${idea.title}</div>
+        <div class="ig-card-meta">
+          <span class="ig-tag">${idea.platform}</span>
+        </div>
+      </div>
+      <button class="ig-use-btn" onclick="igUseIdea({hook:${JSON.stringify(idea.title)},angle:${JSON.stringify(idea.desc||'')},platform:'reel'})">⚡ استخدم</button>
+    </div>`;
+  });
+  saved.innerHTML = html;
+}
+
+function igUseIdea(idea) {
+  closeIgModal();
+  if (typeof idea === 'string') {
+    try { idea = JSON.parse(idea); } catch { return; }
+  }
+  openScriptLab({
+    hook: idea.hook,
+    angle: idea.angle || idea.pillar || '',
+    contentType: idea.platform || 'reel',
+    platform: idea.platform === 'linkedin' ? 'LinkedIn' : idea.platform === 'facebook' ? 'Facebook' : 'YouTube Shorts',
+    format: idea.platform === 'carousel' ? 'Carousel' : 'Short 20-30s'
+  });
+}
+
+// ── Extend SL to support blog content type ──
+const _slBuildSysOrig = slBuildSystemPrompt;
+slBuildSystemPrompt = function(ct) {
+  if (ct === 'blog') {
+    return `أنت كاتب محتوى عربي خبير. اكتب مقال مدونة احترافي.
+النيش: ${SL.niche}
+الأسلوب: ${SL.voice}
+المدة: 600-900 كلمة — فقرات قصيرة — أمثلة عملية.
+لا علامات اقتباس مزدوجة في JSON. JSON فقط:
+{"hook":"العنوان","body":"نص المقال كامل بفقرات","cta":"نص","captions":{"linkedin":{"title":"نص","caption":"نص","hashtags":["tag"]},"facebook":{"title":"نص","caption":"نص","hashtags":["tag"]},"youtube":{"title":"نص","caption":"نص","hashtags":["tag"]},"instagram":{"title":"نص","caption":"نص","hashtags":["tag","tag","tag","tag","tag"]}}}`;
+  }
+  return _slBuildSysOrig(ct);
+};
+
+const _slBuildUserOrig = slBuildUserPrompt;
+slBuildUserPrompt = function(ct) {
+  if (ct === 'blog') {
+    const idea = SL.currentIdea;
+    return `الموضوع: ${idea?.hook || 'AI وأتمتة للمشاريع الصغيرة'}\nالزاوية: ${idea?.angle || ''}\nاكتب مقال مدونة كامل`;
+  }
+  return _slBuildUserOrig(ct);
+};
+
+// Add blog chip to ScriptLab when it opens
+const _openSLOrig = openScriptLab;
+openScriptLab = function(idea) {
+  _openSLOrig(idea);
+  // Ensure blog chip exists in SL
+  setTimeout(() => {
+    const row = document.querySelector('.sl-content-type-row');
+    if (row && !row.querySelector('[data-ct="blog"]')) {
+      const el = document.createElement('div');
+      el.className = 'sl-ct-chip';
+      el.dataset.ct = 'blog';
+      el.innerHTML = '✍️ مقال';
+      el.onclick = function() { slSelectContentType(this, 'blog'); };
+      row.appendChild(el);
+    }
+    if (idea?.contentType === 'blog') {
+      const chip = document.querySelector('.sl-ct-chip[data-ct="blog"]');
+      if (chip) slSelectContentType(chip, 'blog');
+    }
+  }, 100);
+};
+
 async function mainInit() {
   await slInit();
   renderToday();
@@ -2813,3 +3278,325 @@ mainInit();
 </script>
 </body>
 </html>
+
+<style>
+/* My Idea Modal */
+#myidea-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:700;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px);direction:rtl}
+#myidea-overlay.open{display:flex}
+.mi-modal{background:var(--surface);border:1px solid var(--border2);border-radius:14px;width:540px;max-width:95vw;max-height:92dvh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.mi-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--surface);z-index:2}
+.mi-title{font-size:15px;font-weight:900;font-family:'Cairo',sans-serif;display:flex;align-items:center;gap:8px}
+.mi-close{background:var(--surface2);border:1px solid var(--border2);color:var(--text2);width:30px;height:30px;border-radius:6px;cursor:pointer;font-size:16px;transition:all .15s}
+.mi-close:hover{background:var(--red-bg);color:var(--red);border-color:rgba(232,69,69,.4)}
+.mi-body{padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+.mi-label{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2);font-family:'DM Mono',monospace;margin-bottom:5px;display:block}
+.mi-type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media(max-width:480px){.mi-type-grid{grid-template-columns:repeat(2,1fr)}}
+.mi-type-btn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 8px;border-radius:8px;cursor:pointer;border:1.5px solid var(--border2);background:var(--surface2);transition:all .15s;text-align:center}
+.mi-type-btn:hover{transform:translateY(-1px)}
+.mi-type-btn.selected{box-shadow:0 0 0 2px currentColor}
+.mi-type-btn .mi-type-icon{font-size:20px;line-height:1}
+.mi-type-btn .mi-type-name{font-size:11px;font-weight:800;font-family:'Cairo',sans-serif}
+.mi-type-btn .mi-type-sub{font-size:9px;font-family:'DM Mono',monospace;opacity:.7}
+.mi-type-btn[data-ct="reel"]{color:var(--red);border-color:rgba(232,69,69,.3);background:var(--red-bg)}
+.mi-type-btn[data-ct="reel"].selected{background:rgba(232,69,69,.2)}
+.mi-type-btn[data-ct="linkedin"]{color:var(--li);border-color:rgba(0,119,181,.3);background:rgba(0,119,181,.08)}
+.mi-type-btn[data-ct="linkedin"].selected{background:rgba(0,119,181,.2)}
+.mi-type-btn[data-ct="facebook"]{color:var(--fb);border-color:rgba(24,119,242,.3);background:rgba(24,119,242,.08)}
+.mi-type-btn[data-ct="facebook"].selected{background:rgba(24,119,242,.2)}
+.mi-type-btn[data-ct="carousel"]{color:var(--teal);border-color:rgba(32,197,176,.3);background:var(--teal-bg)}
+.mi-type-btn[data-ct="carousel"].selected{background:rgba(32,197,176,.2)}
+.mi-type-btn[data-ct="blog"]{color:var(--yellow);border-color:rgba(245,200,66,.3);background:var(--yellow-bg)}
+.mi-type-btn[data-ct="blog"].selected{background:rgba(245,200,66,.2)}
+.mi-type-btn[data-ct="longvideo"]{color:var(--accent);border-color:rgba(124,92,252,.3);background:rgba(124,92,252,.08)}
+.mi-type-btn[data-ct="longvideo"].selected{background:rgba(124,92,252,.2)}
+.mi-idea-input{width:100%;background:var(--surface2);border:1.5px solid var(--border2);border-radius:8px;color:var(--text);padding:12px 14px;font-size:13px;font-family:'Cairo',sans-serif;outline:none;resize:none;min-height:80px;direction:rtl;line-height:1.6;transition:border-color .15s}
+.mi-idea-input:focus{border-color:var(--accent)}
+.mi-idea-input::placeholder{color:var(--text2)}
+.mi-single-input{width:100%;background:var(--surface2);border:1.5px solid var(--border2);border-radius:8px;color:var(--text);padding:10px 14px;font-size:13px;font-family:'Cairo',sans-serif;outline:none;direction:rtl;transition:border-color .15s}
+.mi-single-input:focus{border-color:var(--accent)}
+.mi-tone-row{display:flex;gap:6px;flex-wrap:wrap}
+.mi-tone-chip{background:var(--surface2);border:1px solid var(--border2);color:var(--text2);padding:5px 12px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif;transition:all .15s}
+.mi-tone-chip.on{background:rgba(124,92,252,.15);border-color:var(--accent);color:var(--accent)}
+.mi-actions{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-top:4px}
+@media(max-width:480px){.mi-actions{grid-template-columns:1fr 1fr}}
+.mi-action-btn{padding:10px 6px;border-radius:8px;font-size:11px;font-weight:800;cursor:pointer;font-family:'Cairo',sans-serif;border:1px solid transparent;transition:all .15s;text-align:center;display:flex;flex-direction:column;gap:3px;align-items:center}
+.mi-action-btn:hover{transform:translateY(-1px);opacity:.9}
+.mi-btn-gemini{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none}
+.mi-btn-claude{background:rgba(214,158,46,.15);color:#d69e2e;border-color:rgba(214,158,46,.3)}
+.mi-btn-gpt{background:rgba(16,163,127,.15);color:#10a37f;border-color:rgba(16,163,127,.3)}
+.mi-btn-sl{background:rgba(124,92,252,.15);color:var(--accent);border-color:rgba(124,92,252,.3)}
+.mi-btn-icon{font-size:16px}
+.mi-btn-label{font-size:9px;opacity:.8}
+
+/* Idea Generator Modal */
+#ideagen-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:700;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px);direction:rtl}
+#ideagen-overlay.open{display:flex}
+.ig-modal{background:var(--surface);border:1px solid var(--border2);border-radius:14px;width:600px;max-width:95vw;max-height:90dvh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.ig-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--surface);z-index:2}
+.ig-title{font-size:15px;font-weight:900;font-family:'Cairo',sans-serif;display:flex;align-items:center;gap:8px}
+.ig-body{padding:16px 20px;display:flex;flex-direction:column;gap:12px}
+.ig-filter-row{display:flex;gap:6px;flex-wrap:wrap}
+.ig-chip{background:var(--surface2);border:1px solid var(--border2);color:var(--text2);padding:5px 12px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;font-family:'DM Mono',monospace;transition:all .15s}
+.ig-chip.on{background:rgba(124,92,252,.15);border-color:var(--accent);color:var(--accent)}
+.ig-gen-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;padding:11px;border-radius:8px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Cairo',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .2s}
+.ig-gen-btn:hover{opacity:.85}
+.ig-gen-btn:disabled{opacity:.5;cursor:not-allowed}
+.ig-gen-btn.loading .ig-spin{display:block}
+.ig-spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+.ig-ideas-list{display:flex;flex-direction:column;gap:10px}
+.ig-idea-card{background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:14px;transition:border-color .15s}
+.ig-idea-card:hover{border-color:var(--accent)}
+.ig-idea-hook{font-size:14px;font-weight:800;font-family:'Cairo',sans-serif;line-height:1.4;margin-bottom:6px;color:var(--text)}
+.ig-idea-angle{font-size:11px;color:var(--text2);font-family:'Cairo',sans-serif;margin-bottom:10px;line-height:1.5}
+.ig-idea-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.ig-idea-actions{display:flex;gap:6px;flex-wrap:wrap}
+.ig-idea-btn{padding:5px 12px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif;border:1px solid transparent;transition:all .15s}
+.ig-idea-btn:hover{transform:translateY(-1px)}
+.ig-btn-sl{background:rgba(124,92,252,.15);color:var(--accent);border-color:rgba(124,92,252,.3)}
+.ig-btn-save{background:var(--yellow-bg);color:var(--yellow);border-color:rgba(245,200,66,.3)}
+.ig-btn-claude{background:rgba(214,158,46,.15);color:#d69e2e;border-color:rgba(214,158,46,.3)}
+.ig-btn-gpt{background:rgba(16,163,127,.15);color:#10a37f;border-color:rgba(16,163,127,.3)}
+.ig-empty{text-align:center;padding:30px;color:var(--text2);font-family:'Cairo',sans-serif;font-size:13px}
+.ig-err{background:var(--red-bg);border:1px solid rgba(232,69,69,.3);color:var(--red);padding:8px 12px;border-radius:6px;font-size:11px;display:none;font-family:'Cairo',sans-serif}
+.ig-err.show{display:block}
+</style>
+
+<!-- ══ MY IDEA MODAL ══ -->
+<div id="myidea-overlay" onclick="if(event.target===this)closeMyIdeaModal()">
+  <div class="mi-modal">
+    <div class="mi-header">
+      <div class="mi-title">✏️ عندي فكرة — حولها لمحتوى</div>
+      <button class="mi-close" onclick="closeMyIdeaModal()">✕</button>
+    </div>
+    <div class="mi-body">
+      <div>
+        <span class="mi-label">نوع المحتوى</span>
+        <div class="mi-type-grid" id="mi-type-grid">
+          <div class="mi-type-btn selected" data-ct="reel" onclick="miSelectType(this,'reel')"><span class="mi-type-icon">🎬</span><span class="mi-type-name">Reel/Short</span><span class="mi-type-sub">20-40ث</span></div>
+          <div class="mi-type-btn" data-ct="linkedin" onclick="miSelectType(this,'linkedin')"><span class="mi-type-icon">💼</span><span class="mi-type-name">LinkedIn Post</span><span class="mi-type-sub">بوست احترافي</span></div>
+          <div class="mi-type-btn" data-ct="facebook" onclick="miSelectType(this,'facebook')"><span class="mi-type-icon">👥</span><span class="mi-type-name">Facebook Post</span><span class="mi-type-sub">بوست شخصي</span></div>
+          <div class="mi-type-btn" data-ct="carousel" onclick="miSelectType(this,'carousel')"><span class="mi-type-icon">📊</span><span class="mi-type-name">Carousel</span><span class="mi-type-sub">6-8 شرائح</span></div>
+          <div class="mi-type-btn" data-ct="blog" onclick="miSelectType(this,'blog')"><span class="mi-type-icon">✍️</span><span class="mi-type-name">مقال مدونة</span><span class="mi-type-sub">Article/Blog</span></div>
+          <div class="mi-type-btn" data-ct="longvideo" onclick="miSelectType(this,'longvideo')"><span class="mi-type-icon">▶️</span><span class="mi-type-name">فيديو طويل</span><span class="mi-type-sub">Outline كامل</span></div>
+        </div>
+      </div>
+      <div>
+        <span class="mi-label">فكرتك / الموضوع / الـ Hook</span>
+        <textarea class="mi-idea-input" id="mi-idea-input" placeholder="مثلاً:&#10;• الأتمتة ما بتحل الفوضى، بتسرّعها&#10;• كيف وفّرت 3 ساعات يومياً باستخدام n8n&#10;• لماذا معظم أصحاب المشاريع يستخدمون AI غلط&#10;&#10;اكتب فكرتك بحرية — AI سيحوّلها لمحتوى كامل"></textarea>
+      </div>
+      <div>
+        <span class="mi-label">الزاوية / الرسالة الرئيسية <span style="font-weight:400;opacity:.6">(اختياري)</span></span>
+        <input class="mi-single-input" id="mi-angle-input" placeholder="مثال: الفوضى في العملية هي المشكلة الحقيقية...">
+      </div>
+      <div>
+        <span class="mi-label">النبرة</span>
+        <div class="mi-tone-row">
+          <span class="mi-tone-chip on" data-tone="direct" onclick="this.classList.toggle('on')">مباشر</span>
+          <span class="mi-tone-chip" data-tone="story" onclick="this.classList.toggle('on')">قصة</span>
+          <span class="mi-tone-chip" data-tone="practical" onclick="this.classList.toggle('on')">عملي</span>
+          <span class="mi-tone-chip" data-tone="controversial" onclick="this.classList.toggle('on')">مثير للجدل</span>
+          <span class="mi-tone-chip" data-tone="humor" onclick="this.classList.toggle('on')">روح دعابة</span>
+          <span class="mi-tone-chip" data-tone="casestudy" onclick="this.classList.toggle('on')">Case Study</span>
+        </div>
+      </div>
+      <div>
+        <span class="mi-label">الـ CTA <span style="font-weight:400;opacity:.6">(اختياري)</span></span>
+        <input class="mi-single-input" id="mi-cta-input" placeholder="مثال: احفظ الفيديو / الرابط بالتعليق...">
+      </div>
+      <div>
+        <span class="mi-label">ولّد المحتوى</span>
+        <div class="mi-actions">
+          <button class="mi-action-btn mi-btn-gemini" onclick="miOpenInScriptLab()"><span class="mi-btn-icon">⚡</span><span>ScriptLab</span><span class="mi-btn-label">Gemini</span></button>
+          <button class="mi-action-btn mi-btn-sl" onclick="miOpenInScriptLab()"><span class="mi-btn-icon">🎬</span><span>ScriptLab</span><span class="mi-btn-label">كامل</span></button>
+          <button class="mi-action-btn mi-btn-claude" onclick="miOpenAI('claude')"><span class="mi-btn-icon">🟠</span><span>Claude</span><span class="mi-btn-label">نسخ + فتح</span></button>
+          <button class="mi-action-btn mi-btn-gpt" onclick="miOpenAI('gpt')"><span class="mi-btn-icon">🟢</span><span>ChatGPT</span><span class="mi-btn-label">نسخ + فتح</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ IDEA GENERATOR MODAL ══ -->
+<div id="ideagen-overlay" onclick="if(event.target===this)closeIdeaGenerator()">
+  <div class="ig-modal">
+    <div class="ig-header">
+      <div class="ig-title">💡 ولّد 5 أفكار جديدة</div>
+      <button class="mi-close" onclick="closeIdeaGenerator()">✕</button>
+    </div>
+    <div class="ig-body">
+      <div>
+        <span class="mi-label">المنصة</span>
+        <div class="ig-filter-row">
+          <span class="ig-chip on" data-p="all" onclick="igTogglePlatform(this)">الكل</span>
+          <span class="ig-chip" data-p="linkedin" onclick="igTogglePlatform(this)">💼 LinkedIn</span>
+          <span class="ig-chip" data-p="facebook" onclick="igTogglePlatform(this)">👥 Facebook</span>
+          <span class="ig-chip" data-p="reel" onclick="igTogglePlatform(this)">🎬 Reel/Short</span>
+          <span class="ig-chip" data-p="carousel" onclick="igTogglePlatform(this)">📊 Carousel</span>
+          <span class="ig-chip" data-p="blog" onclick="igTogglePlatform(this)">✍️ مدونة</span>
+        </div>
+      </div>
+      <div>
+        <span class="mi-label">الركيزة</span>
+        <div class="ig-filter-row">
+          <span class="ig-chip on" data-pil="all" onclick="igTogglePillar(this)">الكل</span>
+          <span class="ig-chip" data-pil="ai" onclick="igTogglePillar(this)">🤖 AI Hacks</span>
+          <span class="ig-chip" data-pil="auto" onclick="igTogglePillar(this)">⚙️ Automation</span>
+          <span class="ig-chip" data-pil="story" onclick="igTogglePillar(this)">📖 قصة شغل</span>
+          <span class="ig-chip" data-pil="security" onclick="igTogglePillar(this)">🔒 أمان رقمي</span>
+          <span class="ig-chip" data-pil="case" onclick="igTogglePillar(this)">📈 Case Study</span>
+        </div>
+      </div>
+      <div>
+        <span class="mi-label">توجيه إضافي <span style="font-weight:400;opacity:.6">(اختياري)</span></span>
+        <input class="mi-single-input" id="ig-context-input" placeholder="مثال: أفكار عن WhatsApp Automation لمراكز التجميل...">
+      </div>
+      <button class="ig-gen-btn" id="ig-gen-btn" onclick="igGenerate()">
+        <div class="ig-spin" id="ig-spin"></div>
+        <span id="ig-gen-txt">⚡ ولّد 5 أفكار</span>
+      </button>
+      <div class="ig-err" id="ig-err"></div>
+      <div id="ig-ideas-list" class="ig-ideas-list">
+        <div class="ig-empty">اضغط "ولّد أفكار" لتظهر هنا 5 أفكار مخصصة لنيشك</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+// ── Quick Action Buttons ──
+function quickOpenSL(ct) {
+  const labels = {linkedin:'بوست LinkedIn جديد',facebook:'بوست Facebook جديد',blog:'مقال مدونة جديد',reel:'Reel/Short جديد',carousel:'Carousel جديد',longvideo:'فيديو طويل جديد'};
+  openScriptLab({hook:labels[ct]||'محتوى جديد',angle:'',contentType:ct,platform:ct==='linkedin'?'LinkedIn':ct==='facebook'?'Facebook':'YouTube Shorts',format:ct});
+}
+
+// ── My Idea Modal ──
+let miCurrentType='reel';
+function openMyIdeaModal(preset){
+  document.getElementById('myidea-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  if(preset){const el=document.querySelector(`.mi-type-btn[data-ct="${preset}"]`);if(el)miSelectType(el,preset);}
+  setTimeout(()=>document.getElementById('mi-idea-input')?.focus(),100);
+}
+function closeMyIdeaModal(){document.getElementById('myidea-overlay').classList.remove('open');document.body.style.overflow='';}
+function miSelectType(el,ct){document.querySelectorAll('.mi-type-btn').forEach(b=>b.classList.remove('selected'));el.classList.add('selected');miCurrentType=ct;}
+function miGetTones(){return[...document.querySelectorAll('.mi-tone-chip.on')].map(t=>t.dataset.tone||t.textContent).join(', ')}
+function miBuildPrompt(){
+  const idea=document.getElementById('mi-idea-input')?.value?.trim()||'';
+  const angle=document.getElementById('mi-angle-input')?.value?.trim()||'';
+  const cta=document.getElementById('mi-cta-input')?.value?.trim()||'';
+  const tones=miGetTones();
+  const ct=miCurrentType;
+  const typeInstructions={
+    reel:`اكتب سكريبت Reel/Short عربي سوري 25-40 ثانية.\nBنية: [0-3ث] Hook → [3-15ث] المشكلة → [15-30ث] الحل → [30-37ث] Punch → [37-40ث] CTA`,
+    linkedin:`اكتب بوست LinkedIn بأسلوب أبو زياد — مهندس يفكر بصوت عالٍ.\nسطر 1 = موقف حصل → 3-4 أسطر قصيرة = درس → آخر سطر = punch + سؤال\nلا bullet points، لا مقدمات، الرابط بالتعليق، لا أكثر من 8 أسطر`,
+    facebook:`اكتب بوست Facebook بأسلوب "حمودة" — جمل قصيرة، موقف → ردة فعل → punch الأخيرة. 3-5 أسطر.`,
+    carousel:`اكتب Carousel 6-8 شرائح — شريحة 1: Hook. شرائح 2-6: خطوة واحدة لكل شريحة. شريحة أخيرة: CTA.`,
+    blog:`اكتب مقال مدونة 600-900 كلمة. عنوان → مقدمة Hook → 3-4 نقاط مع أمثلة → خاتمة + CTA`,
+    longvideo:`اكتب Outline فيديو YouTube طويل 5-8 دقائق — Hook + 3 نقاط رئيسية + أمثلة + CTA`,
+  };
+  return`النيش: ${SL.niche}\nالأسلوب: ${SL.voice}\nالفكرة: ${idea}${angle?'\nالزاوية: '+angle:''}${tones?'\nالنبرة: '+tones:''}${cta?'\nCTA: '+cta:''}\n\n${typeInstructions[ct]||typeInstructions.reel}\n\nثم اكتب كابشنات مختصرة:\n---LINKEDIN--- TITLE: / CAPTION: / HASHTAGS:\n---FACEBOOK--- TITLE: / CAPTION: / HASHTAGS:\n---INSTAGRAM--- TITLE: / CAPTION: / HASHTAGS:\n---YOUTUBE--- TITLE: / CAPTION: / HASHTAGS:`;
+}
+function miOpenInScriptLab(){
+  const idea=document.getElementById('mi-idea-input')?.value?.trim();
+  if(!idea){showToast('⚠️ اكتب فكرتك أولاً');document.getElementById('mi-idea-input')?.focus();return;}
+  const angle=document.getElementById('mi-angle-input')?.value?.trim()||'';
+  closeMyIdeaModal();
+  openScriptLab({hook:idea,angle,contentType:miCurrentType,platform:miCurrentType==='linkedin'?'LinkedIn':miCurrentType==='facebook'?'Facebook':'YouTube Shorts',format:miCurrentType});
+}
+function miOpenAI(ai){
+  const idea=document.getElementById('mi-idea-input')?.value?.trim();
+  if(!idea){showToast('⚠️ اكتب فكرتك أولاً');return;}
+  const prompt=miBuildPrompt();
+  navigator.clipboard.writeText(prompt).then(()=>{
+    window.open(ai==='claude'?'https://claude.ai/new':'https://chat.openai.com/','_blank');
+    closeMyIdeaModal();
+    showToast(`✅ نُسخ + فتح ${ai} — الصق بـ Ctrl+V`);
+  });
+}
+
+// ── Idea Generator ──
+let igCurrentPlatform='all',igCurrentPillar='all',igGeneratedIdeas=[];
+function openIdeaGenerator(){document.getElementById('ideagen-overlay').classList.add('open');document.body.style.overflow='hidden';}
+function closeIdeaGenerator(){document.getElementById('ideagen-overlay').classList.remove('open');document.body.style.overflow='';}
+function igTogglePlatform(el){document.querySelectorAll('.ig-chip[data-p]').forEach(c=>c.classList.remove('on'));el.classList.add('on');igCurrentPlatform=el.dataset.p;}
+function igTogglePillar(el){document.querySelectorAll('.ig-chip[data-pil]').forEach(c=>c.classList.remove('on'));el.classList.add('on');igCurrentPillar=el.dataset.pil;}
+
+function igBuildSystem(){
+  const plat=igCurrentPlatform==='all'?'LinkedIn, Facebook, Reel/Short, Carousel, Blog':igCurrentPlatform;
+  const pil=igCurrentPillar==='all'?'AI Hacks, Automation, قصص شغل, أمان رقمي, Case Study':igCurrentPillar;
+  return`أنت مستشار محتوى رقمي خبير للسوق العربي.\nالنيش: ${SL.niche}\nالأسلوب: ${SL.voice}\nالمنصة: ${plat}\nالركيزة: ${pil}\nالجمهور: أصحاب المشاريع الصغيرة والمتوسطة العرب.\nولّد 5 أفكار متنوعة ومختلفة جاهزة للتنفيذ.\nJSON فقط:\n{"ideas":[{"hook":"جملة الهوك","angle":"الزاوية والفكرة","platform":"LinkedIn|Facebook|Reel|Carousel|Blog|LongVideo","pillar":"ai|auto|story|security|case","heat":"🔥🔥🔥"}]}`;
+}
+
+async function igGenerate(){
+  const btn=document.getElementById('ig-gen-btn');
+  const spin=document.getElementById('ig-spin');
+  const txt=document.getElementById('ig-gen-txt');
+  const err=document.getElementById('ig-err');
+  const list=document.getElementById('ig-ideas-list');
+  const ctx=document.getElementById('ig-context-input')?.value?.trim()||'';
+  btn.disabled=true;btn.classList.add('loading');spin.style.display='block';txt.textContent='جاري التوليد...';
+  err.classList.remove('show');list.innerHTML='<div class="ig-empty">⏳ جاري التوليد...</div>';
+  try{
+    if(!SL.geminiKey)throw new Error('أضف Gemini API Key في الإعدادات');
+    const user=`اليوم: ${new Date().toLocaleDateString('ar-SA',{weekday:'long',month:'long',day:'numeric'})}.${ctx?'\nتوجيه: '+ctx:''}\nولّد 5 أفكار متنوعة ومختلفة.`;
+    const raw=await slCallGemini(igBuildSystem(),user);
+    const parsed=slParseJSON(raw);
+    igGeneratedIdeas=parsed.ideas||[];
+    igRenderIdeas(igGeneratedIdeas);
+  }catch(e){
+    err.textContent=e.message;err.classList.add('show');
+    const fallback=PLAN_28.slice(0,5).map(p=>({hook:p.hook,angle:p.pillarName,platform:p.format.includes('Reel')?'Reel':p.format.includes('طويل')?'LongVideo':p.format.includes('Carousel')?'Carousel':'LinkedIn',pillar:p.pillar,heat:'🔥🔥'}));
+    igGeneratedIdeas=fallback;igRenderIdeas(fallback);
+  }finally{
+    btn.disabled=false;btn.classList.remove('loading');spin.style.display='none';txt.textContent='⚡ ولّد 5 أفكار';
+  }
+}
+
+const _PILLAR_CLR={ai:'var(--accent)',auto:'var(--teal)',story:'var(--yellow)',security:'var(--red)',case:'var(--blue)'};
+const _PT_ICON={LinkedIn:'💼',Facebook:'👥',Reel:'🎬',Carousel:'📊',Blog:'✍️',LongVideo:'▶️'};
+const _CT_MAP={LinkedIn:'linkedin',Facebook:'facebook',Reel:'reel',Carousel:'carousel',Blog:'blog',LongVideo:'longvideo'};
+
+function igRenderIdeas(arr){
+  const list=document.getElementById('ig-ideas-list');
+  if(!arr.length){list.innerHTML='<div class="ig-empty">لم يتم توليد أفكار</div>';return;}
+  list.innerHTML=arr.map((idea,i)=>{
+    const clr=_PILLAR_CLR[idea.pillar]||'var(--text2)';
+    const ct=_CT_MAP[idea.platform]||'reel';
+    const h=(idea.hook||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+    const a=(idea.angle||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+    return`<div class="ig-idea-card">
+      <div class="ig-idea-hook">${idea.hook}</div>
+      <div class="ig-idea-angle">${idea.angle}</div>
+      <div class="ig-idea-tags">
+        <span class="tag" style="color:${clr};border-color:${clr}44">${_PT_ICON[idea.platform]||'📝'} ${idea.platform}</span>
+        <span class="tag">${idea.heat||'🔥🔥'}</span>
+      </div>
+      <div class="ig-idea-actions">
+        <button class="ig-idea-btn ig-btn-sl" onclick="igOpenInSL('${h}','${a}','${ct}')">⚡ ScriptLab</button>
+        <button class="ig-idea-btn ig-btn-save" onclick="igSaveIdea(${i})">⭐ حفظ</button>
+        <button class="ig-idea-btn ig-btn-claude" onclick="igOpenAI('claude','${h}','${a}','${ct}')">🟠 Claude</button>
+        <button class="ig-idea-btn ig-btn-gpt" onclick="igOpenAI('gpt','${h}','${a}','${ct}')">🟢 GPT</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function igOpenInSL(hook,angle,ct){closeIdeaGenerator();openScriptLab({hook,angle,contentType:ct,platform:ct==='linkedin'?'LinkedIn':ct==='facebook'?'Facebook':'YouTube Shorts',format:ct});}
+function igSaveIdea(i){
+  const idea=igGeneratedIdeas[i];if(!idea)return;
+  const pmap={LinkedIn:'li',Facebook:'fb',Reel:'ig',Carousel:'li',Blog:'li',LongVideo:'yt'};
+  ideas.unshift({platform:pmap[idea.platform]||'li',title:idea.hook,desc:idea.angle,tags:['#AI','#automation']});
+  if(document.getElementById('page-ideas').classList.contains('active'))renderIdeas('all');
+  showToast('⭐ تم الحفظ في بنك الأفكار');
+}
+function igOpenAI(ai,hook,angle,ct){
+  const prompt=`النيش: ${SL.niche}\nالأسلوب: ${SL.voice}\nالفكرة: ${hook}\nالزاوية: ${angle}\nولّد محتوى ${ct} كامل بالعربية السورية مع كابشنات.`;
+  navigator.clipboard.writeText(prompt).then(()=>{window.open(ai==='claude'?'https://claude.ai/new':'https://chat.openai.com/','_blank');showToast(`✅ نُسخ + فتح ${ai}`);});
+}
+
+// ESC close
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeMyIdeaModal();closeIdeaGenerator();}});
+</script>
