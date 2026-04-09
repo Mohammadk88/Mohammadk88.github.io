@@ -980,6 +980,67 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     <!-- ─── TRENDS ─── -->
     <div class="page" id="page-trends">
       <div class="page-title">ترندات 2026</div>
+
+      <!-- ── Gemini Refresh Bar ── -->
+      <div style="background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:14px 18px;margin-bottom:16px">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+          <div>
+            <div style="font-size:13px;font-weight:800;font-family:'Cairo',sans-serif;margin-bottom:3px">🔄 تحديث الترندات بـ Gemini AI</div>
+            <div style="font-size:11px;color:var(--text2);font-family:'Cairo',sans-serif">يجيب أحدث ترندات السوق العربي لهذا الشهر — AI + Automation + Business</div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <select id="trends-region" style="background:var(--surface2);border:1px solid var(--border2);color:var(--text);padding:6px 10px;border-radius:6px;font-size:11px;font-family:'Cairo',sans-serif;outline:none">
+              <option value="SA">🇸🇦 السعودية</option>
+              <option value="AE">🇦🇪 الإمارات</option>
+              <option value="EG">🇪🇬 مصر</option>
+              <option value="JO">🇯🇴 الأردن</option>
+              <option value="ALL">🌍 كل السوق العربي</option>
+            </select>
+            <select id="trends-niche" style="background:var(--surface2);border:1px solid var(--border2);color:var(--text);padding:6px 10px;border-radius:6px;font-size:11px;font-family:'Cairo',sans-serif;outline:none">
+              <option value="ai_automation">🤖 AI + Automation</option>
+              <option value="smb">💼 مشاريع صغيرة</option>
+              <option value="social">📱 سوشال ميديا</option>
+              <option value="ecommerce">🛒 تجارة إلكترونية</option>
+              <option value="all">🌐 كل النيشات</option>
+            </select>
+            <button onclick="trendsRefreshGemini()" id="trends-refresh-btn" style="background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;padding:7px 18px;border-radius:6px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Cairo',sans-serif;display:flex;align-items:center;gap:6px;transition:opacity .2s">
+              <span id="trends-refresh-spin" style="width:12px;height:12px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none"></span>
+              <span id="trends-refresh-txt">⚡ تحديث الآن</span>
+            </button>
+          </div>
+        </div>
+        <div id="trends-gemini-status" style="font-size:11px;color:var(--text2);margin-top:8px;font-family:'Cairo',sans-serif;display:none"></div>
+      </div>
+
+      <!-- ── Google Trends Quick Links ── -->
+      <div style="background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:14px 18px;margin-bottom:16px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text2);font-family:'DM Mono',monospace;margin-bottom:10px">🔗 روابط سريعة — Google Trends</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <a href="https://trends.google.com/trends/explore?geo=SA&q=ذكاء+اصطناعي,أتمتة,ChatGPT,n8n&hl=ar" target="_blank" class="trends-link-btn">🇸🇦 AI السعودية</a>
+          <a href="https://trends.google.com/trends/explore?geo=AE&q=AI+automation,chatgpt,business+automation&hl=ar" target="_blank" class="trends-link-btn">🇦🇪 AI الإمارات</a>
+          <a href="https://trends.google.com/trends/explore?geo=SA&q=واتساب+بيزنس,مشاريع+صغيرة,تجارة+إلكترونية&hl=ar" target="_blank" class="trends-link-btn">🛒 مشاريع صغيرة SA</a>
+          <a href="https://trends.google.com/trends/trendingsearches/daily?geo=SA" target="_blank" class="trends-link-btn trends-link-hot">🔥 يومي SA</a>
+          <a href="https://trends.google.com/trends/trendingsearches/daily?geo=AE" target="_blank" class="trends-link-btn trends-link-hot">🔥 يومي AE</a>
+          <a href="https://ads.tiktok.com/business/creativecenter/inspiration/topads/pc/en" target="_blank" class="trends-link-btn" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.2);color:#fff">🎵 TikTok Creative</a>
+          <a href="https://www.youtube.com/feed/explore" target="_blank" class="trends-link-btn" style="background:rgba(255,0,0,.08);border-color:rgba(255,0,0,.3);color:var(--yt)">▶️ YT Trending</a>
+        </div>
+        <div style="font-size:10px;color:var(--text2);margin-top:8px;font-family:'Cairo',sans-serif;line-height:1.6">
+          💡 طريقة استخدامها: افتح الرابط → غيّر المنطقة والفترة الزمنية → انظر شو الناس تبحث عنه → استخدم كـ Hook للمحتوى
+        </div>
+      </div>
+
+      <!-- ── Live Trends Output ── -->
+      <div id="trends-live-section" style="display:none;margin-bottom:16px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--green);font-family:'DM Mono',monospace">✅ ترندات حية — </div>
+          <div id="trends-live-meta" style="font-size:10px;color:var(--text2);font-family:'DM Mono',monospace"></div>
+          <button onclick="trendsAddToContent()" style="margin-right:auto;background:var(--green-bg);border:1px solid var(--green-border);color:var(--green);padding:4px 12px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif">➕ أضف للمحتوى الشهري</button>
+        </div>
+        <div id="trends-live-container"></div>
+      </div>
+
+      <!-- ── Static Trends ── -->
+      <div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text2);font-family:'DM Mono',monospace;margin-bottom:10px">📅 ترندات ثابتة 2026</div>
       <div id="trends-container"></div>
     </div>
 
@@ -3599,4 +3660,234 @@ function igOpenAI(ai,hook,angle,ct){
 
 // ESC close
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeMyIdeaModal();closeIdeaGenerator();}});
+</script>
+
+<style>
+/* Trends Quick Links */
+.trends-link-btn {
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(32,197,176,.08);border:1px solid rgba(32,197,176,.25);
+  color:var(--teal);padding:5px 12px;border-radius:5px;
+  font-size:10px;font-weight:700;font-family:'DM Mono',monospace;
+  text-decoration:none;transition:all .15s;letter-spacing:.3px;
+}
+.trends-link-btn:hover{background:rgba(32,197,176,.2);border-color:var(--teal);transform:translateY(-1px)}
+.trends-link-hot{background:rgba(232,69,69,.08)!important;border-color:rgba(232,69,69,.3)!important;color:var(--red)!important}
+.trends-link-hot:hover{background:rgba(232,69,69,.2)!important;border-color:var(--red)!important}
+
+/* Live trend cards */
+.trend-live-card {
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;padding:14px 16px;margin-bottom:8px;
+  border-right:3px solid var(--green);
+  transition:border-color .15s;
+}
+.trend-live-card:hover{border-color:var(--accent)}
+.trend-live-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.trend-live-name{font-size:14px;font-weight:800;font-family:'Cairo',sans-serif;color:var(--text)}
+.trend-live-heat{font-size:12px}
+.trend-live-why{font-size:11px;color:var(--text2);font-family:'Cairo',sans-serif;line-height:1.5;margin-bottom:8px}
+.trend-live-hooks{display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+.trend-live-hook{
+  background:var(--surface2);border:1px solid var(--border2);
+  border-radius:5px;padding:7px 10px;
+  font-size:11px;font-family:'Cairo',sans-serif;
+  color:var(--text);line-height:1.4;cursor:pointer;
+  transition:all .15s;display:flex;align-items:center;justify-content:space-between;gap:8px;
+}
+.trend-live-hook:hover{border-color:var(--accent);background:rgba(124,92,252,.1)}
+.trend-live-hook-txt{flex:1}
+.trend-live-hook-btns{display:flex;gap:4px;flex-shrink:0}
+.tlh-btn{padding:3px 8px;border-radius:4px;font-size:9px;font-weight:700;cursor:pointer;border:1px solid transparent;font-family:'DM Mono',monospace;transition:all .15s;white-space:nowrap}
+.tlh-sl{background:rgba(124,92,252,.15);color:var(--accent);border-color:rgba(124,92,252,.3)}
+.tlh-copy{background:var(--surface3);color:var(--text2);border-color:var(--border2)}
+.tlh-copy:hover{border-color:var(--accent);color:var(--accent)}
+.trend-live-platforms{display:flex;gap:5px;flex-wrap:wrap}
+.trend-live-plat{background:var(--surface3);border:1px solid var(--border2);color:var(--text2);padding:2px 7px;border-radius:3px;font-size:9px;font-family:'DM Mono',monospace}
+</style>
+
+<script>
+'use strict';
+// ══════════════════════════════════════════
+// TRENDS PAGE — Gemini Live + Google Links
+// ══════════════════════════════════════════
+
+let trendsLiveData = [];
+const TRENDS_CACHE_KEY = 'trends_live_cache';
+
+const TRENDS_SYSTEM = `أنت خبير تسويق رقمي متخصص في السوق العربي.
+مهمتك: تحليل الترندات الحالية وتقديمها بشكل قابل للتطبيق فوراً على المحتوى.
+
+اكتشف أهم 5 ترندات الآن للنيش المطلوب في السوق العربي المحدد.
+لكل ترند: اسمه + لماذا يشتغل الآن + 3 hooks جاهزة للاستخدام + أفضل المنصات.
+
+أرجع JSON فقط:
+{
+  "month": "اسم الشهر",
+  "region": "المنطقة",
+  "generated_at": "التاريخ",
+  "trends": [
+    {
+      "name": "اسم الترند",
+      "heat": "🔥🔥🔥",
+      "why_now": "لماذا يشتغل هذا الترند الآن",
+      "hooks": ["hook 1 جاهز للنشر", "hook 2", "hook 3"],
+      "best_platforms": ["LinkedIn", "Reel", "Facebook"],
+      "content_type": "post|reel|carousel"
+    }
+  ]
+}`;
+
+async function trendsRefreshGemini() {
+  if (!SL.geminiKey) {
+    showToast('⚠️ أضف Gemini API Key في الإعدادات');
+    showPage('settings', null);
+    return;
+  }
+
+  const btn = document.getElementById('trends-refresh-btn');
+  const spin = document.getElementById('trends-refresh-spin');
+  const txt = document.getElementById('trends-refresh-txt');
+  const status = document.getElementById('trends-gemini-status');
+
+  btn.disabled = true;
+  spin.style.display = 'block';
+  txt.textContent = 'جاري التحديث...';
+  status.style.display = 'block';
+  status.textContent = '⏳ يسأل Gemini عن أحدث الترندات...';
+
+  const region = document.getElementById('trends-region')?.value || 'SA';
+  const niche = document.getElementById('trends-niche')?.value || 'ai_automation';
+
+  const regionNames = {SA:'السعودية', AE:'الإمارات', EG:'مصر', JO:'الأردن', ALL:'كل السوق العربي'};
+  const nicheNames = {ai_automation:'AI + Automation', smb:'مشاريع صغيرة', social:'سوشال ميديا', ecommerce:'تجارة إلكترونية', all:'كل النيشات'};
+
+  const now = new Date();
+  const userMsg = `الشهر: ${now.toLocaleDateString('ar-SA', {month:'long', year:'numeric'})}
+المنطقة: ${regionNames[region]}
+النيش: ${nicheNames[niche]}
+الجمهور المستهدف: أصحاب المشاريع الصغيرة والمتوسطة + منشئو المحتوى العرب
+
+ما هي أبرز 5 ترندات الآن تصلح لصانع محتوى في ${nicheNames[niche]} يستهدف ${regionNames[region]}؟
+ركّز على الترندات العملية القابلة للتحويل لمحتوى فوراً.`;
+
+  try {
+    const raw = await slCallGemini(TRENDS_SYSTEM, userMsg);
+    const parsed = slParseJSON(raw);
+    trendsLiveData = parsed.trends || [];
+
+    // Cache it
+    localStorage.setItem(TRENDS_CACHE_KEY, JSON.stringify({
+      data: parsed,
+      ts: Date.now(),
+      region,
+      niche
+    }));
+
+    renderLiveTrends(parsed);
+    status.textContent = `✅ تم التحديث — ${parsed.trends?.length || 0} ترندات لـ ${regionNames[region]}`;
+    status.style.color = 'var(--green)';
+    showToast('✅ ترندات جديدة جاهزة');
+
+  } catch(e) {
+    status.textContent = '❌ ' + e.message;
+    status.style.color = 'var(--red)';
+  } finally {
+    btn.disabled = false;
+    spin.style.display = 'none';
+    txt.textContent = '⚡ تحديث الآن';
+  }
+}
+
+function renderLiveTrends(parsed) {
+  const section = document.getElementById('trends-live-section');
+  const container = document.getElementById('trends-live-container');
+  const meta = document.getElementById('trends-live-meta');
+
+  section.style.display = 'block';
+  meta.textContent = `${parsed.month || ''} • ${parsed.region || ''} • ${new Date().toLocaleDateString('ar-SA')}`;
+
+  container.innerHTML = (parsed.trends || []).map((t, ti) => {
+    const hooksHtml = (t.hooks || []).map((h, hi) => `
+      <div class="trend-live-hook">
+        <span class="trend-live-hook-txt">"${h}"</span>
+        <div class="trend-live-hook-btns">
+          <button class="tlh-btn tlh-sl" onclick="trendsOpenInSL(${ti},${hi})">⚡ SL</button>
+          <button class="tlh-btn tlh-copy" onclick="trendsCopyHook(this,'${h.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">نسخ</button>
+        </div>
+      </div>`).join('');
+
+    const platsHtml = (t.best_platforms || []).map(p =>
+      `<span class="trend-live-plat">${p}</span>`).join('');
+
+    return `<div class="trend-live-card">
+      <div class="trend-live-header">
+        <div class="trend-live-name">${t.name}</div>
+        <div class="trend-live-heat">${t.heat || '🔥🔥'}</div>
+      </div>
+      <div class="trend-live-why">💡 ${t.why_now}</div>
+      <div style="font-size:10px;font-weight:800;letter-spacing:1px;color:var(--text2);font-family:'DM Mono',monospace;margin-bottom:5px;text-transform:uppercase">Hooks جاهزة</div>
+      <div class="trend-live-hooks">${hooksHtml}</div>
+      <div class="trend-live-platforms">${platsHtml}</div>
+    </div>`;
+  }).join('');
+}
+
+function trendsOpenInSL(trendIdx, hookIdx) {
+  const trend = trendsLiveData[trendIdx];
+  if (!trend) return;
+  const hook = trend.hooks?.[hookIdx] || trend.name;
+  const ctMap = {post:'linkedin', reel:'reel', carousel:'carousel'};
+  const ct = ctMap[trend.content_type] || 'reel';
+  openScriptLab({
+    hook,
+    angle: trend.why_now || '',
+    contentType: ct,
+    platform: ct === 'linkedin' ? 'LinkedIn' : 'YouTube Shorts',
+    format: ct,
+  });
+  showPage('today', null);
+}
+
+function trendsCopyHook(btn, hook) {
+  navigator.clipboard.writeText(hook).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓';
+    btn.style.color = 'var(--green)';
+    setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 1500);
+  });
+}
+
+function trendsAddToContent() {
+  if (!trendsLiveData.length) return;
+  // Add top 3 trends as content ideas
+  trendsLiveData.slice(0, 3).forEach(t => {
+    const hook = t.hooks?.[0] || t.name;
+    const pmap = {reel:'ig', post:'li', carousel:'li'};
+    ideas.unshift({
+      platform: pmap[t.content_type] || 'li',
+      title: hook,
+      desc: t.why_now || t.name,
+      tags: (t.best_platforms || []).map(p => '#' + p.toLowerCase()),
+    });
+  });
+  if (document.getElementById('page-ideas').classList.contains('active')) renderIdeas('all');
+  showToast('✅ تم إضافة 3 أفكار من الترندات لبنك الأفكار');
+}
+
+// Load cached trends on page open
+const _trendsPageOrig = renderTrends;
+renderTrends = function() {
+  _trendsPageOrig();
+  // Load from cache if fresh (< 6 hours)
+  try {
+    const cached = JSON.parse(localStorage.getItem(TRENDS_CACHE_KEY) || 'null');
+    if (cached && (Date.now() - cached.ts) < 6 * 60 * 60 * 1000) {
+      trendsLiveData = cached.data?.trends || [];
+      renderLiveTrends(cached.data);
+      const meta = document.getElementById('trends-live-meta');
+      if (meta) meta.textContent += ' (cached)';
+    }
+  } catch(e) {}
+};
 </script>
