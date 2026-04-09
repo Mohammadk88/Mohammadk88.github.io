@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content OS — محمد قفيلاتي</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0a0f; --surface:#111118; --surface2:#1a1a24; --surface3:#20202e;
+  --border:#2a2a3a; --border2:#353550;
+  --accent:#7c5cfc; --accent2:#fc5c7d; --accent3:#5cfc9a; --accent4:#fcb95c;
+  --text:#f0f0ff; --text2:#8888aa; --text3:#444466;
+  --ig:#e1306c; --tk:#ffffff; --yt:#ff0000; --li:#0077b5; --fb:#1877f2;
+  --red:#e84545; --blue:#4f8ef7; --green:#2dd17a; --yellow:#f5c842; --teal:#20c5b0;
+  --red-bg:rgba(232,69,69,.08); --blue-bg:rgba(79,142,247,.08);
+  --green-bg:rgba(45,209,122,.08); --yellow-bg:rgba(245,200,66,.08);
+  --teal-bg:rgba(32,197,176,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;direction:rtl}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.4}
+
+/* ── HEADER ── */
+.header{padding:14px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(10,10,15,.97);backdrop-filter:blur(20px);z-index:200}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;letter-spacing:-1px}
+.logo-text{font-size:14px;font-weight:700;font-family:'Cairo',sans-serif}
+.logo-sub{font-family:'DM Mono',monospace;font-size:9px;color:var(--text2);letter-spacing:2px;text-transform:uppercase}
+.header-right{display:flex;align-items:center;gap:10px}
+.today-badge{background:var(--green-bg);border:1px solid rgba(45,209,122,.3);color:var(--green);font-family:'DM Mono',monospace;font-size:10px;padding:4px 10px;border-radius:4px;letter-spacing:1px}
+.add-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;padding:7px 16px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif;transition:opacity .2s}
+.add-btn:hover{opacity:.85}
+
+/* ── LAYOUT ── */
+.app{display:grid;grid-template-columns:200px 1fr;height:calc(100vh - 55px)}
+
+/* ── SIDEBAR ── */
+.sidebar{background:var(--surface);border-left:1px solid var(--border);overflow-y:auto;padding:16px 10px}
+.sidebar-section{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text3);padding:10px 8px 6px;font-family:'DM Mono',monospace}
+.nav-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;color:var(--text2);transition:all .15s;margin-bottom:2px;font-family:'Cairo',sans-serif}
+.nav-item:hover{background:var(--surface2);color:var(--text)}
+.nav-item.active{background:rgba(124,92,252,.15);color:var(--accent);border:1px solid rgba(124,92,252,.25)}
+.nav-icon{font-size:14px;width:18px;text-align:center}
+
+/* ── MAIN ── */
+.main{overflow-y:auto;background:var(--bg)}
+.page{display:none;padding:24px 28px}
+.page.active{display:block}
+.page-title{font-size:20px;font-weight:800;font-family:'Cairo',sans-serif;margin-bottom:4px}
+.page-sub{font-size:11px;color:var(--text2);margin-bottom:20px;font-family:'DM Mono',monospace}
+
+/* ── TODAY PAGE ── */
+.today-hero{background:linear-gradient(135deg,rgba(124,92,252,.15),rgba(252,92,125,.08));border:1px solid rgba(124,92,252,.25);border-radius:12px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between}
+.today-day-name{font-size:28px;font-weight:900;font-family:'Cairo',sans-serif}
+.today-date{font-size:12px;color:var(--text2);font-family:'DM Mono',monospace;margin-top:4px}
+.today-type-badge{font-size:11px;font-weight:800;padding:6px 16px;border-radius:6px;letter-spacing:1px;font-family:'DM Mono',monospace}
+
+.tasks-today{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.task-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:10px}
+.task-card:hover{border-color:var(--border2);background:var(--surface2)}
+.task-card.done{opacity:.45;border-color:rgba(45,209,122,.3);background:var(--green-bg)}
+.task-check{width:18px;height:18px;border:2px solid var(--border2);border-radius:4px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .15s}
+.task-card.done .task-check{background:var(--green);border-color:var(--green);color:#0a0a0f}
+.task-text{font-size:12px;font-weight:600;line-height:1.5;font-family:'Cairo',sans-serif}
+
+/* ── AI LAUNCHER ── */
+.ai-launcher{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:20px}
+.ai-launcher-title{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--accent);font-family:'DM Mono',monospace;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.prompt-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.prompt-card{background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:12px;cursor:pointer;transition:all .15s}
+.prompt-card:hover{border-color:var(--accent);background:rgba(124,92,252,.1)}
+.prompt-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.prompt-title{font-size:11px;font-weight:700;font-family:'Cairo',sans-serif;line-height:1.4}
+.prompt-type{font-size:9px;font-family:'DM Mono',monospace;padding:2px 6px;border-radius:3px;font-weight:700}
+.pt-video{background:var(--red-bg);color:var(--red);border:1px solid rgba(232,69,69,.3)}
+.pt-post{background:var(--blue-bg);color:var(--blue);border:1px solid rgba(79,142,247,.3)}
+.pt-hook{background:var(--yellow-bg);color:var(--yellow);border:1px solid rgba(245,200,66,.3)}
+.pt-script{background:rgba(124,92,252,.1);color:var(--accent);border:1px solid rgba(124,92,252,.3)}
+.pt-carousel{background:var(--teal-bg);color:var(--teal);border:1px solid rgba(32,197,176,.3)}
+.ai-btns{display:flex;gap:6px;margin-top:6px}
+.ai-btn{flex:1;padding:5px 4px;border:none;border-radius:4px;font-size:9px;font-weight:700;cursor:pointer;font-family:'DM Mono',monospace;transition:all .15s;letter-spacing:.5px}
+.ai-btn-claude{background:rgba(214,158,46,.15);color:#d69e2e;border:1px solid rgba(214,158,46,.3)}
+.ai-btn-claude:hover{background:rgba(214,158,46,.25)}
+.ai-btn-gpt{background:rgba(16,163,127,.15);color:#10a37f;border:1px solid rgba(16,163,127,.3)}
+.ai-btn-gpt:hover{background:rgba(16,163,127,.25)}
+.ai-btn-gemini{background:rgba(66,133,244,.15);color:#4285f4;border:1px solid rgba(66,133,244,.3)}
+.ai-btn-gemini:hover{background:rgba(66,133,244,.25)}
+
+/* ── WEEK SCHEDULE ── */
+.week-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:20px}
+.week-cell{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 8px;text-align:center;cursor:pointer;transition:all .15s}
+.week-cell:hover{border-color:var(--border2)}
+.week-cell.today-cell{border-color:var(--accent);background:rgba(124,92,252,.1)}
+.week-cell.done-cell{border-color:rgba(45,209,122,.3);background:var(--green-bg)}
+.wc-day{font-size:9px;font-family:'DM Mono',monospace;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.wc-date{font-size:16px;font-weight:800}
+.wc-type{font-size:8px;font-weight:700;padding:2px 5px;border-radius:3px;margin-top:4px;display:inline-block}
+
+/* ── STATS ROW ── */
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px}
+.stat-mini{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center}
+.stat-mini-val{font-size:22px;font-weight:900;font-family:'DM Mono',monospace}
+.stat-mini-lbl{font-size:9px;color:var(--text2);margin-top:2px;font-family:'Cairo',sans-serif}
+
+/* ── CALENDAR PAGE ── */
+.calendar-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.month-nav{display:flex;align-items:center;gap:12px}
+.month-name{font-size:16px;font-weight:700;font-family:'Cairo',sans-serif;min-width:160px;text-align:center}
+.nav-btn{background:var(--surface2);border:1px solid var(--border2);color:var(--text);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:14px;transition:all .15s}
+.nav-btn:hover{background:var(--surface3);border-color:var(--accent)}
+.cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px}
+.cal-weekday{text-align:center;font-size:10px;font-family:'DM Mono',monospace;color:var(--text2);padding:4px}
+.cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-day{background:var(--surface);border:1px solid var(--border);border-radius:6px;min-height:72px;padding:6px;cursor:pointer;transition:all .15s;position:relative}
+.cal-day:hover{border-color:var(--border2);background:var(--surface2)}
+.cal-day.today{border-color:var(--accent);background:rgba(124,92,252,.1)}
+.cal-day.has-content{border-color:rgba(45,209,122,.25)}
+.cal-day.other-month{opacity:.3}
+.day-num{font-size:12px;font-weight:700;margin-bottom:4px;font-family:'DM Mono',monospace}
+.day-posts{display:flex;flex-direction:column;gap:2px}
+.post-chip{font-size:9px;padding:2px 5px;border-radius:3px;font-weight:600;font-family:'Cairo',sans-serif;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip-ig{background:rgba(225,48,108,.15);color:var(--ig)}
+.chip-tk{background:rgba(255,255,255,.08);color:#ddd}
+.chip-yt{background:rgba(255,0,0,.12);color:var(--yt)}
+.chip-li{background:rgba(0,119,181,.15);color:var(--li)}
+.chip-fb{background:rgba(24,119,242,.15);color:var(--fb)}
+
+/* ── IDEAS ── */
+.ideas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.idea-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;cursor:pointer;transition:all .15s}
+.idea-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.idea-title{font-size:13px;font-weight:700;margin:8px 0 6px;font-family:'Cairo',sans-serif;line-height:1.4}
+.idea-desc{font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:10px;font-family:'Cairo',sans-serif}
+.tag{display:inline-block;background:var(--surface2);border:1px solid var(--border2);padding:2px 7px;border-radius:3px;font-size:9px;margin:2px;color:var(--text2);font-family:'DM Mono',monospace}
+.platform-badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:3px;display:inline-block;font-family:'DM Mono',monospace}
+
+/* ── HASHTAGS ── */
+.hashtag-set{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px}
+.set-name{font-size:14px;font-weight:700;font-family:'Cairo',sans-serif;margin-bottom:4px}
+.set-info{font-size:10px;color:var(--text2);font-family:'DM Mono',monospace;margin-bottom:10px}
+.hashtag-list{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.hashtag-tag{background:var(--surface2);border:1px solid var(--border2);padding:3px 8px;border-radius:4px;font-size:10px;color:var(--accent);font-family:'DM Mono',monospace;cursor:pointer;transition:all .15s}
+.hashtag-tag:hover{background:rgba(124,92,252,.2);border-color:var(--accent)}
+.copy-btn{background:var(--surface2);border:1px solid var(--border2);color:var(--text);padding:7px 14px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600;font-family:'Cairo',sans-serif;transition:all .15s}
+.copy-btn:hover{border-color:var(--accent);color:var(--accent)}
+.copy-btn.copied{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+
+/* ── TRENDS ── */
+.trend-month{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px}
+.trend-month-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.trend-month-name{font-size:15px;font-weight:700;font-family:'Cairo',sans-serif}
+.trend-badge{font-size:10px;padding:3px 10px;border-radius:4px;font-weight:700;font-family:'DM Mono',monospace}
+.trend-items{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.trend-item{display:flex;align-items:flex-start;gap:8px;padding:10px;background:var(--surface2);border-radius:6px}
+.trend-icon{font-size:18px}
+.trend-name{font-size:12px;font-weight:700;font-family:'Cairo',sans-serif}
+.trend-detail{font-size:10px;color:var(--text2);margin-top:2px;font-family:'Cairo',sans-serif;line-height:1.4}
+
+/* ── PLAN 28 ── */
+.plan-filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.pf-btn{background:var(--surface2);border:1px solid var(--border2);color:var(--text2);padding:5px 12px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;font-family:'DM Mono',monospace;transition:all .15s}
+.pf-btn:hover,.pf-btn.active{background:rgba(124,92,252,.15);border-color:var(--accent);color:var(--accent)}
+.plan-table{width:100%;border-collapse:collapse}
+.plan-table th{background:var(--surface);font-size:10px;font-weight:700;letter-spacing:1px;padding:8px 10px;border:1px solid var(--border);font-family:'DM Mono',monospace;color:var(--text2);text-align:right}
+.plan-table td{padding:9px 10px;border:1px solid var(--border);font-size:11px;vertical-align:top;font-family:'Cairo',sans-serif}
+.plan-table tr:hover td{background:var(--surface2)}
+.plan-table tr.done-row td{opacity:.4}
+.pillar-badge{font-size:9px;padding:2px 7px;border-radius:3px;font-weight:700;display:inline-block;font-family:'DM Mono',monospace}
+.pb-ai{background:rgba(124,92,252,.15);color:var(--accent);border:1px solid rgba(124,92,252,.3)}
+.pb-auto{background:var(--teal-bg);color:var(--teal);border:1px solid rgba(32,197,176,.3)}
+.pb-story{background:var(--yellow-bg);color:var(--yellow);border:1px solid rgba(245,200,66,.3)}
+.pb-security{background:var(--red-bg);color:var(--red);border:1px solid rgba(232,69,69,.3)}
+.pb-case{background:var(--blue-bg);color:var(--blue);border:1px solid rgba(79,142,247,.3)}
+.format-badge{font-size:9px;padding:2px 6px;border-radius:3px;background:var(--surface3);color:var(--text2);border:1px solid var(--border2);font-family:'DM Mono',monospace}
+.plan-done-btn{background:transparent;border:1px solid var(--border2);color:var(--text2);width:22px;height:22px;border-radius:4px;cursor:pointer;font-size:11px;transition:all .15s}
+.plan-done-btn.done{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.plan-ai-btn{background:transparent;border:none;font-size:14px;cursor:pointer;opacity:.6;transition:opacity .15s}
+.plan-ai-btn:hover{opacity:1}
+
+/* ── PROMPT PANEL ── */
+.prompt-panel{position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:500;display:none;align-items:center;justify-content:center;backdrop-filter:blur(6px)}
+.prompt-panel.open{display:flex}
+.pp-inner{background:var(--surface);border:1px solid var(--border2);border-radius:14px;width:680px;max-width:94vw;max-height:90vh;overflow:hidden;display:flex;flex-direction:column}
+.pp-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.pp-title{font-size:14px;font-weight:800;font-family:'Cairo',sans-serif}
+.pp-close{background:var(--surface2);border:1px solid var(--border2);color:var(--text2);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:14px}
+.pp-body{padding:16px 20px;overflow-y:auto;flex:1}
+.pp-context{background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:12px;margin-bottom:12px}
+.pp-context-label{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text2);font-family:'DM Mono',monospace;margin-bottom:6px}
+.pp-context-text{font-size:12px;color:var(--text);line-height:1.6;font-family:'Cairo',sans-serif}
+.pp-prompt-box{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:14px;font-size:12px;line-height:1.7;color:var(--text);font-family:'Cairo',sans-serif;direction:rtl;white-space:pre-wrap;word-break:break-word;max-height:220px;overflow-y:auto}
+.pp-actions{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
+.pp-action-btn{padding:10px 8px;border:none;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif;transition:all .15s;text-align:center}
+.pp-copy{background:var(--surface3);border:1px solid var(--border2);color:var(--text)}
+.pp-copy:hover{border-color:var(--accent);color:var(--accent)}
+.pp-claude{background:rgba(214,158,46,.12);color:#d69e2e;border:1px solid rgba(214,158,46,.3)}
+.pp-claude:hover{background:rgba(214,158,46,.25)}
+.pp-gpt{background:rgba(16,163,127,.12);color:#10a37f;border:1px solid rgba(16,163,127,.3)}
+.pp-gpt:hover{background:rgba(16,163,127,.25)}
+.pp-gemini{background:rgba(66,133,244,.12);color:#4285f4;border:1px solid rgba(66,133,244,.3)}
+.pp-gemini:hover{background:rgba(66,133,244,.25)}
+.pp-edit{width:100%;margin-top:8px;background:var(--surface2);border:1px solid var(--border2);border-radius:6px;color:var(--text);padding:8px 12px;font-family:'Cairo',sans-serif;font-size:12px;resize:vertical;min-height:80px;outline:none;direction:rtl}
+.pp-edit:focus{border-color:var(--accent)}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:600;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:14px;width:480px;max-width:95vw;overflow:hidden}
+.modal-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-title-txt{font-size:14px;font-weight:800;font-family:'Cairo',sans-serif}
+.modal-close{background:var(--surface2);border:1px solid var(--border2);color:var(--text2);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:14px;transition:all .15s}
+.modal-close:hover{background:var(--surface3)}
+.modal-body{padding:20px}
+.form-row{margin-bottom:14px}
+.form-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:6px;display:block;font-family:'DM Mono',monospace}
+.form-input,.form-select,.form-textarea{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:6px;color:var(--text);padding:8px 12px;font-size:12px;font-family:'Cairo',sans-serif;outline:none;direction:rtl;transition:border-color .15s}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent)}
+.form-select option{background:var(--surface2)}
+.form-textarea{resize:vertical;min-height:70px}
+.platform-row{display:flex;gap:8px;flex-wrap:wrap}
+.platform-check{padding:6px 12px;border-radius:5px;border:1px solid var(--border2);cursor:pointer;font-size:11px;font-weight:600;color:var(--text2);background:var(--surface2);transition:all .15s;font-family:'Cairo',sans-serif}
+.platform-check:hover{border-color:var(--text2)}
+.selected-ig{background:rgba(225,48,108,.15);border-color:var(--ig)!important;color:var(--ig)!important}
+.selected-tk{background:rgba(255,255,255,.08);border-color:#fff!important;color:#fff!important}
+.selected-yt{background:rgba(255,0,0,.12);border-color:var(--yt)!important;color:var(--yt)!important}
+.selected-li{background:rgba(0,119,181,.15);border-color:var(--li)!important;color:var(--li)!important}
+.selected-fb{background:rgba(24,119,242,.15);border-color:var(--fb)!important;color:var(--fb)!important}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modal-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
+.btn-save{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;padding:8px 22px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Cairo',sans-serif}
+.btn-cancel{background:var(--surface2);border:1px solid var(--border2);color:var(--text2);padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;font-family:'Cairo',sans-serif}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--green);color:#0a0a0f;padding:9px 20px;border-radius:6px;font-size:12px;font-weight:700;transition:transform .3s;z-index:999;font-family:'Cairo',sans-serif}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+
+/* ── SECTION TITLE ── */
+.section-title{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2);font-family:'DM Mono',monospace;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.section-title::before{content:'';display:inline-block;width:3px;height:12px;background:var(--accent);border-radius:2px}
+
+/* ── SETTINGS ── */
+.settings-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px}
+.settings-card-title{font-size:12px;font-weight:700;font-family:'Cairo',sans-serif;margin-bottom:12px}
+.progress-row{margin-bottom:10px}
+.progress-header{display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px;font-family:'Cairo',sans-serif;color:var(--text2)}
+.progress-bar{height:5px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;transition:width .8s cubic-bezier(.34,1.56,.64,1)}
+
+/* ════════════════════════════════════════
+   MOBILE RESPONSIVE — Full overhaul
+   ════════════════════════════════════════ */
+
+/* ── BOTTOM NAV (mobile only) ── */
+.bottom-nav{display:none}
+
+@media (max-width: 768px) {
+
+  /* Layout: hide sidebar, full-width main, bottom padding for nav */
+  .app{grid-template-columns:1fr;height:auto}
+  .sidebar{display:none}
+  .main{height:auto;overflow-y:visible;padding-bottom:80px}
+  .page{padding:16px 14px}
+
+  /* Header: compact */
+  .header{padding:10px 14px}
+  .logo-sub{display:none}
+  .logo-text{font-size:13px}
+  .today-badge{font-size:9px;padding:3px 8px}
+  .add-btn{padding:6px 12px;font-size:11px}
+
+  /* Bottom Nav */
+  .bottom-nav{
+    display:flex;
+    position:fixed;
+    bottom:0;left:0;right:0;
+    background:rgba(17,17,24,.97);
+    backdrop-filter:blur(20px);
+    border-top:1px solid var(--border);
+    z-index:300;
+    padding:6px 0 env(safe-area-inset-bottom,6px);
+  }
+  .bn-item{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:6px 4px;cursor:pointer;gap:3px;transition:all .15s;
+    color:var(--text2);font-family:'Cairo',sans-serif;
+  }
+  .bn-item.active{color:var(--accent)}
+  .bn-icon{font-size:20px;line-height:1}
+  .bn-label{font-size:9px;font-weight:700;letter-spacing:.3px}
+
+  /* Today hero */
+  .today-hero{flex-direction:column;gap:10px;padding:14px}
+  .today-day-name{font-size:22px}
+
+  /* Prompt grid: 1 col on mobile */
+  .prompt-grid{grid-template-columns:1fr!important}
+  .prompt-card{padding:10px}
+
+  /* Tasks: 1 col */
+  .tasks-today{grid-template-columns:1fr}
+
+  /* Stats: 3 col wrap */
+  .stats-row{grid-template-columns:repeat(3,1fr);gap:6px}
+  .stat-mini{padding:8px 4px}
+  .stat-mini-val{font-size:18px}
+  .stat-mini-lbl{font-size:8px}
+
+  /* Week strip: scroll horizontally */
+  .week-strip{
+    display:flex;
+    overflow-x:auto;
+    gap:6px;
+    padding-bottom:6px;
+    scrollbar-width:none;
+  }
+  .week-strip::-webkit-scrollbar{display:none}
+  .week-cell{flex-shrink:0;width:72px;padding:8px 6px}
+
+  /* Calendar: smaller days */
+  .cal-day{min-height:52px;padding:4px}
+  .day-num{font-size:11px}
+  .post-chip{font-size:8px;padding:1px 3px}
+
+  /* Ideas: 1 col */
+  .ideas-grid{grid-template-columns:1fr}
+
+  /* Trend items: 1 col */
+  .trend-items{grid-template-columns:1fr}
+
+  /* Plan28 table: scrollable */
+  #plan28-container{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .plan-table{min-width:500px}
+
+  /* Prompt panel: full screen */
+  .pp-inner{width:100%;max-width:100vw;max-height:100dvh;border-radius:0;position:fixed;bottom:0;left:0;right:0;top:auto;max-height:90dvh;border-radius:16px 16px 0 0}
+  .prompt-panel{align-items:flex-end}
+  .pp-actions{grid-template-columns:1fr 1fr}
+
+  /* Modal: full screen */
+  .modal{width:100%;max-width:100vw;border-radius:16px 16px 0 0;position:fixed;bottom:0;left:0;right:0}
+  .modal-overlay{align-items:flex-end}
+  .modal-body{max-height:65dvh;overflow-y:auto}
+
+  /* Form row 2: stack */
+  .form-row-2{grid-template-columns:1fr}
+
+  /* Page title */
+  .page-title{font-size:17px}
+
+  /* AI buttons in plan */
+  .ai-btns{gap:4px}
+  .ai-btn{font-size:8px;padding:4px 2px}
+
+  /* Section title */
+  .section-title{font-size:10px}
+
+  /* Week day detail */
+  #week-day-detail > div > div:last-child{
+    grid-template-columns:1fr!important;
+  }
+
+  /* Hashtag tags wrap nicely */
+  .hashtag-list{gap:4px}
+  .hashtag-tag{font-size:9px;padding:2px 6px}
+
+  /* cal weekdays labels: shorter */
+  .cal-weekday{font-size:9px;padding:2px}
+}
+
+@media (max-width: 400px) {
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .week-cell{width:60px}
+  .header{padding:8px 10px}
+  .add-btn{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="header">
+  <div class="logo">
+    <div class="logo-mark">MK</div>
+    <div>
+      <div class="logo-text">Content OS</div>
+      <div class="logo-sub">Mohammad Kfelati</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="today-badge" id="live-date">اليوم...</div>
+    <button class="add-btn" onclick="openModal()">+ جدّد بوست</button>
+  </div>
+</header>
+
+<!-- ═══ BOTTOM NAV (mobile) ═══ -->
+<nav class="bottom-nav" id="bottom-nav">
+  <div class="bn-item active" id="bn-today" onclick="showPage('today',null);setBottomActive('bn-today')">
+    <div class="bn-icon">🎯</div><div class="bn-label">اليوم</div>
+  </div>
+  <div class="bn-item" id="bn-week" onclick="showPage('week',null);setBottomActive('bn-week')">
+    <div class="bn-icon">📋</div><div class="bn-label">الأسبوع</div>
+  </div>
+  <div class="bn-item" id="bn-calendar" onclick="showPage('calendar',null);setBottomActive('bn-calendar')">
+    <div class="bn-icon">📅</div><div class="bn-label">تقويم</div>
+  </div>
+  <div class="bn-item" id="bn-plan28" onclick="showPage('plan28',null);setBottomActive('bn-plan28')">
+    <div class="bn-icon">🗓️</div><div class="bn-label">28 يوم</div>
+  </div>
+  <div class="bn-item" id="bn-ideas" onclick="showPage('ideas',null);setBottomActive('bn-ideas')">
+    <div class="bn-icon">💡</div><div class="bn-label">أفكار</div>
+  </div>
+  <div class="bn-item" id="bn-more" onclick="toggleMobileMenu()">
+    <div class="bn-icon">☰</div><div class="bn-label">المزيد</div>
+  </div>
+</nav>
+
+<!-- ═══ MOBILE MORE MENU ═══ -->
+<div id="mobile-menu" style="display:none;position:fixed;bottom:70px;left:0;right:0;background:var(--surface);border-top:1px solid var(--border2);z-index:400;padding:14px;border-radius:16px 16px 0 0;box-shadow:0 -8px 32px rgba(0,0,0,.5)">
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+    <div onclick="showPage('hashtags',null);hideMobileMenu();setBottomActive(null)" style="background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:12px;text-align:center;cursor:pointer">
+      <div style="font-size:22px">#</div><div style="font-size:10px;color:var(--text2);margin-top:4px;font-family:'Cairo',sans-serif">هاشتاغات</div>
+    </div>
+    <div onclick="showPage('trends',null);hideMobileMenu();setBottomActive(null)" style="background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:12px;text-align:center;cursor:pointer">
+      <div style="font-size:22px">🔥</div><div style="font-size:10px;color:var(--text2);margin-top:4px;font-family:'Cairo',sans-serif">ترندات</div>
+    </div>
+    <div onclick="openModal();hideMobileMenu()" style="background:rgba(124,92,252,.15);border:1px solid rgba(124,92,252,.3);border-radius:8px;padding:12px;text-align:center;cursor:pointer">
+      <div style="font-size:22px">➕</div><div style="font-size:10px;color:var(--accent);margin-top:4px;font-family:'Cairo',sans-serif">بوست جديد</div>
+    </div>
+    <div onclick="exportCSV();hideMobileMenu()" style="background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:12px;text-align:center;cursor:pointer">
+      <div style="font-size:22px">📊</div><div style="font-size:10px;color:var(--text2);margin-top:4px;font-family:'Cairo',sans-serif">تصدير CSV</div>
+    </div>
+    <div onclick="showPage('week',null);hideMobileMenu();setBottomActive('bn-week')" style="background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:12px;text-align:center;cursor:pointer">
+      <div style="font-size:22px">📋</div><div style="font-size:10px;color:var(--text2);margin-top:4px;font-family:'Cairo',sans-serif">الأسبوع</div>
+    </div>
+    <div onclick="hideMobileMenu()" style="background:var(--surface3);border:1px solid var(--border2);border-radius:8px;padding:12px;text-align:center;cursor:pointer">
+      <div style="font-size:22px">✕</div><div style="font-size:10px;color:var(--text2);margin-top:4px;font-family:'Cairo',sans-serif">إغلاق</div>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+  <!-- ═══ SIDEBAR ═══ -->
+  <nav class="sidebar">
+    <div class="sidebar-section">الرئيسية</div>
+    <div class="nav-item active" onclick="showPage('today',this)"><span class="nav-icon">🎯</span>اليوم</div>
+    <div class="nav-item" onclick="showPage('week',this)"><span class="nav-icon">📋</span>الأسبوع</div>
+    <div class="nav-item" onclick="showPage('calendar',this)"><span class="nav-icon">📅</span>التقويم</div>
+    <div class="nav-item" onclick="showPage('plan28',this)"><span class="nav-icon">🗓️</span>خطة 28 يوم</div>
+
+    <div class="sidebar-section">المحتوى</div>
+    <div class="nav-item" onclick="showPage('ideas',this)"><span class="nav-icon">💡</span>بنك الأفكار</div>
+    <div class="nav-item" onclick="showPage('hashtags',this)"><span class="nav-icon">#</span>هاشتاغات</div>
+    <div class="nav-item" onclick="showPage('trends',this)"><span class="nav-icon">🔥</span>ترندات 2026</div>
+
+    <div class="sidebar-section">المنصات</div>
+    <div class="nav-item" onclick="filterIdeasNav('ig')"><span class="nav-icon">📸</span>Instagram</div>
+    <div class="nav-item" onclick="filterIdeasNav('tk')"><span class="nav-icon">🎵</span>TikTok</div>
+    <div class="nav-item" onclick="filterIdeasNav('yt')"><span class="nav-icon">▶️</span>YouTube</div>
+    <div class="nav-item" onclick="filterIdeasNav('li')"><span class="nav-icon">💼</span>LinkedIn</div>
+
+    <div class="sidebar-section">النظام</div>
+    <div class="nav-item" onclick="exportCSV()"><span class="nav-icon">📊</span>تصدير CSV</div>
+  </nav>
+
+  <!-- ═══ MAIN ═══ -->
+  <main class="main">
+
+    <!-- ─── TODAY PAGE ─── -->
+    <div class="page active" id="page-today">
+      <div id="today-hero-area"></div>
+
+      <div class="section-title">أزرار AI السريعة — اضغط ← نسخ ← افتح الشات</div>
+      <div id="ai-prompts-today" class="prompt-grid" style="margin-bottom:20px"></div>
+
+      <div class="section-title">مهام اليوم</div>
+      <div class="tasks-today" id="today-tasks"></div>
+
+      <div class="section-title" style="margin-top:8px">أداء الأسبوع</div>
+      <div class="stats-row">
+        <div class="stat-mini"><div class="stat-mini-val" style="color:var(--red)" id="st-reels">0</div><div class="stat-mini-lbl">Reels نُشرت</div></div>
+        <div class="stat-mini"><div class="stat-mini-val" style="color:var(--blue)" id="st-posts">0</div><div class="stat-mini-lbl">Posts نصية</div></div>
+        <div class="stat-mini"><div class="stat-mini-val" style="color:var(--teal)" id="st-stories">0</div><div class="stat-mini-lbl">Stories</div></div>
+        <div class="stat-mini"><div class="stat-mini-val" style="color:var(--yellow)" id="st-total">0</div><div class="stat-mini-lbl">إجمالي هذا الأسبوع</div></div>
+        <div class="stat-mini"><div class="stat-mini-val" style="color:var(--green)" id="st-streak">0🔥</div><div class="stat-mini-lbl">يوم متواصل</div></div>
+      </div>
+    </div>
+
+    <!-- ─── WEEK PAGE ─── -->
+    <div class="page" id="page-week">
+      <div class="page-title">نظرة الأسبوع</div>
+      <div class="page-sub" id="week-sub">خطة النشر الأسبوعية</div>
+      <div class="week-strip" id="week-strip-days"></div>
+      <div id="week-day-detail"></div>
+    </div>
+
+    <!-- ─── CALENDAR PAGE ─── -->
+    <div class="page" id="page-calendar">
+      <div class="page-title">تقويم المحتوى</div>
+      <div class="calendar-header">
+        <div class="month-nav">
+          <button class="nav-btn" onclick="changeMonth(-1)">›</button>
+          <div class="month-name" id="month-display"></div>
+          <button class="nav-btn" onclick="changeMonth(1)">‹</button>
+        </div>
+      </div>
+      <div id="calendar-container"></div>
+    </div>
+
+    <!-- ─── PLAN 28 ─── -->
+    <div class="page" id="page-plan28">
+      <div class="page-title">خطة محتوى 28 يوم</div>
+      <div class="page-sub">اضغط على ✨ لإطلاق برومبت توليد المحتوى — اضغط ✓ لتعليم اليوم منتهياً</div>
+      <div class="plan-filters">
+        <button class="pf-btn active" onclick="filterPlan('all',this)">الكل</button>
+        <button class="pf-btn" onclick="filterPlan('ai',this)">AI Hacks</button>
+        <button class="pf-btn" onclick="filterPlan('auto',this)">Automation</button>
+        <button class="pf-btn" onclick="filterPlan('story',this)">قصص شغل</button>
+        <button class="pf-btn" onclick="filterPlan('security',this)">أمان رقمي</button>
+        <button class="pf-btn" onclick="filterPlan('case',this)">Case Study</button>
+        <button class="pf-btn" onclick="filterPlan('undone',this)">لم يُنشر</button>
+      </div>
+      <div id="plan28-container"></div>
+    </div>
+
+    <!-- ─── IDEAS ─── -->
+    <div class="page" id="page-ideas">
+      <div class="page-title">بنك الأفكار</div>
+      <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+        <button class="pf-btn active" onclick="filterIdeas('all',this)">الكل</button>
+        <button class="pf-btn" onclick="filterIdeas('ig',this)">Instagram</button>
+        <button class="pf-btn" onclick="filterIdeas('tk',this)">TikTok</button>
+        <button class="pf-btn" onclick="filterIdeas('yt',this)">YouTube</button>
+        <button class="pf-btn" onclick="filterIdeas('li',this)">LinkedIn</button>
+      </div>
+      <div class="ideas-grid" id="ideas-container"></div>
+    </div>
+
+    <!-- ─── HASHTAGS ─── -->
+    <div class="page" id="page-hashtags">
+      <div class="page-title">هاشتاغات</div>
+      <div id="hashtag-container"></div>
+    </div>
+
+    <!-- ─── TRENDS ─── -->
+    <div class="page" id="page-trends">
+      <div class="page-title">ترندات 2026</div>
+      <div id="trends-container"></div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ═══ PROMPT PANEL ═══ -->
+<div class="prompt-panel" id="prompt-panel">
+  <div class="pp-inner">
+    <div class="pp-header">
+      <div class="pp-title" id="pp-title">توليد محتوى</div>
+      <button class="pp-close" onclick="closePromptPanel()">✕</button>
+    </div>
+    <div class="pp-body">
+      <div class="pp-context">
+        <div class="pp-context-label">السياق</div>
+        <div class="pp-context-text" id="pp-context-text"></div>
+      </div>
+      <div class="section-title" style="margin-bottom:8px">البرومبت الجاهز</div>
+      <div class="pp-prompt-box" id="pp-prompt-text"></div>
+      <textarea class="pp-edit" id="pp-edit" placeholder="عدّل البرومبت هنا قبل الإرسال..."></textarea>
+      <div class="pp-actions">
+        <button class="pp-action-btn pp-copy" onclick="copyPrompt()">📋 نسخ</button>
+        <button class="pp-action-btn pp-claude" onclick="openAI('claude')">Claude →</button>
+        <button class="pp-action-btn pp-gpt" onclick="openAI('gpt')">ChatGPT →</button>
+        <button class="pp-action-btn pp-gemini" onclick="openAI('gemini')">Gemini →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ POST MODAL ═══ -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title-txt" id="modal-title">إضافة بوست</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <label class="form-label">العنوان</label>
+        <input type="text" class="form-input" id="post-title" placeholder="عنوان البوست أو الفيديو...">
+      </div>
+      <div class="form-row-2">
+        <div class="form-row">
+          <label class="form-label">التاريخ</label>
+          <input type="date" class="form-input" id="post-date">
+        </div>
+        <div class="form-row">
+          <label class="form-label">الوقت</label>
+          <input type="time" class="form-input" id="post-time" value="09:00">
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">المنصات</label>
+        <div class="platform-row">
+          <div class="platform-check" onclick="togglePlatform(this,'ig')">📸 IG</div>
+          <div class="platform-check" onclick="togglePlatform(this,'tk')">🎵 TikTok</div>
+          <div class="platform-check" onclick="togglePlatform(this,'yt')">▶️ YouTube</div>
+          <div class="platform-check" onclick="togglePlatform(this,'li')">💼 LinkedIn</div>
+          <div class="platform-check" onclick="togglePlatform(this,'fb')">👥 Facebook</div>
+        </div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-row">
+          <label class="form-label">النوع</label>
+          <select class="form-select" id="post-type">
+            <option value="reel">Reel / Short</option>
+            <option value="post">بوست نصي</option>
+            <option value="carousel">Carousel</option>
+            <option value="long">فيديو طويل</option>
+            <option value="story">Story</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label class="form-label">الحالة</label>
+          <select class="form-select" id="post-status">
+            <option value="idea">💡 فكرة</option>
+            <option value="draft">📝 مسودة</option>
+            <option value="ready">✅ جاهز</option>
+            <option value="published">🚀 نُشر</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-label">ملاحظات</label>
+        <textarea class="form-textarea" id="post-notes" placeholder="Hook، نقاط رئيسية، CTA..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal()">إلغاء</button>
+      <button class="btn-save" onclick="savePost()">حفظ</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// DATA — WEEKLY SCHEDULE
+// ═══════════════════════════════════════════════════
+const WEEKLY_SCHEDULE = {
+  0: { // الأحد
+    name:'الأحد', en:'SUN', type:'video', typeName:'فيديو طويل',
+    color:'var(--red)', badge:'VIDEO',
+    tasks:['نشر Long Video على YouTube','نشر Teaser post على LinkedIn (رابط بالتعليق)','نشر Teaser post على Facebook','نشر IG Story 8م','رد على تعليقات الأمس'],
+    platforms:['yt','li','fb'],
+    prompts:['long_video_script','teaser_post_li','teaser_post_fb']
+  },
+  1: { // الاثنين
+    name:'الاثنين', en:'MON', type:'reel', typeName:'Reel 1',
+    color:'var(--red)', badge:'REEL 1',
+    tasks:['نشر Reel 1 (Pain Point) على Instagram','نشر على YouTube Shorts','نشر على TikTok','نشر على Facebook','نشر IG Story 8م','رد على تعليقات الأحد'],
+    platforms:['ig','yt','tk','fb'],
+    prompts:['reel_script','hook_generator','caption_ig']
+  },
+  2: { // الثلاثاء
+    name:'الثلاثاء', en:'TUE', type:'text', typeName:'Case Study',
+    color:'var(--blue)', badge:'CASE',
+    tasks:['نشر Case Study post على LinkedIn','وضع الرابط بالتعليق الأول','نشر على Facebook','نشر IG Story 8م','رد على تعليقات الاثنين'],
+    platforms:['li','fb'],
+    prompts:['case_study_li','caption_li','caption_fb']
+  },
+  3: { // الأربعاء
+    name:'الأربعاء', en:'WED', type:'carousel', typeName:'Carousel',
+    color:'var(--blue)', badge:'CAROUSEL',
+    tasks:['نشر Carousel على LinkedIn','نشر Carousel على Facebook','نشر IG Story 8م','رد على تعليقات الثلاثاء'],
+    platforms:['li','fb'],
+    prompts:['carousel_script','carousel_li']
+  },
+  4: { // الخميس
+    name:'الخميس', en:'THU', type:'reel', typeName:'Reel 2',
+    color:'var(--red)', badge:'REEL 2',
+    tasks:['نشر Reel 2 (Hidden Tip) على Instagram','نشر على YouTube Shorts','نشر على TikTok','نشر على Facebook','نشر IG Story 8م','رد على تعليقات الأربعاء'],
+    platforms:['ig','yt','tk','fb'],
+    prompts:['reel_script','hook_generator','caption_ig']
+  },
+  5: { // الجمعة
+    name:'الجمعة', en:'FRI', type:'review', typeName:'مراجعة',
+    color:'var(--yellow)', badge:'REVIEW',
+    tasks:['نشر Expert Opinion post على LinkedIn','Reply على كل التعليقات','تسجيل أرقام الأسبوع','تحديد أفضل محتوى الأسبوع','تحضير أفكار الأسبوع القادم','نشر IG Story 8م'],
+    platforms:['li','fb'],
+    prompts:['expert_opinion','weekly_review']
+  },
+  6: { // السبت
+    name:'السبت', en:'SAT', type:'batch', typeName:'Batch Day',
+    color:'var(--green)', badge:'BATCH',
+    tasks:['قراءة سكريبت Reel 1 بصوت عالٍ','تسجيل Reel 1 — Pain Point','تسجيل Reel 2 — Hidden Tip','تسجيل Teaser الفيديو الطويل','تنظيف الصوت Adobe Podcast','تعديل Reel 1 CapCut','تعديل Reel 2 CapCut','كتابة Case Study post','كتابة Expert Opinion post','تصميم Carousel Canva','جدولة كل المحتوى للأسبوع'],
+    platforms:[],
+    prompts:['batch_ideas','week_plan','content_ideas']
+  }
+};
+
+// ═══════════════════════════════════════════════════
+// DATA — AI PROMPTS LIBRARY
+// ═══════════════════════════════════════════════════
+const PROMPTS = {
+  reel_script: {
+    title:'سكريبت Reel قصير',
+    type:'script',
+    context:(day)=>`اليوم: ${day.name} — Reel عن AI/Automation للمشاريع الصغيرة`,
+    prompt:(day,hook)=>`أنت كاتب محتوى خبير للفيديوهات القصيرة. اكتب سكريبت Reel بالعربي السوري لمحمد قفيلاتي — مطور ومستشار AI.
+
+الجمهور: أصحاب المشاريع الصغيرة والمتوسطة العرب
+المدة: 25-40 ثانية
+الموضوع: ${hook || 'AI/Automation تساعد المشاريع الصغيرة'}
+
+السكريبت يجب أن يكون:
+[0-3ث — Hook]: جملة مشكلة مباشرة على الشاشة + صوت
+[3-15ث — المشكلة]: وصف الألم بشكل واقعي
+[15-30ث — الحل]: خطوة واحدة أو نظرة سريعة
+[30-37ث — Punch]: جملة ذكية تعلّق
+[37-40ث — CTA]: "احفظ الفيديو" أو "متابعة للمزيد"
+
+القواعد:
+- لهجة سورية طبيعية (مش فصحى)
+- لا تشرح — فقط أوحي
+- آخر جملة هي الـ Punch
+- لا مقدمات ولا "هلاً وسهلاً"`
+  },
+  hook_generator: {
+    title:'توليد Hooks قوية',
+    type:'hook',
+    context:()=>'توليد 10 hooks قوية لفيديوهات AI/Automation',
+    prompt:(day)=>`اكتب 10 hooks قوية لفيديوهات Reel/Short عن AI وأتمتة المشاريع الصغيرة.
+
+الجمهور: أصحاب مشاريع عرب (مطاعم، متاجر، عقارات، خدمات)
+اللهجة: عربي وسط/سوري — مفهوم للكل
+المدة: أول 3 ثوانٍ من الفيديو
+
+كل Hook يجب أن:
+- يبدأ بموقف أو سؤال مباشر (مش بفكرة)
+- يحتوي على مشكلة واضحة
+- يكون بين 5-12 كلمة
+- لا يبدأ بـ "هل"
+
+الفورمات:
+1. [الموقف] — [المشكلة]
+2. [رقم] + [مشكلة شائعة]
+3. [سؤال مباشر]
+... إلخ`
+  },
+  caption_ig: {
+    title:'كابشن Instagram',
+    type:'post',
+    context:()=>'كابشن لبوست Instagram مرتبط بالفيديو',
+    prompt:(day)=>`اكتب كابشن Instagram لفيديو Reel عن AI/Automation لمحمد قفيلاتي.
+
+الكابشن يجب أن يكون:
+- السطر الأول: Hook قوي (أهم شي)
+- السطر 2-3: القيمة السريعة
+- السطر الأخير: CTA بسيط
+- 3-5 هاشتاغات في النهاية
+- لهجة سورية طبيعية
+- لا مقدمات ولا "في هذا الفيديو"
+- لا تزيد عن 8 أسطر`
+  },
+  caption_li: {
+    title:'بوست LinkedIn',
+    type:'post',
+    context:()=>'بوست LinkedIn — Case Study أو قصة شغل',
+    prompt:()=>`اكتب بوست LinkedIn لمحمد قفيلاتي — مطور Full-Stack ومستشار AI في إسطنبول.
+
+الأسلوب: مهني بشري — "مهندس يفكر بصوت عالٍ"
+البنية:
+- السطر 1: موقف حصل (مش فكرة)
+- 2-4 أسطر: ما حصل وشو عملت
+- سطر أو سطرين: الدرس
+- آخر سطر: punch/سؤال
+
+القواعد:
+- لا تزيد عن 8-10 أسطر قصيرة
+- الرابط دايماً بالتعليق مش بالبوست
+- لا bullet points
+- لا emojis كثيرة (2 كحد أقصى)
+- لا "في هذا البوست"
+- لهجة: عربي فصيح مريح`
+  },
+  caption_fb: {
+    title:'بوست Facebook',
+    type:'post',
+    context:()=>'بوست Facebook — أسلوب "حمودة" الشخصي',
+    prompt:()=>`اكتب بوست Facebook لمحمد "حمودة" قفيلاتي — أسلوب شخصي ومرح.
+
+الأسلوب: صديق يحكيلك شي بصدق
+البنية: موقف → ردة فعل → الجملة الأخيرة هي الـ punch
+القواعد:
+- جمل قصيرة جداً (3-5 كلمات)
+- يبدأ بموقف مش بفكرة
+- لا يشرح — فقط يلمّح
+- فيه شي خفيف من الفكاهة
+- لهجة سورية طبيعية
+- 3-5 أسطر بالمجمل`
+  },
+  case_study_li: {
+    title:'Case Study LinkedIn',
+    type:'post',
+    context:()=>'Case Study كامل على LinkedIn — قصة عميل حقيقية',
+    prompt:()=>`اكتب Case Study post على LinkedIn لمحمد قفيلاتي.
+
+الموضوع: كيف ساعد مشروع صغير باستخدام AI أو أتمتة
+
+البنية:
+1. الموقف: [اسم مشروع] واجه [مشكلة]
+2. الحل: شو عملنا بالضبط (3 خطوات)
+3. النتيجة: رقم واضح (وقت، مال، مبيعات)
+4. الدرس: جملة وحدة
+5. CTA: "إذا مشروعك يواجه نفس المشكلة، الرابط بالتعليق"
+
+القواعد:
+- الأرقام الحقيقية تجيب ثقة
+- لا مبالغة
+- لا أكثر من 10 أسطر
+- الرابط دايماً بالتعليق`
+  },
+  carousel_script: {
+    title:'سكريبت Carousel',
+    type:'carousel',
+    context:()=>'Carousel — خطوات عملية للمشاريع الصغيرة',
+    prompt:()=>`اكتب سكريبت Carousel لـ LinkedIn/Facebook عن AI/Automation.
+
+الموضوع: [اختار موضوع واضح مثل: كيف تبني نظام WhatsApp تلقائي]
+
+البنية:
+- شريحة 1: Hook — مشكلة واضحة
+- شرائح 2-5: خطوات عملية (خطوة واحدة لكل شريحة)
+- شريحة 6: ملخص سريع
+- شريحة 7: CTA
+
+كل شريحة:
+- عنوان: 3-5 كلمات فقط
+- نقطة واحدة رئيسية
+- نص توضيحي: 10-15 كلمة`
+  },
+  expert_opinion: {
+    title:'Expert Opinion Post',
+    type:'post',
+    context:()=>'رأي خبير عن AI/Automation — الجمعة',
+    prompt:()=>`اكتب "Expert Opinion" post لمحمد قفيلاتي على LinkedIn/Facebook.
+
+موضوعات مقترحة (اختار الأنسب):
+- رأي صريح عن أداة AI جديدة
+- خطأ شائع بيرتكبه أصحاب المشاريع مع AI
+- مقارنة واقعية بين أدوات
+- تحذير من ترند معين
+
+البنية:
+- سطر 1: رأي مثير للجدل أو counter-intuitive
+- 3-4 أسطر: الدليل من تجربة حقيقية
+- آخر سطر: سؤال للنقاش
+
+القواعد:
+- رأي واضح، لا وسطية فارغة
+- مدعوم بتجربة أو رقم
+- يدعو للتعليق والنقاش`
+  },
+  long_video_script: {
+    title:'سكريبت فيديو طويل',
+    type:'script',
+    context:()=>'فيديو طويل 5-10 دقائق على YouTube',
+    prompt:()=>`اكتب مخطط (outline) لفيديو YouTube طويل لمحمد قفيلاتي.
+
+المدة: 5-10 دقائق
+الجمهور: أصحاب مشاريع عرب يريدون استخدام AI
+
+البنية:
+- Hook (0-15ث): سؤال مباشر أو مشكلة مؤلمة
+- مقدمة (15ث-1د): ما ستتعلمه + لماذا يهمك
+- الجسم (1-8د): 3 نقاط رئيسية، كل نقطة: مشكلة → حل → مثال حقيقي
+- الخلاصة (8-9د): ملخص + الخطوة التالية
+- CTA (9-10د): اشترك + الملف المجاني + السؤال
+
+القواعد:
+- Hook أول 15 ثانية تحدد كل شي
+- كل نقطة يجب أن تكون قابلة للتطبيق
+- مثال واقعي لكل نقطة`
+  },
+  batch_ideas: {
+    title:'أفكار Batch Day',
+    type:'script',
+    context:()=>'توليد 5 أفكار Reels للأسبوع القادم',
+    prompt:()=>`أنت مستشار محتوى لمحمد قفيلاتي — مطور AI/Automation.
+
+اقترح 5 أفكار Reel/Short للأسبوع القادم.
+الجمهور: أصحاب مشاريع صغيرة عرب
+النيش: AI + Automation + Systems Thinking
+
+لكل فكرة:
+- Hook (أول جملة تُقال)
+- المشكلة الجوهرية
+- الحل أو الـ angle
+- أفضل منصة لها
+- مستوى الصعوبة في الإنتاج (سهل/متوسط/صعب)
+
+الأولوية للأفكار: سهلة الإنتاج + pain point واضح + hook قوي`
+  },
+  week_plan: {
+    title:'خطة أسبوع كامل',
+    type:'script',
+    context:()=>'خطة محتوى أسبوع كامل',
+    prompt:()=>`اكتب خطة محتوى أسبوع كامل لمحمد قفيلاتي.
+
+الجدول الثابت:
+- السبت: Batch Day (إنتاج فقط)
+- الأحد: فيديو طويل + Teaser
+- الاثنين: Reel 1 — Pain Point
+- الثلاثاء: Case Study نصي
+- الأربعاء: Carousel
+- الخميس: Reel 2 — Hidden Tip
+- الجمعة: Expert Opinion + مراجعة
+
+لكل يوم اقترح:
+1. موضوع محدد (مش عام)
+2. Hook مقترح
+3. CTA مناسب
+4. الركيزة (AI Hacks / Automation / قصة شغل / أمان / Case Study)
+
+النيش: AI + Automation للمشاريع الصغيرة`
+  },
+  content_ideas: {
+    title:'أفكار محتوى',
+    type:'script',
+    context:()=>'أفكار محتوى متنوعة',
+    prompt:()=>`أعطني 10 أفكار محتوى لمحمد قفيلاتي — مطور AI/Automation.
+
+التوزيع:
+- 3 أفكار: AI Hacks عملية للمشاريع الصغيرة
+- 2 أفكار: أتمتة بسيطة (n8n/No-code)
+- 2 أفكار: قصة شغل + درس
+- 2 أفكار: خطأ شائع / myth-busting
+- 1 فكرة: أمان رقمي
+
+لكل فكرة: عنوان + Hook + منصة مثالية`
+  },
+  weekly_review: {
+    title:'تحليل أرقام الأسبوع',
+    type:'post',
+    context:()=>'تحليل أداء وتوصيات للأسبوع القادم',
+    prompt:()=>`ساعدني أحلل أداء الأسبوع وأخطط للقادم.
+
+أعطيني:
+الأرقام هذا الأسبوع:
+- LinkedIn Impressions: ___
+- YouTube Views: ___
+- Instagram Reach: ___
+- TikTok Views: ___
+- أفضل بوست: ___
+
+بناءً على هذه الأرقام:
+1. ما هو أفضل نوع محتوى هذا الأسبوع؟
+2. ما الذي يجب تكراره؟
+3. ما الذي يجب تغييره؟
+4. اقترح موضوعات الأسبوع القادم بناءً على ما اشتغل`
+  },
+  teaser_post_li: {
+    title:'Teaser Post LinkedIn',
+    type:'post',
+    context:()=>'Teaser لفيديو YouTube الطويل على LinkedIn',
+    prompt:()=>`اكتب Teaser post على LinkedIn لفيديو YouTube جديد لمحمد قفيلاتي.
+
+الهدف: دفع الناس للضغط على الرابط في التعليق
+المدة: قصير — 4-6 أسطر
+
+البنية:
+- سطر 1: الـ Hook (مشكلة الفيديو)
+- 2-3 أسطر: ما ستجد في الفيديو (3 نقاط سريعة)
+- آخر سطر: "الرابط في التعليق الأول"
+
+القواعد:
+- لا تشرح كل الفيديو — فقط "عطش" القارئ
+- لا تكتب "شاهد الفيديو الرائع"
+- الرابط دايماً بالتعليق`
+  },
+  teaser_post_fb: {
+    title:'Teaser Post Facebook',
+    type:'post',
+    context:()=>'Teaser لفيديو YouTube على Facebook',
+    prompt:()=>`اكتب Teaser post على Facebook لفيديو YouTube جديد بأسلوب "حمودة".
+
+3-4 أسطر فقط — أسلوب شخصي ومباشر
+يبدأ بموقف أو سؤال مباشر
+آخر سطر: الرابط بالتعليق`
+  },
+  carousel_li: {
+    title:'Carousel LinkedIn',
+    type:'carousel',
+    context:()=>'Carousel LinkedIn — خطوات عملية',
+    prompt:()=>`اكتب نص Carousel لـ LinkedIn/Facebook — خطوات عملية لاستخدام AI.
+
+7 شرائح:
+1. Hook: مشكلة + وعد الحل
+2-5. خطوات (خطوة لكل شريحة — عنوان + جملة توضيح)
+6. النتيجة المتوقعة
+7. CTA: "احفظ" + "الرابط في التعليق"
+
+كل شريحة: عنوان 3-4 كلمات + نص 10-15 كلمة`
+  }
+};
+
+// ═══════════════════════════════════════════════════
+// DATA — 28 DAY PLAN
+// ═══════════════════════════════════════════════════
+const PLAN_28 = [
+  {day:1,date:'2026-04-09',dayName:'الخميس',style:'حقيقي',pillar:'ai',pillarName:'AI Hacks',format:'Short',hook:'برومبت واحد يطلع لك خطة مشروع كاملة خلال دقيقة',cta:'احفظ الفيديو + رابط مجاني'},
+  {day:2,date:'2026-04-10',dayName:'الجمعة',style:'افتراضي',pillar:'review',pillarName:'مراجعة',format:'Expert Post',hook:'رأي صريح: أكثر شي يضيع وقت أصحاب المشاريع مع AI',cta:'رأيك في التعليق'},
+  {day:3,date:'2026-04-11',dayName:'السبت',style:'—',pillar:'batch',pillarName:'Batch Day',format:'إنتاج',hook:'تسجيل + كتابة + جدولة أسبوع كامل',cta:'—'},
+  {day:4,date:'2026-04-12',dayName:'الأحد',style:'حقيقي',pillar:'case',pillarName:'Case Study',format:'YouTube طويل + LI',hook:'تحليل: ليش المشاريع بتفشل + نظام بسيط لتجنب الفوضى',cta:'نزّل القالب من التعليق'},
+  {day:5,date:'2026-04-13',dayName:'الاثنين',style:'حقيقي',pillar:'ai',pillarName:'AI Hacks',format:'Reel 1',hook:'اختصار يوفّر ساعة يومياً باستخدام قالب واحد',cta:'احفظ الفيديو'},
+  {day:6,date:'2026-04-14',dayName:'الثلاثاء',style:'افتراضي',pillar:'auto',pillarName:'Automation',format:'Case Study Post',hook:'Gmail → تذاكر متابعة تلقائية خلال دقيقة',cta:'رابط Workflow بالتعليق'},
+  {day:7,date:'2026-04-15',dayName:'الأربعاء',style:'مختلط',pillar:'ai',pillarName:'AI Hacks',format:'Carousel',hook:'3 خطوات لتحويل AI من أداة لمساعد حقيقي بمشروعك',cta:'احفظ الكاروسيل'},
+  {day:8,date:'2026-04-16',dayName:'الخميس',style:'مختلط',pillar:'security',pillarName:'أمان رقمي',format:'Reel 2',hook:'رسالة نصب وصلتني... 3 إشارات كشفتها فوراً',cta:'احفظ الفيديو'},
+  {day:9,date:'2026-04-17',dayName:'الجمعة',style:'افتراضي',pillar:'review',pillarName:'مراجعة',format:'Expert Post',hook:'مو كل أداة AI لازم تدخل شغلك',cta:'رأيك في التعليق'},
+  {day:10,date:'2026-04-18',dayName:'السبت',style:'—',pillar:'batch',pillarName:'Batch Day',format:'إنتاج',hook:'Batch Day الأسبوع الثاني',cta:'—'},
+  {day:11,date:'2026-04-19',dayName:'الأحد',style:'حقيقي',pillar:'case',pillarName:'Case Study',format:'YouTube طويل + LI',hook:'خريطة طريق: من فكرة إلى MVP خلال 14 يوم',cta:'نزّل القالب من التعليق'},
+  {day:12,date:'2026-04-20',dayName:'الاثنين',style:'حقيقي',pillar:'ai',pillarName:'AI Hacks',format:'Reel 1',hook:'أفضل طريقة تسأل AI ليعطيك جواب مش عام',cta:'احفظ الفيديو'},
+  {day:13,date:'2026-04-21',dayName:'الثلاثاء',style:'افتراضي',pillar:'auto',pillarName:'Automation',format:'Case Study Post',hook:'تحويل طلبات واتساب لجدول منظم بدون نسخ/لصق',cta:'رابط n8n Workflow'},
+  {day:14,date:'2026-04-22',dayName:'الأربعاء',style:'مختلط',pillar:'story',pillarName:'قصة شغل',format:'Carousel',hook:'غلط صغير خلانا نخسر أسبوع — الدرس اللي تعلمناه',cta:'احفظ الكاروسيل'},
+  {day:15,date:'2026-04-23',dayName:'الخميس',style:'حقيقي',pillar:'security',pillarName:'أمان رقمي',format:'Reel 2',hook:'لينك شكله رسمي... لكنه كان فخ',cta:'احفظ الفيديو'},
+  {day:16,date:'2026-04-24',dayName:'الجمعة',style:'افتراضي',pillar:'review',pillarName:'مراجعة',format:'Expert Post',hook:'السرعة بدون وضوح = إعادة شغل',cta:'رأيك في التعليق'},
+  {day:17,date:'2026-04-25',dayName:'السبت',style:'—',pillar:'batch',pillarName:'Batch Day',format:'إنتاج',hook:'Batch Day الأسبوع الثالث',cta:'—'},
+  {day:18,date:'2026-04-26',dayName:'الأحد',style:'حقيقي',pillar:'case',pillarName:'Case Study',format:'YouTube طويل + LI',hook:'Case Study: كيف قللنا الشغل اليدوي 70% بنظام بسيط',cta:'نزّل القالب من التعليق'},
+  {day:19,date:'2026-04-27',dayName:'الاثنين',style:'حقيقي',pillar:'ai',pillarName:'AI Hacks',format:'Reel 1',hook:'كيف تخلي AI يحوّل فوضاك إلى To-Do مرتّبة',cta:'احفظ الفيديو'},
+  {day:20,date:'2026-04-28',dayName:'الثلاثاء',style:'افتراضي',pillar:'auto',pillarName:'Automation',format:'Case Study Post',hook:'تسجيل عميل → Notion CRM تلقائي',cta:'رابط Workflow'},
+  {day:21,date:'2026-04-29',dayName:'الأربعاء',style:'مختلط',pillar:'ai',pillarName:'AI Hacks',format:'Carousel',hook:'خدعة شائعة تسحب بياناتك بدون ما تحس',cta:'احفظ'},
+  {day:22,date:'2026-04-30',dayName:'الخميس',style:'حقيقي',pillar:'story',pillarName:'قصة شغل',format:'Reel 2',hook:'رسالة واحدة كادت تخرب المشروع... وكيف أنقذناه',cta:'احفظ الفيديو'},
+  {day:23,date:'2026-05-01',dayName:'الجمعة',style:'افتراضي',pillar:'review',pillarName:'مراجعة',format:'Expert Post',hook:'هل فعلاً AI يختصر الوقت؟ الجواب مش بسيط',cta:'رأيك في التعليق'},
+  {day:24,date:'2026-05-02',dayName:'السبت',style:'—',pillar:'batch',pillarName:'Batch Day',format:'إنتاج',hook:'Batch Day الأسبوع الرابع',cta:'—'},
+  {day:25,date:'2026-05-03',dayName:'الأحد',style:'حقيقي',pillar:'case',pillarName:'Case Study',format:'YouTube طويل + LI',hook:'Workflow كامل: من فكرة → خطة → تنفيذ → متابعة',cta:'نزّل القالب'},
+  {day:26,date:'2026-05-04',dayName:'الاثنين',style:'حقيقي',pillar:'ai',pillarName:'AI Hacks',format:'Reel 1',hook:'كيف تبني نظام مراجعة يومي بدقيقتين مع AI',cta:'احفظ الفيديو'},
+  {day:27,date:'2026-05-05',dayName:'الثلاثاء',style:'افتراضي',pillar:'auto',pillarName:'Automation',format:'Case Study Post',hook:'Zapier vs n8n للمشاريع الصغيرة — مين الأفضل؟',cta:'رأيك في التعليق'},
+  {day:28,date:'2026-05-06',dayName:'الأربعاء',style:'مختلط',pillar:'story',pillarName:'قصة شغل',format:'Carousel',hook:'28 يوم من المحتوى — 5 أشياء تعلمتها',cta:'احفظ الكاروسيل'},
+];
+
+// ═══════════════════════════════════════════════════
+// DATA — IDEAS, HASHTAGS, TRENDS (inherited + extended)
+// ═══════════════════════════════════════════════════
+const ideas = [
+  {platform:'ig',title:'5 AI أدوات بتوفر ساعتين يومياً',desc:'Reel يعرض 5 أدوات AI عملية لأصحاب المشاريع الصغيرة',tags:['#AI','#automation','#مشاريع']},
+  {platform:'ig',title:'كيف ترد على 100 رسالة واتساب بدقيقتين',desc:'شرح عملي لأتمتة ردود WhatsApp Business',tags:['#WhatsApp','#automation','#مشاريع_صغيرة']},
+  {platform:'yt',title:'بناء نظام بيع كامل على WhatsApp',desc:'فيديو طويل يشرح كيف تبني funnel مبيعات على WhatsApp',tags:['#WhatsApp','#sales','#CRM']},
+  {platform:'yt',title:'n8n للمبتدئين — أتمتة بدون كود',desc:'مقدمة عملية لـ n8n مع مثال حقيقي',tags:['#n8n','#automation','#nocode']},
+  {platform:'li',title:'لماذا معظم أصحاب المشاريع يستخدمون AI غلط',desc:'بوست يوضح الفرق بين استخدام AI كـ "ميزة" و"نظام"',tags:['#AI','#SMB','#productivity']},
+  {platform:'li',title:'أتمتة lead generation — كيف فعلتها',desc:'Case Study حقيقي عن أتمتة استقبال العملاء المحتملين',tags:['#automation','#leads','#CRM']},
+  {platform:'tk',title:'AI في 60 ثانية — أداة واحدة كل يوم',desc:'Series يومية تعرض أداة AI مفيدة في أقل من دقيقة',tags:['#AI','#tools','#productivity']},
+  {platform:'tk',title:'قبل وبعد الأتمتة — فيديو مقارنة',desc:'فيديو يوضح الفرق قبل وبعد أتمتة عملية في مشروع',tags:['#automation','#workflow','#timesaving']},
+  {platform:'ig',title:'الـ prompt اللي وفّر علي ساعة',desc:'Reel يعرض prompt واحد قوي مع نتيجة حقيقية',tags:['#prompt','#ChatGPT','#AI']},
+  {platform:'li',title:'3 أخطاء تقتل وقتك في إدارة المشروع',desc:'بوست عن أكثر 3 أخطاء منهجية في إدارة المشاريع الصغيرة',tags:['#productivity','#management','#SMB']},
+  {platform:'yt',title:'مراجعة شاملة: أفضل أدوات AI للعربي في 2026',desc:'مقارنة عملية بين أدوات AI مع تجربة حقيقية لكل واحدة',tags:['#AI','#review','#arabic']},
+  {platform:'fb',title:'قصة: كيف أنقذت مشروع عميل بأتمتة بسيطة',desc:'قصة قصيرة عن حل مشكلة حقيقية لعميل باستخدام n8n',tags:['#automation','#story','#client']},
+];
+
+const hashtagSets = [
+  {name:'AI + Automation عربي',info:'20 هاشتاغ • عربي + إنكليزي',tags:['#ذكاء_اصطناعي','#أتمتة','#مشاريع_صغيرة','#تقنية','#AI','#automation','#n8n','#nocode','#ChatGPT','#Claude','#productivity','#workflow','#تطوير','#تسويق_رقمي','#ريادة_أعمال','#SMB','#AItools','#automatización','#مطور','#tech']},
+  {name:'LinkedIn Arabic Tech',info:'15 هاشتاغ • LinkedIn EN/AR',tags:['#AI','#automation','#tech','#developer','#startup','#SMB','#productivity','#nocode','#workflow','#digitaltransformation','#ArabicAI','#SaudiTech','#UAETech','#مطورين','#تقنية']},
+  {name:'Reels Growth Arabic',info:'20 هاشتاغ • Instagram/TikTok',tags:['#reels','#تعليم_تقني','#تطوير_الذات','#مشاريع','#AI','#ذكاء_اصطناعي','#productivity','#أدوات_AI','#automation','#n8n','#nocode','#ChatGPT','#تقنية','#مبرمج','#محتوى','#ريلز','#فيديو','#تعلم','#مشاريع_صغيرة','#ريادة']},
+  {name:'YouTube Arabic Tech',info:'15 هاشتاغ • YouTube',tags:['#AI_عربي','#أتمتة_المشاريع','#n8n_عربي','#ذكاء_اصطناعي','#تطوير_المشاريع','#AItools','#automation','#nocode','#workflow','#ChatGPT','#productivity','#مشاريع_صغيرة','#تقنية','#مطور_عربي','#tech_arabic']},
+];
+
+const trends2026 = [
+  {month:'أبريل 2026',badge:'🌙 رمضان/عيد',badgeColor:'#fcb95c',items:[{icon:'🌙',name:'محتوى رمضان',detail:'أعلى engagement للسوق العربي في السنة'},{icon:'🎉',name:'عيد الفطر',detail:'محتوى احتفالي + عروض — فرصة ذهبية'},{icon:'💰',name:'موسم الشراء',detail:'أعلى نية شراء خلال رمضان وبعد العيد'}]},
+  {month:'مايو 2026',badge:'💪 نمو',badgeColor:'#5cfc9a',items:[{icon:'📈',name:'Q2 مراجعة',detail:'محتوى B2B: نصف العام — فرصة Build in Public'},{icon:'☀️',name:'تحضير الصيف',detail:'محتوى إنتاجية الصيف والعمل عن بُعد'},{icon:'🚀',name:'إطلاق منتجات',detail:'موسم إطلاق قوي بعد الإجازات'}]},
+  {month:'يونيو 2026',badge:'☀️ صيف',badgeColor:'#fcb95c',items:[{icon:'🏖️',name:'العمل عن بُعد',detail:'ترند قوي: الإنتاجية من أي مكان'},{icon:'📚',name:'موسم التخرج',detail:'محتوى مسار مهني + نصائح للخريجين'},{icon:'💼',name:'مراجعة منتصف السنة',detail:'Build in Public: أين أنا من أهدافي؟'}]},
+];
+
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+let posts = JSON.parse(localStorage.getItem('cos-posts')||'[]');
+let plan28Done = JSON.parse(localStorage.getItem('cos-plan28')||'{}');
+let tasksDone = JSON.parse(localStorage.getItem('cos-tasks')||'{}');
+let selectedPlatforms = [];
+let editingId = null;
+let currentPromptId = null;
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+
+const MONTHS_AR = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+const DAYS_AR = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+const DAYS_EN = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+// ═══════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════
+function showPage(id, navEl) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(navEl) navEl.classList.add('active');
+  if(id==='today') renderToday();
+  if(id==='week') renderWeekPage();
+  if(id==='calendar') renderCalendar();
+  if(id==='plan28') renderPlan28('all');
+  if(id==='ideas') renderIdeas('all');
+  if(id==='hashtags') renderHashtags();
+  if(id==='trends') renderTrends();
+}
+function filterIdeasNav(p) {
+  showPage('ideas',null);
+  renderIdeas(p);
+}
+
+// ═══════════════════════════════════════════════════
+// TODAY PAGE
+// ═══════════════════════════════════════════════════
+function renderToday() {
+  const now = new Date();
+  const dow = now.getDay();
+  const sched = WEEKLY_SCHEDULE[dow];
+  const dateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  const dayKey = dateStr;
+
+  // Live date badge
+  document.getElementById('live-date').textContent = `${DAYS_AR[dow]} ${now.getDate()} ${MONTHS_AR[now.getMonth()]}`;
+
+  // Hero
+  const typeColors = {batch:'var(--green)',video:'var(--red)',reel:'var(--red)',text:'var(--blue)',carousel:'var(--blue)',review:'var(--yellow)'};
+  const tc = typeColors[sched.type]||'var(--accent)';
+  document.getElementById('today-hero-area').innerHTML = `
+    <div class="today-hero">
+      <div>
+        <div class="today-day-name">${sched.name}</div>
+        <div class="today-date">${now.getDate()} ${MONTHS_AR[now.getMonth()]} ${now.getFullYear()} &nbsp;|&nbsp; ${sched.typeName}</div>
+        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+          ${sched.platforms.map(p=>`<span class="post-chip chip-${p}" style="font-size:11px;padding:3px 9px">${getPlatformName(p)}</span>`).join('')}
+        </div>
+      </div>
+      <div style="text-align:center">
+        <div class="today-type-badge" style="background:${tc}22;color:${tc};border:1px solid ${tc}44">${sched.badge}</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:8px;font-family:'DM Mono',monospace">${sched.tasks.length} مهام اليوم</div>
+      </div>
+    </div>`;
+
+  // AI Prompts for today
+  const todayPromptIds = sched.prompts||[];
+  let ph = '';
+  todayPromptIds.forEach(pid=>{
+    const pr = PROMPTS[pid];
+    if(!pr) return;
+    ph += `<div class="prompt-card" onclick="openPromptPanel('${pid}','')">
+      <div class="prompt-card-top">
+        <div class="prompt-type pt-${pr.type}">${pr.type}</div>
+        <span style="font-size:16px">✨</span>
+      </div>
+      <div class="prompt-title">${pr.title}</div>
+      <div class="ai-btns" onclick="event.stopPropagation()">
+        <button class="ai-btn ai-btn-claude" onclick="openPromptPanel('${pid}','claude')">Claude</button>
+        <button class="ai-btn ai-btn-gpt" onclick="openPromptPanel('${pid}','gpt')">GPT</button>
+        <button class="ai-btn ai-btn-gemini" onclick="openPromptPanel('${pid}','gemini')">Gemini</button>
+      </div>
+    </div>`;
+  });
+  // Always add "أفكار أسبوع" and "hooks"
+  ['content_ideas','hook_generator'].forEach(pid=>{
+    const pr = PROMPTS[pid];
+    ph += `<div class="prompt-card" onclick="openPromptPanel('${pid}','')">
+      <div class="prompt-card-top">
+        <div class="prompt-type pt-${pr.type}">${pr.type}</div>
+        <span style="font-size:16px">✨</span>
+      </div>
+      <div class="prompt-title">${pr.title}</div>
+      <div class="ai-btns" onclick="event.stopPropagation()">
+        <button class="ai-btn ai-btn-claude" onclick="openPromptPanel('${pid}','claude')">Claude</button>
+        <button class="ai-btn ai-btn-gpt" onclick="openPromptPanel('${pid}','gpt')">GPT</button>
+        <button class="ai-btn ai-btn-gemini" onclick="openPromptPanel('${pid}','gemini')">Gemini</button>
+      </div>
+    </div>`;
+  });
+  document.getElementById('ai-prompts-today').innerHTML = ph;
+
+  // Tasks
+  const savedTasks = tasksDone[dayKey]||{};
+  let th = '';
+  sched.tasks.forEach((t,i)=>{
+    const done = savedTasks[i];
+    th += `<div class="task-card ${done?'done':''}" onclick="toggleTodayTask('${dayKey}',${i},this)">
+      <div class="task-check">${done?'✓':''}</div>
+      <div class="task-text">${t}</div>
+    </div>`;
+  });
+  document.getElementById('today-tasks').innerHTML = th;
+
+  // Stats
+  updateTodayStats();
+}
+
+function toggleTodayTask(dayKey,idx,el) {
+  if(!tasksDone[dayKey]) tasksDone[dayKey]={};
+  tasksDone[dayKey][idx] = !tasksDone[dayKey][idx];
+  localStorage.setItem('cos-tasks',JSON.stringify(tasksDone));
+  el.classList.toggle('done');
+  const chk = el.querySelector('.task-check');
+  chk.textContent = tasksDone[dayKey][idx]?'✓':'';
+}
+
+function updateTodayStats() {
+  const now = new Date();
+  const weekStart = new Date(now);
+  weekStart.setDate(now.getDate()-now.getDay());
+  const thisWeek = posts.filter(p=>{const d=new Date(p.date);return d>=weekStart;});
+  document.getElementById('st-reels').textContent = thisWeek.filter(p=>p.type==='reel').length;
+  document.getElementById('st-posts').textContent = thisWeek.filter(p=>p.type==='post'||p.type==='carousel').length;
+  document.getElementById('st-stories').textContent = thisWeek.filter(p=>p.type==='story').length;
+  document.getElementById('st-total').textContent = thisWeek.length;
+  let streak=0,d=new Date(now);
+  while(true){const ds=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;if(posts.some(p=>p.date===ds)){streak++;d.setDate(d.getDate()-1);}else break;}
+  document.getElementById('st-streak').textContent = streak+'🔥';
+}
+
+function getPlatformName(p){return{ig:'Instagram',tk:'TikTok',yt:'YouTube',li:'LinkedIn',fb:'Facebook'}[p]||p}
+function getPlatformEmoji(p){return{ig:'📸',tk:'🎵',yt:'▶️',li:'💼',fb:'👥'}[p]||'📝'}
+
+// ═══════════════════════════════════════════════════
+// WEEK PAGE
+// ═══════════════════════════════════════════════════
+function renderWeekPage() {
+  const now = new Date();
+  const today = now.getDay();
+  let sh = '';
+  for(let i=0;i<7;i++){
+    const d = new Date(now);
+    d.setDate(now.getDate()-today+i);
+    const ds = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const sched = WEEKLY_SCHEDULE[i];
+    const isToday = i===today;
+    const dayPosts = posts.filter(p=>p.date===ds);
+    const hasPosts = dayPosts.length>0;
+    const typeColors={batch:'var(--green)',video:'var(--red)',reel:'var(--red)',text:'var(--blue)',carousel:'var(--blue)',review:'var(--yellow)'};
+    const tc=typeColors[sched.type]||'var(--accent)';
+    sh += `<div class="week-cell ${isToday?'today-cell':''} ${hasPosts?'done-cell':''}" onclick="showWeekDay(${i})">
+      <div class="wc-day">${sched.en}</div>
+      <div class="wc-date">${d.getDate()}</div>
+      <div class="wc-type" style="background:${tc}22;color:${tc};border:1px solid ${tc}44">${sched.badge}</div>
+      ${hasPosts?`<div style="font-size:9px;color:var(--green);margin-top:4px;font-family:'DM Mono',monospace">${dayPosts.length} نُشر</div>`:''}
+    </div>`;
+  }
+  document.getElementById('week-strip-days').innerHTML = sh;
+  document.getElementById('week-sub').textContent = `الأسبوع: ${formatDate(getWeekStart())} — ${formatDate(getWeekEnd())}`;
+  showWeekDay(now.getDay());
+}
+
+function showWeekDay(idx) {
+  const sched = WEEKLY_SCHEDULE[idx];
+  const typeColors={batch:'var(--green)',video:'var(--red)',reel:'var(--red)',text:'var(--blue)',carousel:'var(--blue)',review:'var(--yellow)'};
+  const tc=typeColors[sched.type]||'var(--accent)';
+  let html = `<div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div>
+        <span style="font-size:16px;font-weight:800;font-family:'Cairo',sans-serif">${sched.name}</span>
+        <span class="wc-type" style="margin-right:10px;background:${tc}22;color:${tc};border:1px solid ${tc}44">${sched.typeName}</span>
+      </div>
+      <div style="display:flex;gap:6px">
+        ${sched.prompts.slice(0,2).map(pid=>PROMPTS[pid]?`<button onclick="openPromptPanel('${pid}','')" style="background:rgba(124,92,252,.15);border:1px solid rgba(124,92,252,.3);color:var(--accent);padding:5px 12px;border-radius:5px;font-size:10px;cursor:pointer;font-family:'Cairo',sans-serif">✨ ${PROMPTS[pid].title}</button>`:'').join('')}
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      ${sched.tasks.map(t=>`<div style="background:var(--surface2);border:1px solid var(--border2);border-radius:6px;padding:8px 12px;font-size:11px;font-family:'Cairo',sans-serif">• ${t}</div>`).join('')}
+    </div>
+    ${sched.platforms.length?`<div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap">${sched.platforms.map(p=>`<span class="post-chip chip-${p}" style="font-size:11px;padding:3px 9px">${getPlatformEmoji(p)} ${getPlatformName(p)}</span>`).join('')}</div>`:''}
+  </div>`;
+  document.getElementById('week-day-detail').innerHTML = html;
+}
+
+function getWeekStart(){const n=new Date();n.setDate(n.getDate()-n.getDay());return n}
+function getWeekEnd(){const n=new Date();n.setDate(n.getDate()+(6-n.getDay()));return n}
+function formatDate(d){return `${d.getDate()} ${MONTHS_AR[d.getMonth()]}`}
+
+// ═══════════════════════════════════════════════════
+// CALENDAR
+// ═══════════════════════════════════════════════════
+function renderCalendar() {
+  document.getElementById('month-display').textContent = `${MONTHS_AR[currentMonth]} ${currentYear}`;
+  const container = document.getElementById('calendar-container');
+  const first = new Date(currentYear, currentMonth, 1).getDay();
+  const days = new Date(currentYear, currentMonth+1, 0).getDate();
+  const today = new Date();
+
+  let html = '<div class="cal-weekdays">';
+  ['أحد','اثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت'].forEach(d=>html+=`<div class="cal-weekday">${d}</div>`);
+  html += '</div><div class="cal-days">';
+  const prev = new Date(currentYear, currentMonth, 0).getDate();
+  for(let i=first-1;i>=0;i--) html+=`<div class="cal-day other-month"><div class="day-num">${prev-i}</div></div>`;
+  for(let d=1;d<=days;d++){
+    const ds=`${currentYear}-${String(currentMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday=(d===today.getDate()&&currentMonth===today.getMonth()&&currentYear===today.getFullYear());
+    const dp=posts.filter(p=>p.date===ds);
+    const plan=PLAN_28.find(p=>p.date===ds);
+    html+=`<div class="cal-day ${isToday?'today':''} ${dp.length>0||plan?'has-content':''}" onclick="openModalOnDate('${ds}')">`;
+    html+=`<div class="day-num">${d}</div><div class="day-posts">`;
+    if(plan&&dp.length===0) html+=`<div class="post-chip" style="background:rgba(124,92,252,.1);color:var(--accent);font-size:8px">📋 ${plan.hook.substring(0,16)}…</div>`;
+    dp.slice(0,3).forEach(p=>{const pl=p.platforms[0]||'ig';html+=`<div class="post-chip chip-${pl}" onclick="event.stopPropagation();editPost('${p.id}')">${getPlatformEmoji(pl)} ${p.title.substring(0,12)}${p.title.length>12?'…':''}</div>`;});
+    if(dp.length>3) html+=`<div class="post-chip" style="background:rgba(255,255,255,.05);color:var(--text2)">+${dp.length-3}</div>`;
+    html+=`</div></div>`;
+  }
+  const total=first+days;
+  const rem=total%7===0?0:7-(total%7);
+  for(let i=1;i<=rem;i++) html+=`<div class="cal-day other-month"><div class="day-num">${i}</div></div>`;
+  html+='</div>';
+  container.innerHTML = html;
+}
+function changeMonth(dir){currentMonth+=dir;if(currentMonth>11){currentMonth=0;currentYear++;}if(currentMonth<0){currentMonth=11;currentYear--;}renderCalendar();}
+
+// ═══════════════════════════════════════════════════
+// PLAN 28
+// ═══════════════════════════════════════════════════
+const PILLAR_MAP = {ai:'pb-ai',auto:'pb-auto',story:'pb-story',security:'pb-security',case:'pb-case',review:'pb-story',batch:'pb-auto'};
+const PILLAR_NAMES = {ai:'AI Hacks',auto:'Automation',story:'قصة شغل',security:'أمان رقمي',case:'Case Study',review:'مراجعة',batch:'Batch Day'};
+
+function renderPlan28(filter) {
+  let data = PLAN_28;
+  if(filter!=='all'&&filter!=='undone') data=data.filter(d=>d.pillar===filter);
+  if(filter==='undone') data=data.filter(d=>!plan28Done[d.day]);
+
+  const today = new Date().toISOString().split('T')[0];
+
+  let html = `<table class="plan-table"><thead><tr>
+    <th style="width:30px"></th>
+    <th>اليوم</th><th>التاريخ</th><th>الركيزة</th>
+    <th>الـ Hook / العنوان</th>
+    <th>الفورمات</th><th>AI</th>
+  </tr></thead><tbody>`;
+
+  data.forEach(item=>{
+    const done = plan28Done[item.day];
+    const isToday = item.date===today;
+    const pillarClass = PILLAR_MAP[item.pillar]||'pb-ai';
+    const promptId = item.pillar==='ai'||item.pillar==='story'?'reel_script':item.pillar==='auto'?'carousel_script':item.pillar==='case'?'long_video_script':item.pillar==='review'?'expert_opinion':'content_ideas';
+    html += `<tr class="${done?'done-row':''} ${isToday?'':''}">
+      <td><button class="plan-done-btn ${done?'done':''}" onclick="togglePlan28(${item.day},this)">${done?'✓':''}</button></td>
+      <td style="font-weight:700;font-family:'DM Mono',monospace;color:${isToday?'var(--accent)':'inherit'}">${item.day} ${isToday?'← اليوم':''}<br><span style="font-size:9px;color:var(--text2)">${item.dayName}</span></td>
+      <td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text2)">${item.date}</td>
+      <td><span class="pillar-badge ${pillarClass}">${PILLAR_NAMES[item.pillar]}</span></td>
+      <td style="max-width:260px;line-height:1.5">${item.hook}</td>
+      <td><span class="format-badge">${item.format}</span></td>
+      <td style="display:flex;gap:4px;padding-top:10px">
+        <button class="plan-ai-btn" onclick="openPromptPanel('${promptId}','','${item.hook.replace(/'/g,"\\'")}')" title="توليد محتوى">✨</button>
+        <button class="plan-ai-btn" onclick="openPromptPanel('${promptId}','claude','${item.hook.replace(/'/g,"\\'")}')" title="Claude">🤖</button>
+        <button class="plan-ai-btn" onclick="openPromptPanel('${promptId}','gpt','${item.hook.replace(/'/g,"\\'")}')" title="ChatGPT">💚</button>
+      </td>
+    </tr>`;
+  });
+  html += '</tbody></table>';
+  document.getElementById('plan28-container').innerHTML = html;
+}
+
+function togglePlan28(day,btn) {
+  plan28Done[day] = !plan28Done[day];
+  localStorage.setItem('cos-plan28',JSON.stringify(plan28Done));
+  btn.classList.toggle('done');
+  btn.textContent = plan28Done[day]?'✓':'';
+  btn.closest('tr').classList.toggle('done-row');
+}
+
+function filterPlan(f,el) {
+  document.querySelectorAll('.plan-filters .pf-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderPlan28(f);
+}
+
+// ═══════════════════════════════════════════════════
+// PROMPT PANEL
+// ═══════════════════════════════════════════════════
+function openPromptPanel(promptId, aiTarget='', hookContext='') {
+  const pr = PROMPTS[promptId];
+  if(!pr) return;
+  currentPromptId = promptId;
+
+  const today = new Date();
+  const dow = today.getDay();
+  const sched = WEEKLY_SCHEDULE[dow];
+
+  document.getElementById('pp-title').textContent = pr.title;
+  document.getElementById('pp-context-text').textContent = pr.context(sched);
+
+  const promptText = pr.prompt(sched, hookContext);
+  document.getElementById('pp-prompt-text').textContent = promptText;
+  document.getElementById('pp-edit').value = promptText;
+
+  document.getElementById('prompt-panel').classList.add('open');
+
+  if(aiTarget) {
+    setTimeout(()=>openAI(aiTarget), 300);
+  }
+}
+
+function closePromptPanel() {
+  document.getElementById('prompt-panel').classList.remove('open');
+}
+
+function copyPrompt() {
+  const text = document.getElementById('pp-edit').value || document.getElementById('pp-prompt-text').textContent;
+  navigator.clipboard.writeText(text).then(()=>showToast('✅ تم النسخ — الصقه في الشات'));
+}
+
+function openAI(target) {
+  const text = encodeURIComponent(document.getElementById('pp-edit').value || document.getElementById('pp-prompt-text').textContent);
+  navigator.clipboard.writeText(decodeURIComponent(text)).then(()=>{
+    const urls = {
+      claude:'https://claude.ai/new',
+      gpt:'https://chat.openai.com/',
+      gemini:'https://gemini.google.com/'
+    };
+    window.open(urls[target],'_blank');
+    showToast(`✅ نُسخ + فتح ${target} — الصق بـ Ctrl+V`);
+  });
+}
+
+// ═══════════════════════════════════════════════════
+// IDEAS
+// ═══════════════════════════════════════════════════
+function renderIdeas(filter) {
+  const filtered = filter==='all'?ideas:ideas.filter(i=>i.platform===filter);
+  const pc={ig:'var(--ig)',tk:'var(--tk)',yt:'var(--yt)',li:'var(--li)',fb:'var(--fb)'};
+  const pn={ig:'Instagram',tk:'TikTok',yt:'YouTube',li:'LinkedIn',fb:'Facebook'};
+  let html='';
+  filtered.forEach(idea=>{
+    html+=`<div class="idea-card" onclick="quickAdd('${idea.platform}','${idea.title.replace(/'/g,"\\'")}')">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <span class="platform-badge" style="background:${pc[idea.platform]}22;color:${pc[idea.platform]};border:1px solid ${pc[idea.platform]}44">${pn[idea.platform]}</span>
+      </div>
+      <div class="idea-title">${idea.title}</div>
+      <div class="idea-desc">${idea.desc}</div>
+      <div>${idea.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+    </div>`;
+  });
+  document.getElementById('ideas-container').innerHTML=html;
+}
+
+function filterIdeas(f,el) {
+  document.querySelectorAll('#page-ideas .pf-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderIdeas(f);
+}
+
+// ═══════════════════════════════════════════════════
+// HASHTAGS
+// ═══════════════════════════════════════════════════
+function renderHashtags(){
+  let html='';
+  hashtagSets.forEach((set,si)=>{
+    html+=`<div class="hashtag-set">
+      <div class="set-name">${set.name}</div>
+      <div class="set-info">${set.info}</div>
+      <div class="hashtag-list">${set.tags.map(t=>`<div class="hashtag-tag" onclick="copyTag('${t}')">${t}</div>`).join('')}</div>
+      <button class="copy-btn" id="cpbtn-${si}" onclick="copyHashtags(${si})">📋 نسخ الكل (${set.tags.length})</button>
+    </div>`;
+  });
+  document.getElementById('hashtag-container').innerHTML=html;
+}
+function copyTag(t){navigator.clipboard.writeText(t);showToast(`📋 ${t}`);}
+function copyHashtags(i){
+  const text=hashtagSets[i].tags.join(' ');
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn=document.getElementById(`cpbtn-${i}`);
+    btn.textContent='✅ تم النسخ!';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent=`📋 نسخ الكل (${hashtagSets[i].tags.length})`;btn.classList.remove('copied');},2000);
+    showToast('هاشتاغات نُسخت!');
+  });
+}
+
+// ═══════════════════════════════════════════════════
+// TRENDS
+// ═══════════════════════════════════════════════════
+function renderTrends(){
+  let html='';
+  trends2026.forEach(t=>{
+    html+=`<div class="trend-month">
+      <div class="trend-month-header">
+        <div class="trend-month-name">${t.month}</div>
+        <div class="trend-badge" style="background:${t.badgeColor}22;color:${t.badgeColor};border:1px solid ${t.badgeColor}44">${t.badge}</div>
+      </div>
+      <div class="trend-items">${t.items.map(item=>`<div class="trend-item"><div class="trend-icon">${item.icon}</div><div><div class="trend-name">${item.name}</div><div class="trend-detail">${item.detail}</div></div></div>`).join('')}</div>
+    </div>`;
+  });
+  document.getElementById('trends-container').innerHTML=html;
+}
+
+// ═══════════════════════════════════════════════════
+// POST MODAL
+// ═══════════════════════════════════════════════════
+function openModal(){editingId=null;selectedPlatforms=[];document.getElementById('post-title').value='';document.getElementById('post-notes').value='';document.getElementById('post-status').value='idea';document.getElementById('post-date').value=new Date().toISOString().split('T')[0];document.getElementById('modal-title').textContent='إضافة بوست';document.querySelectorAll('.platform-check').forEach(el=>el.className='platform-check');document.getElementById('modal-overlay').classList.add('open');}
+function openModalOnDate(ds){openModal();document.getElementById('post-date').value=ds;}
+function closeModal(){document.getElementById('modal-overlay').classList.remove('open');}
+function togglePlatform(el,p){if(selectedPlatforms.includes(p)){selectedPlatforms=selectedPlatforms.filter(x=>x!==p);el.className='platform-check';}else{selectedPlatforms.push(p);el.className=`platform-check selected-${p}`;}}
+function quickAdd(platform,title){openModal();document.getElementById('post-title').value=title;selectedPlatforms=[platform];document.querySelectorAll('.platform-check').forEach(el=>{const m=el.getAttribute('onclick')?.match(/'(\w+)'\)/);if(m&&m[1]===platform)el.className=`platform-check selected-${platform}`;});}
+
+function savePost(){
+  const title=document.getElementById('post-title').value.trim();
+  const date=document.getElementById('post-date').value;
+  const time=document.getElementById('post-time').value;
+  const type=document.getElementById('post-type').value;
+  const notes=document.getElementById('post-notes').value;
+  const status=document.getElementById('post-status').value;
+  if(!title){showToast('❗ أضف عنواناً');return;}
+  if(!date){showToast('❗ اختر تاريخاً');return;}
+  if(selectedPlatforms.length===0){showToast('❗ اختر منصة');return;}
+  const post={id:editingId||Date.now().toString(),title,date,time,type,notes,status,platforms:[...selectedPlatforms],createdAt:new Date().toISOString()};
+  if(editingId){const idx=posts.findIndex(p=>p.id===editingId);if(idx!==-1)posts[idx]=post;}else{posts.push(post);}
+  localStorage.setItem('cos-posts',JSON.stringify(posts));
+  closeModal();
+  if(document.getElementById('page-calendar').classList.contains('active')) renderCalendar();
+  updateTodayStats();
+  showToast('✅ تم الحفظ!');
+}
+
+function editPost(id){
+  const post=posts.find(p=>p.id===id);if(!post)return;
+  editingId=id;selectedPlatforms=[...post.platforms];
+  document.getElementById('post-title').value=post.title;
+  document.getElementById('post-date').value=post.date;
+  document.getElementById('post-time').value=post.time||'09:00';
+  document.getElementById('post-type').value=post.type;
+  document.getElementById('post-notes').value=post.notes||'';
+  document.getElementById('post-status').value=post.status||'idea';
+  document.getElementById('modal-title').textContent='تعديل البوست';
+  document.querySelectorAll('.platform-check').forEach(el=>{el.className='platform-check';});
+  post.platforms.forEach(p=>{document.querySelectorAll('.platform-check').forEach(el=>{const m=el.getAttribute('onclick')?.match(/'(\w+)'\)/);if(m&&m[1]===p)el.className=`platform-check selected-${p}`;});});
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+// ═══════════════════════════════════════════════════
+// EXPORT
+// ═══════════════════════════════════════════════════
+function exportCSV(){
+  const h=['Title','Date','Platforms','Type','Status','Notes'];
+  const r=posts.map(p=>[`"${p.title}"`,p.date,p.platforms.join('+'),p.type,p.status,`"${(p.notes||'').replace(/"/g,'""')}"`]);
+  const csv=[h.join(','),...r.map(x=>x.join(','))].join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='content-os-2026.csv';a.click();
+  showToast('📊 تم التصدير!');
+}
+
+// ═══════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+document.getElementById('modal-overlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+document.getElementById('prompt-panel').addEventListener('click',function(e){if(e.target===this)closePromptPanel();});
+
+// ═══════════════════════════════════════════════════
+// MOBILE HELPERS
+// ═══════════════════════════════════════════════════
+function setBottomActive(id) {
+  document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));
+  if(id){const el=document.getElementById(id);if(el)el.classList.add('active');}
+}
+function toggleMobileMenu(){
+  const m=document.getElementById('mobile-menu');
+  m.style.display=m.style.display==='none'||m.style.display===''?'block':'none';
+}
+function hideMobileMenu(){document.getElementById('mobile-menu').style.display='none';}
+
+document.addEventListener('click',function(e){
+  const menu=document.getElementById('mobile-menu');
+  const btn=document.getElementById('bn-more');
+  if(menu&&menu.style.display==='block'&&!menu.contains(e.target)&&btn&&!btn.contains(e.target)) hideMobileMenu();
+});
+
+// Wrap showPage to add mobile behaviors
+const _showPage = showPage;
+showPage = function(id, navEl) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const pg = document.getElementById('page-'+id);
+  if(pg) pg.classList.add('active');
+  if(navEl) navEl.classList.add('active');
+  if(id==='today') renderToday();
+  if(id==='week') renderWeekPage();
+  if(id==='calendar') renderCalendar();
+  if(id==='plan28') renderPlan28('all');
+  if(id==='ideas') renderIdeas('all');
+  if(id==='hashtags') renderHashtags();
+  if(id==='trends') renderTrends();
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+renderToday();
+setBottomActive('bn-today');
+</script>
+</body>
+</html>
