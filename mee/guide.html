@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>دليل البدء السريع | محمد قفيلاتي</title><meta name="description" content="5 خطوات عملية لبناء نظام أتمتة واتساب كامل بـ n8n وGemini AI وPostgreSQL. التكاليف الكاملة، متطلبات السيرفر، وخطوات التنفيذ من صفر."><meta name="keywords" content="دليل أتمتة واتساب, n8n setup, VPS للأتمتة, WhatsApp Business API, PostgreSQL أتمتة, تكلفة سيستم واتساب"><meta name="author" content="محمد قفيلاتي"><meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large"><meta name="revisit-after" content="7 days"><link rel="canonical" href="https://initiverse.com/guide.html"><meta name="geo.region" content="TR-34"><meta name="geo.placename" content="Istanbul, Turkey"><meta name="language" content="ar"><meta property="og:title" content="دليل البدء السريع — نظام الواتساب الذكي | محمد قفيلاتي"><meta property="og:description" content="5 خطوات عملية لبناء نظام أتمتة واتساب كامل بـ n8n وGemini AI وPostgreSQL. التكاليف الكاملة، متطلبات السيرفر، وخطوات التنفيذ من صفر."><meta property="og:url" content="https://initiverse.com/guide.html"><meta property="og:locale" content="ar_AR"><meta property="og:site_name" content="Initiverse — محمد قفيلاتي"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="دليل البدء السريع — نظام الواتساب الذكي | محمد قفيلاتي"><script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"دليل البدء السريع — نظام الواتساب الذكي | محمد قفيلاتي","description":"5 خطوات عملية لبناء نظام أتمتة واتساب كامل بـ n8n وGemini AI وPostgreSQL. التكاليف الكاملة، متطلبات السيرفر، وخطوات التنفيذ من صفر.","url":"https://initiverse.com/guide.html","author":{"@type":"Person","name":"محمد قفيلاتي","alternateName":"Mohammad Kfelati","jobTitle":"Full Stack Developer & ICT Consultant","worksFor":{"@type":"Organization","name":"Initiverse"}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TM4Q70XH3M"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-TM4Q70XH3M");</script>
+<style>
+
+/* ═══ TOKENS ═══ */
+:root {
+  --bg:       #07070A;
+  --bg1:      #0D0D12;
+  --bg2:      #111118;
+  --bg3:      #171720;
+  --bg4:      #1D1D28;
+  --border:   #252532;
+  --border2:  #32324A;
+  --green:    #3DDB82;
+  --green2:   #2ABF6A;
+  --blue:     #4DB8FF;
+  --yellow:   #F5C842;
+  --red:      #FF6B6B;
+  --purple:   #B57BFF;
+  --orange:   #FF8C42;
+  --white:    #F0F0F8;
+  --gray:     #8888A8;
+  --dim:      #454560;
+  --font:     'Tajawal', sans-serif;
+  --mono:     'IBM Plex Mono', monospace;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box }
+
+html { scroll-behavior: smooth }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ═══ NOISE TEXTURE ═══ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: .4;
+}
+
+/* ═══ LAYOUT ═══ */
+.wrap { max-width: 780px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1 }
+
+/* ═══ NAV ═══ */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(7,7,10,.92);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-logo {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: .05em;
+}
+.nav-logo span { color: var(--dim); font-weight: 400 }
+.nav-links { display: flex; gap: 20px }
+.nav-links a {
+  font-size: 13px;
+  color: var(--gray);
+  text-decoration: none;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--white) }
+
+/* ═══ HERO ═══ */
+.hero {
+  padding: 90px 0 60px;
+  text-align: center;
+  position: relative;
+}
+.hero-glow {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 300px;
+  background: radial-gradient(ellipse at center, rgba(61,219,130,.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border: 1px solid rgba(61,219,130,.25);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--green);
+  margin-bottom: 28px;
+  background: rgba(61,219,130,.05);
+}
+.hero-badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity:1; transform:scale(1) }
+  50% { opacity:.5; transform:scale(1.4) }
+}
+.hero h1 {
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 900;
+  line-height: 1.25;
+  margin-bottom: 20px;
+  letter-spacing: -.01em;
+}
+.hero h1 .accent { color: var(--green) }
+.hero h1 .dim { color: var(--gray); font-weight: 400 }
+.hero-sub {
+  font-size: 16px;
+  color: var(--gray);
+  max-width: 520px;
+  margin: 0 auto 40px;
+  line-height: 1.8;
+}
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--green);
+  color: #000;
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all .2s;
+  border: none;
+  cursor: pointer;
+}
+.hero-cta:hover {
+  background: var(--green2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(61,219,130,.25);
+}
+.hero-cta svg { width:16px; height:16px; flex-shrink:0 }
+
+/* ═══ SECTION LABEL ═══ */
+.sec-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--dim);
+  margin-bottom: 12px;
+}
+.sec-label::before {
+  content: '';
+  width: 20px; height: 1px;
+  background: var(--dim);
+}
+
+/* ═══ CARDS ═══ */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 14px;
+  transition: border-color .2s;
+}
+.card:hover { border-color: var(--border2) }
+.card-accent { border-right: 3px solid var(--green) }
+.card-title {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.card-body {
+  font-size: 14px;
+  color: var(--gray);
+  line-height: 1.85;
+}
+
+/* ═══ SECTION ═══ */
+section { padding: 60px 0 }
+.section-title {
+  font-size: clamp(22px, 3.5vw, 32px);
+  font-weight: 900;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.section-sub {
+  font-size: 15px;
+  color: var(--gray);
+  margin-bottom: 36px;
+}
+
+/* ═══ PART 1: GENERAL PROMPT ═══ */
+.concept-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+@media(max-width:560px) { .concept-grid { grid-template-columns: 1fr } }
+
+.concept-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+.concept-num {
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--mono);
+  margin-bottom: 8px;
+}
+.concept-name {
+  font-size: 15px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+.concept-desc {
+  font-size: 13px;
+  color: var(--gray);
+  line-height: 1.7;
+}
+
+/* ═══ COMPARISON ═══ */
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 20px 0;
+}
+@media(max-width:500px) { .compare { grid-template-columns: 1fr } }
+.compare-col {
+  border-radius: 12px;
+  padding: 18px;
+}
+.compare-col.bad {
+  background: rgba(255,107,107,.06);
+  border: 1px solid rgba(255,107,107,.2);
+}
+.compare-col.good {
+  background: rgba(61,219,130,.06);
+  border: 1px solid rgba(61,219,130,.2);
+}
+.compare-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: 12px;
+}
+.compare-label.bad { color: var(--red) }
+.compare-label.good { color: var(--green) }
+.compare-item {
+  font-size: 13px;
+  color: var(--gray);
+  margin-bottom: 8px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.compare-item span { flex: 1; line-height: 1.6 }
+
+/* ═══ FORMULA ═══ */
+.formula {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+  margin: 20px 0;
+}
+.formula-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--yellow);
+  margin-bottom: 18px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+.formula-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.formula-step {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  position: relative;
+  padding-bottom: 20px;
+}
+.formula-step:last-child { padding-bottom: 0 }
+.formula-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 15px;
+  top: 30px;
+  bottom: 0;
+  width: 1px;
+  background: var(--border);
+}
+.step-circle {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  flex-shrink: 0;
+  font-family: var(--mono);
+}
+.step-body { flex: 1 }
+.step-name {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.step-desc {
+  font-size: 13px;
+  color: var(--gray);
+  line-height: 1.7;
+}
+.step-example {
+  margin-top: 8px;
+  background: var(--bg4);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--dim);
+  font-family: var(--mono);
+  line-height: 1.6;
+}
+.step-example::before { content: '← مثال: '; color: var(--green); font-family: var(--font); font-size: 11px; font-weight: 700 }
+
+/* ═══ MISTAKES ═══ */
+.mistake {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 10px;
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  gap: 14px;
+  align-items: center;
+}
+@media(max-width:560px) {
+  .mistake { grid-template-columns: auto 1fr; }
+  .mistake .mistake-good { grid-column: 2 }
+}
+.mistake-num {
+  font-size: 18px;
+  font-weight: 900;
+  font-family: var(--mono);
+  color: var(--border2);
+}
+.mistake-bad {
+  font-size: 13px;
+  color: var(--red);
+}
+.mistake-good {
+  font-size: 13px;
+  color: var(--green);
+}
+
+/* ═══ DIVIDER ═══ */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(to left, transparent, var(--border), transparent);
+  margin: 20px 0;
+}
+
+/* ═══ PART 2: BRAIN CLONE ═══ */
+.brain-header {
+  background: linear-gradient(135deg, rgba(61,219,130,.08), rgba(77,184,255,.04));
+  border: 1px solid rgba(61,219,130,.2);
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+.brain-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+  display: block;
+}
+.brain-tagline {
+  font-size: 13px;
+  color: var(--green);
+  font-weight: 600;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+
+/* SECTIONS 4 */
+.four-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 20px 0;
+}
+@media(max-width:540px) { .four-grid { grid-template-columns: 1fr } }
+
+.part-card {
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid transparent;
+}
+.part-card .part-num {
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: 8px;
+}
+.part-card .part-name {
+  font-size: 15px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+.part-card .part-desc {
+  font-size: 13px;
+  line-height: 1.75;
+  margin-bottom: 10px;
+}
+.part-card .part-template {
+  background: rgba(0,0,0,.3);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 11px;
+  font-family: var(--mono);
+  line-height: 1.7;
+  color: var(--dim);
+}
+.part-card.p1 { background: rgba(77,184,255,.05); border-color: rgba(77,184,255,.2) }
+.part-card.p1 .part-num { color: var(--blue) }
+.part-card.p2 { background: rgba(61,219,130,.05); border-color: rgba(61,219,130,.2) }
+.part-card.p2 .part-num { color: var(--green) }
+.part-card.p3 { background: rgba(255,107,107,.05); border-color: rgba(255,107,107,.2) }
+.part-card.p3 .part-num { color: var(--red) }
+.part-card.p4 { background: rgba(245,200,66,.05); border-color: rgba(245,200,66,.2) }
+.part-card.p4 .part-num { color: var(--yellow) }
+
+/* ═══ FULL EXAMPLE ═══ */
+.code-box {
+  background: #050508;
+  border: 1px solid rgba(61,219,130,.15);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+.code-header {
+  background: rgba(61,219,130,.05);
+  padding: 10px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(61,219,130,.1);
+}
+.code-dots { display: flex; gap: 6px }
+.code-dots span {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+}
+.code-lang {
+  font-size: 11px;
+  font-family: var(--mono);
+  color: var(--green);
+}
+.code-body {
+  padding: 18px 20px;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 2;
+}
+.code-section { color: var(--blue); font-weight: 600 }
+.code-key { color: var(--green) }
+.code-val { color: #c8f0d4 }
+.code-rule { color: var(--red) }
+.code-style { color: var(--yellow) }
+.code-comment { color: var(--dim); font-style: italic }
+
+/* ═══ TEST LIST ═══ */
+.test-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 14px 0;
+}
+@media(max-width:540px) { .test-grid { grid-template-columns: 1fr } }
+.test-item {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 12px 14px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.test-check {
+  color: var(--green);
+  font-size: 12px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.test-q { font-size: 13px; font-weight: 600; margin-bottom: 2px }
+.test-a { font-size: 11px; color: var(--gray) }
+
+/* ═══ WHERE TO USE ═══ */
+.platforms {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin: 16px 0;
+}
+.platform {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  text-align: center;
+}
+.platform-icon { font-size: 22px; margin-bottom: 6px }
+.platform-name { font-size: 13px; font-weight: 700; margin-bottom: 3px }
+.platform-desc { font-size: 11px; color: var(--gray) }
+
+/* ═══ CTA SECTION ═══ */
+.cta-section {
+  background: linear-gradient(135deg, var(--bg2), var(--bg3));
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 40px 32px;
+  text-align: center;
+  margin: 40px 0 20px;
+  position: relative;
+  overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(61,219,130,.08), transparent 70%);
+  pointer-events: none;
+}
+.cta-section::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: -60px;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(77,184,255,.05), transparent 70%);
+  pointer-events: none;
+}
+.cta-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--green);
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  margin-bottom: 12px;
+}
+.cta-title {
+  font-size: clamp(20px, 4vw, 28px);
+  font-weight: 900;
+  margin-bottom: 10px;
+  line-height: 1.35;
+}
+.cta-sub {
+  font-size: 14px;
+  color: var(--gray);
+  max-width: 420px;
+  margin: 0 auto 28px;
+  line-height: 1.8;
+}
+
+/* ═══ FORM ═══ */
+.form-wrap {
+  max-width: 480px;
+  margin: 0 auto;
+  text-align: right;
+}
+.form-row { margin-bottom: 14px }
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gray);
+  margin-bottom: 7px;
+  text-align: right;
+}
+.form-label .req { color: var(--green); margin-right: 3px }
+.form-input,
+.form-textarea {
+  width: 100%;
+  background: var(--bg4);
+  border: 1px solid var(--border2);
+  border-radius: 9px;
+  padding: 13px 15px;
+  color: var(--white);
+  font-family: var(--font);
+  font-size: 14px;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  text-align: right;
+  direction: rtl;
+}
+.form-input:focus,
+.form-textarea:focus {
+  border-color: rgba(61,219,130,.4);
+  box-shadow: 0 0 0 3px rgba(61,219,130,.08);
+}
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--dim);
+}
+.form-textarea {
+  height: 80px;
+  resize: none;
+}
+.form-btn {
+  width: 100%;
+  background: var(--green);
+  color: #000;
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all .2s;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.form-btn:hover {
+  background: var(--green2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(61,219,130,.25);
+}
+.form-btn:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+.form-privacy {
+  font-size: 11px;
+  color: var(--dim);
+  text-align: center;
+  margin-top: 12px;
+  line-height: 1.7;
+}
+.form-success {
+  display: none;
+  background: rgba(61,219,130,.08);
+  border: 1px solid rgba(61,219,130,.25);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+}
+.form-success.show { display: block }
+.form-success-icon { font-size: 36px; margin-bottom: 10px }
+.form-success-title { font-size: 18px; font-weight: 800; color: var(--green); margin-bottom: 6px }
+.form-success-text { font-size: 14px; color: var(--gray) }
+
+/* ═══ FOOTER ═══ */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 28px 20px;
+  text-align: center;
+}
+.footer-name {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.footer-name span { color: var(--green) }
+.footer-sub { font-size: 12px; color: var(--dim) }
+
+/* ═══ FADE IN ANIMATIONS ═══ */
+.fade-in {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══ HIGHLIGHT ═══ */
+.hl-green { color: var(--green) }
+.hl-blue  { color: var(--blue) }
+.hl-yellow{ color: var(--yellow) }
+.hl-red   { color: var(--red) }
+.hl-purple{ color: var(--purple) }
+
+/* ═══ TAG ═══ */
+.tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.tag-green { background: rgba(61,219,130,.12); color: var(--green) }
+.tag-blue  { background: rgba(77,184,255,.12);  color: var(--blue) }
+.tag-red   { background: rgba(255,107,107,.12); color: var(--red) }
+.breadcrumb{font-size:12px;color:var(--dim);padding:10px 0 0;display:flex;gap:6px;align-items:center;}.breadcrumb a{color:var(--dim);text-decoration:none;}.breadcrumb a:hover{color:var(--gray);}.breadcrumb span{color:var(--green);}.nav-links a.active-page{color:var(--white);}
+.step-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:14px;transition:border-color .2s;}
+.step-card:hover{border-color:var(--border2)}
+.step-header{display:flex;gap:16px;align-items:flex-start;margin-bottom:14px}
+.step-num{font-size:28px;font-weight:900;font-family:var(--mono);flex-shrink:0;line-height:1}
+.step-info h3{font-size:17px;font-weight:800;margin-bottom:4px}
+.step-info p{font-size:13px;color:var(--gray)}
+.step-items{display:flex;flex-direction:column;gap:8px;}
+.step-item{background:var(--bg3);border-radius:8px;padding:10px 14px;display:flex;gap:10px;align-items:flex-start;}
+.step-item-icon{flex-shrink:0;font-size:14px}
+.step-item-text{font-size:13px;line-height:1.6}
+.step-item-text strong{color:var(--white)}
+.step-item-text span{color:var(--gray)}
+.cost-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:500px){.cost-grid{grid-template-columns:1fr}}
+.cost-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.cost-name{font-size:14px;font-weight:700;margin-bottom:4px}
+.cost-price{font-size:12px;font-weight:700;padding:2px 8px;border-radius:100px;display:inline-block;margin-bottom:4px}
+.cost-note{font-size:11px;color:var(--gray)}
+
+.footer-social{display:flex;gap:14px;justify-content:center;margin-top:12px;}
+.footer-social a{color:var(--dim);text-decoration:none;transition:color .2s;display:flex;align-items:center;}
+.footer-social a svg{width:18px;height:18px;}
+.footer-social a:hover{color:var(--green);}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo"><a href="index.html" style="text-decoration:none;color:inherit">محمد قفيلاتي <span>· Mohammad Kfelati</span></a></div>
+  <div class="nav-links"><a href="index.html">الرئيسية</a><a href="architecture.html">مخطط النظام</a><a href="guide.html" class="anp">دليل البدء</a><a href="about.html">محمد قفيلاتي</a></div>
+</nav>
+<div class="wrap">
+  <div class="breadcrumb"><a href="index.html">الرئيسية</a> › <span>دليل البدء السريع</span></div>
+  <div class="hero" style="padding-top:60px;padding-bottom:40px">
+    <div class="hero-glow"></div>
+    <div class="hero-badge">🚀 Quick Start Guide</div>
+    <h1>5 خطوات من <span class="accent">صفر لسيستم شغال</span></h1>
+    <p class="hero-sub">دليل عملي — مو نظري. كل خطوة فيها شو بالضبط لازم تعمل وشو تحتاجه.</p>
+    <a href="architecture.html" class="hero-cta" style="display:inline-flex;margin-top:20px;background:var(--bg3);color:var(--white);border:1px solid var(--border2)">
+      🗺️ شوف مخطط النظام أولاً
+    </a>
+  </div>
+</div>
+
+<div class="wrap">
+  <section style="padding-top:10px">
+
+    <div class="fade-in">
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-num" style="color:#4DB8FF">01</div>
+        <div class="step-info">
+          <h3>احصل على WhatsApp Business API</h3>
+          <p>الخطوة الوحيدة اللي تحتاج حساب Meta</p>
+        </div>
+      </div>
+      <div class="step-items">
+        <div class="step-item"><div class="step-item-icon">🔧</div><div class="step-item-text"><strong>Meta for Developers App</strong><br><span>developers.facebook.com → Create App → Business → WhatsApp</span></div></div>
+        <div class="step-item"><div class="step-item-icon">📱</div><div class="step-item-text"><strong>WhatsApp Business Account</strong><br><span>بتحتاج رقم هاتف جديد ما مرتبط بواتساب حالياً</span></div></div>
+        <div class="step-item"><div class="step-item-icon">🔑</div><div class="step-item-text"><strong>Phone Number ID + Access Token</strong><br><span>من لوحة Meta → WhatsApp → API Setup. احفظهم — بتحتاجهم بالـ n8n</span></div></div>
+      </div>
+    </div>
+    </div>
+
+    <div class="fade-in">
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-num" style="color:#B57BFF">02</div>
+        <div class="step-info">
+          <h3>جهّز السيرفر</h3>
+          <p>VPS + Docker + n8n + Domain — مرة واحدة وبيشتغل للأبد</p>
+        </div>
+      </div>
+      <div class="step-items">
+        <div class="step-item"><div class="step-item-icon">🖥️</div><div class="step-item-text"><strong>VPS — Hetzner CX22 أو DigitalOcean</strong><br><span>~5$/شهر. Ubuntu 22.04. 2 CPU, 4GB RAM — كافي لـ n8n وPostgreSQL.</span></div></div>
+        <div class="step-item"><div class="step-item-icon">🐋</div><div class="step-item-text"><strong>Docker + n8n</strong><br><span>docker run -d --name n8n -p 5678:5678 n8nio/n8n</span></div></div>
+        <div class="step-item"><div class="step-item-icon">🔒</div><div class="step-item-text"><strong>Domain + SSL</strong><br><span>مطلوب للـ Webhook. ~10$/سنة + Certbot مجاناً.</span></div></div>
+      </div>
+    </div>
+    </div>
+
+    <div class="fade-in">
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-num" style="color:#F5C842">03</div>
+        <div class="step-info">
+          <h3>أنشئ قاعدة البيانات</h3>
+          <p>PostgreSQL — جدولين كافيين للبداية</p>
+        </div>
+      </div>
+      <div class="step-items">
+        <div class="step-item"><div class="step-item-icon">🗄️</div><div class="step-item-text"><strong>جدول customers</strong><br><span>id, phone (UNIQUE), name, last_order_id, status, created_at</span></div></div>
+        <div class="step-item"><div class="step-item-icon">💬</div><div class="step-item-text"><strong>جدول messages</strong><br><span>id, phone, text, intent, urgency, needs_human, created_at</span></div></div>
+        <div class="step-item"><div class="step-item-icon">🔗</div><div class="step-item-text"><strong>ربط n8n بالـ Database</strong><br><span>Credentials → Postgres → host: host.docker.internal</span></div></div>
+      </div>
+    </div>
+    </div>
+
+    <div class="fade-in">
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-num" style="color:#3DDB82">04</div>
+        <div class="step-info">
+          <h3>استورد الـ Workflows</h3>
+          <p>Workflow 1 + Workflow 2 — Import from JSON</p>
+        </div>
+      </div>
+      <div class="step-items">
+        <div class="step-item"><div class="step-item-icon">⚡</div><div class="step-item-text"><strong>Workflow 1: Intent Routing</strong><br><span>Webhook → Extract → Gemini AI → Decision Router → PostgreSQL → Reply → Log</span></div></div>
+        <div class="step-item"><div class="step-item-icon">🔄</div><div class="step-item-text"><strong>Workflow 2: Customer Follow-up</strong><br><span>Schedule (يومي 10AM) → استرجاع الزباين → بناء رسالة مخصصة → إرسال</span></div></div>
+        <div class="step-item"><div class="step-item-icon">🔑</div><div class="step-item-text"><strong>Variables مطلوبة</strong><br><span>GEMINI_API_KEY + PHONE_ID + WHATSAPP_TOKEN — Settings → Variables</span></div></div>
+      </div>
+    </div>
+    </div>
+
+    <div class="fade-in">
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-num" style="color:#FF8C42">05</div>
+        <div class="step-info">
+          <h3>اختبر وفعّل</h3>
+          <p>3 اختبارات قبل التشغيل الحقيقي</p>
+        </div>
+      </div>
+      <div class="step-items">
+        <div class="step-item"><div class="step-item-icon">🧪</div><div class="step-item-text"><strong>اختبار 1 — رسالة order_status</strong><br><span>"where is my order 4823" — المفروض يجاوب تلقائياً</span></div></div>
+        <div class="step-item"><div class="step-item-icon">😠</div><div class="step-item-text"><strong>اختبار 2 — شكوى</strong><br><span>"I have a complaint" — المفروض يصعّد لموظف</span></div></div>
+        <div class="step-item"><div class="step-item-icon">🗄️</div><div class="step-item-text"><strong>اختبار 3 — تحقق من قاعدة البيانات</strong><br><span>SELECT * FROM messages — المفروض تلاقي record جديد</span></div></div>
+      </div>
+    </div>
+    </div>
+
+  </section>
+</div>
+
+<div class="wrap"><div class="section-divider"></div></div>
+
+<div class="wrap">
+  <section style="padding:30px 0">
+    <div class="fade-in">
+      <div class="sec-label">التكاليف</div>
+      <h2 class="section-title">شو بيكلف <span class="hl-green">كل شهر؟</span></h2>
+      <p class="section-sub">تقدير واقعي لمتجر 500-2000 رسالة/شهر</p>
+    </div>
+    <div class="cost-grid fade-in">
+      <div class="cost-card"><div class="cost-name">n8n Self-Hosted</div><div class="cost-price tag-green">مجاني</div><div class="cost-note">تنصّبه على سيرفرك بدون رسوم</div></div>
+      <div class="cost-card"><div class="cost-name">Gemini API</div><div class="cost-price tag-green">مجاني للبداية</div><div class="cost-note">15 طلب/دقيقة مجاناً — كافي للبداية</div></div>
+      <div class="cost-card"><div class="cost-name">PostgreSQL</div><div class="cost-price tag-green">مجاني</div><div class="cost-note">مفتوح المصدر — بدون رسوم</div></div>
+      <div class="cost-card"><div class="cost-name">VPS Server</div><div class="cost-price" style="background:rgba(245,200,66,.12);color:var(--yellow)">5-10$/شهر</div><div class="cost-note">Hetzner CX22 أو DigitalOcean Basic</div></div>
+      <div class="cost-card"><div class="cost-name">Domain + SSL</div><div class="cost-price" style="background:rgba(255,140,66,.12);color:var(--orange)">10$/سنة</div><div class="cost-note">Namecheap + Certbot مجاناً</div></div>
+      <div class="cost-card"><div class="cost-name">WhatsApp API</div><div class="cost-price" style="background:rgba(255,107,107,.12);color:var(--red)">حسب الرسائل</div><div class="cost-note">أول 1000 رسالة/شهر مجاناً</div></div>
+    </div>
+    <div class="card fade-in" style="margin-top:14px;text-align:center;background:rgba(61,219,130,.04);border-color:rgba(61,219,130,.2)">
+      <div style="font-size:20px;font-weight:900;color:var(--green)">💰 المجموع: ~15-20$ شهرياً</div>
+      <div style="font-size:13px;color:var(--gray);margin-top:6px">مقابل سيستم يشتغل ٢٤/٧ بدون موظف إضافي</div>
+    </div>
+  </section>
+</div>
+
+<div class="wrap"><div class="section-divider"></div></div>
+<div class="wrap">
+  <div class="cta-section fade-in">
+    <div class="cta-label">🛠 بدك مساعدة؟</div>
+    <h2 class="cta-title">بنيه لك من <span class="hl-green">صفر</span></h2>
+    <p class="cta-sub">رح تواصل معك خلال ٢٤ ساعة. نحدد المتطلبات والتكلفة الدقيقة.</p>
+    <a href="index.html#contact" class="hero-cta" style="display:inline-flex;margin-top:16px">
+      تواصل معي →
+    </a>
+  </div>
+</div>
+<footer>
+  <div class="footer-name">محمد قفيلاتي <span>· Mohammad Kfelati</span></div>
+  <div class="footer-sub">وقت أقل. مبيعات أكثر. أتمتة وAI · Initiverse · إسطنبول</div>
+  <div class="footer-social">
+    <a href="https://www.youtube.com/@MohammadKfelati" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2s-.2-1.6-.9-2.3c-.9-.9-1.9-.9-2.3-1C17.2 2.7 12 2.7 12 2.7s-5.2 0-8.3.2c-.5.1-1.5.1-2.3 1-.7.7-.9 2.3-.9 2.3S.2 8 .2 9.8v1.7c0 1.8.3 3.6.3 3.6s.2 1.6.9 2.3c.9.9 2 .9 2.6 1 1.9.2 8 .2 8 .2s5.2 0 8.3-.2c.5-.1 1.4-.1 2.3-1 .7-.7.9-2.3.9-2.3s.3-1.8.3-3.6V9.8c0-1.8-.3-3.6-.3-3.6zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg></a>
+    <a href="https://www.linkedin.com/in/mohammadkfelati/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.4 2H3.6C2.7 2 2 2.7 2 3.6v16.8c0 .9.7 1.6 1.6 1.6h16.8c.9 0 1.6-.7 1.6-1.6V3.6C22 2.7 21.3 2 20.4 2zM8.2 19H5.6V9.4h2.6V19zm-1.3-10.8c-.8 0-1.5-.7-1.5-1.5s.7-1.5 1.5-1.5 1.5.7 1.5 1.5-.7 1.5-1.5 1.5zM19 19h-2.6v-4.7c0-1.1 0-2.6-1.6-2.6s-1.8 1.2-1.8 2.5V19h-2.6V9.4h2.5v1.3h.1c.4-.7 1.2-1.5 2.5-1.5 2.6 0 3.1 1.7 3.1 4V19z"/></svg></a>
+    <a href="https://www.instagram.com/mohammad.kfelati" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8 0 3.2 0 3.6-.1 4.8-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.9.1-3.2 0-3.6 0-4.8-.1-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.3 2.2 12c0-3.2 0-3.6.1-4.8.1-3.3 1.7-4.8 4.9-4.9 1.2-.1 1.6-.1 4.8-.1zm0-2.2c-3.3 0-3.7 0-5 .1C3.1.2.2 3.1.1 7c-.1 1.3-.1 1.7-.1 5s0 3.7.1 5c.1 3.9 3 6.8 6.9 6.9 1.3.1 1.7.1 5 .1s3.7 0 5-.1c3.9-.1 6.8-3 6.9-6.9.1-1.3.1-1.7.1-5s0-3.7-.1-5c-.1-3.9-3-6.8-6.9-6.9C15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4A6.2 6.2 0 0012 5.8zm0 10.2a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.4 1.4 0 100 2.8 1.4 1.4 0 000-2.8z"/></svg></a>
+    <a href="https://www.facebook.com/mohammad.kfelati/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.1C24 5.4 18.6 0 12 0S0 5.4 0 12.1C0 18.1 4.4 23 10.1 24v-8.4H7.1v-3.5h3V9.7c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3H15.8c-1.5 0-2 .9-2 1.9v2.2h3.3l-.5 3.5h-2.8V24C19.6 23 24 18.1 24 12.1z"/></svg></a>
+    <a href="https://www.tiktok.com/@mohammad.kfelati" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.6 3c-.1-1.7-1.4-3-3.1-3h-2.3v13.3c0 1.4-1.1 2.5-2.5 2.5s-2.5-1.1-2.5-2.5 1.1-2.5 2.5-2.5c.2 0 .5 0 .7.1V8.5c-.2 0-.5-.1-.7-.1-3.4 0-6.2 2.8-6.2 6.2s2.8 6.2 6.2 6.2 6.2-2.8 6.2-6.2V7.8c1.2.9 2.6 1.4 4.1 1.4V6c-1.3 0-2.4-.9-2.4-3z"/></svg></a>
+    <a href="https://linktr.ee/mohammad.kfelati" target="_blank" rel="noopener" style="font-size:16px">🌐</a>
+  </div>
+</footer>
+<script>document.querySelectorAll(".fade-in").forEach(el=>{const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.classList.add("visible");obs.unobserve(x.target);}});},{threshold:0.08});obs.observe(el);});</script>
+
+<div id="floatCta" style="position:fixed;bottom:24px;left:24px;z-index:999;transition:opacity .3s;opacity:0">
+  <button onclick="openContactModal()"
+    style="background:var(--green);color:#000;border:none;border-radius:50px;padding:12px 20px;font-family:var(--font);font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(61,219,130,.35);transition:all .2s"
+    onmousedown="this.style.transform='scale(.96)'" onmouseup="this.style.transform='scale(1)'">
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M14.5 1.5l-13 5.5 5 2 8-7.5zm-6 6.5l2 5 5.5-13-7.5 8z"/></svg>
+    ابني سيستمك
+  </button>
+</div>
+<div id="contactModal" style="display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:32px;max-width:480px;width:100%;position:relative;max-height:90vh;overflow-y:auto;overflow-x:hidden;overflow-x:hidden">
+    <button onclick="closeContactModal()" style="position:absolute;top:14px;left:14px;background:var(--bg3);border:1px solid var(--border);color:var(--gray);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;font-family:var(--font)">×</button>
+    <div style="text-align:center;margin-bottom:22px">
+      <div style="font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">🛠 ابني سيستمك</div>
+      <h2 style="font-size:19px;font-weight:900;margin-bottom:6px">بدك تشتغل معي؟</h2>
+      <p style="font-size:12px;color:var(--gray)">رح تواصل معك خلال ٢٤ ساعة</p>
+    </div>
+    <div id="modalSuccess" style="display:none;text-align:center;padding:20px">
+      <div style="font-size:38px;margin-bottom:10px">✅</div>
+      <div style="font-size:16px;font-weight:800;color:var(--green);margin-bottom:5px">وصلت رسالتك!</div>
+      <div style="font-size:12px;color:var(--gray)">رح تواصل معك خلال ٢٤ ساعة 🙏</div>
+    </div>
+    <div id="modalError" style="display:none;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.25);border-radius:8px;padding:10px;margin-bottom:12px;font-size:12px;color:var(--red);text-align:center"></div>
+    <form id="modalForm" onsubmit="handleModalSubmit(event)" novalidate>
+      <div style="position:absolute;left:-9999px;opacity:0" aria-hidden="true"><input type="text" id="mhp1" tabindex="-1" autocomplete="off"></div>
+      <div style="margin-bottom:11px">
+        <label style="display:block;font-size:11px;font-weight:700;color:var(--gray);margin-bottom:5px;text-align:right"><span style="color:var(--green)">*</span> الاسم</label>
+        <input class="form-input" type="text" id="mf_name" placeholder="اسمك الكامل" required maxlength="80" style="width:100%">
+        <div id="merr_name" style="font-size:10px;color:var(--red);margin-top:3px;min-height:13px;text-align:right"></div>
+      </div>
+      <div style="margin-bottom:11px">
+        <label style="display:block;font-size:11px;font-weight:700;color:var(--gray);margin-bottom:5px;text-align:right"><span style="color:var(--green)">*</span> البريد الإلكتروني</label>
+        <input class="form-input" type="email" id="mf_email" placeholder="example@email.com" required maxlength="120" dir="ltr" style="width:100%;text-align:left">
+        <div id="merr_email" style="font-size:10px;color:var(--red);margin-top:3px;min-height:13px;text-align:right"></div>
+      </div>
+      <div style="margin-bottom:11px">
+        <label style="display:block;font-size:11px;font-weight:700;color:var(--gray);margin-bottom:5px;text-align:right"><span style="color:var(--green)">*</span> شو بدك تبني؟</label>
+        <select class="form-input" id="mf_service" required style="width:100%;cursor:pointer">
+          <option value="" disabled selected>اختار...</option>
+          <option value="whatsapp_ai">🤖 نظام ردود واتساب بالـ AI</option>
+          <option value="followup">📅 سيستم متابعة وتذكير الزباين</option>
+          <option value="brain_clone">🧠 Brain Clone — مساعد AI</option>
+          <option value="full">⚡ النظام الكامل</option>
+          <option value="consult">💬 استشارة أولاً</option>
+        </select>
+        <div id="merr_service" style="font-size:10px;color:var(--red);margin-top:3px;min-height:13px;text-align:right"></div>
+      </div>
+      <div style="margin-bottom:14px">
+        <label style="display:block;font-size:11px;font-weight:700;color:var(--gray);margin-bottom:5px;text-align:right">رسالة قصيرة <span style="color:var(--dim);font-weight:400">(اختياري)</span></label>
+        <textarea class="form-textarea" id="mf_message" placeholder="نوع مشروعك أو أي تفاصيل..." maxlength="500" style="width:100%;height:65px;resize:none"></textarea>
+      </div>
+      <button type="submit" id="modalSubmitBtn" class="form-btn">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M14.5 1.5l-13 5.5 5 2 8-7.5zm-6 6.5l2 5 5.5-13-7.5 8z"/></svg>
+        إرسال
+      </button>
+      <p style="font-size:10px;color:var(--dim);text-align:center;margin-top:8px">🔒 معلوماتك محمية ولن تُشارك</p>
+    </form>
+  </div>
+</div>
+<script>
+const _SU='https://script.google.com/macros/s/AKfycbxqfw1g_uCn-gvTiwkHC3cvW_lAfOoNyPntvfr5yNuUjyIHecm3PVNFPBFPS-VIVvCI/exec';
+function openContactModal(){document.getElementById('contactModal').style.display='flex';document.body.style.overflow='hidden';}
+function closeContactModal(){document.getElementById('contactModal').style.display='none';document.body.style.overflow='';}
+document.getElementById('contactModal').addEventListener('click',function(e){if(e.target===this)closeContactModal();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeContactModal();});
+window.addEventListener('scroll',function(){document.getElementById('floatCta').style.opacity=window.scrollY>300?'1':'0';},{passive:true});
+function _ve(e){return/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);}
+function _s(s){return(s||'').replace(/[<>&"']/g,'').trim().substring(0,500);}
+async function handleModalSubmit(e){
+  e.preventDefault();
+  if(document.getElementById('mhp1').value)return;
+  const last=localStorage.getItem('init_m_last');
+  if(last&&(Date.now()-parseInt(last))<600000){document.getElementById('modalError').textContent='⏱ انتظر قليلاً';document.getElementById('modalError').style.display='block';return;}
+  const n=_s(document.getElementById('mf_name').value),em=_s(document.getElementById('mf_email').value),sv=_s(document.getElementById('mf_service').value),ms=_s(document.getElementById('mf_message').value);
+  let err=false;
+  ['name','email','service'].forEach(f=>document.getElementById('merr_'+f).textContent='');
+  document.getElementById('modalError').style.display='none';
+  if(!n||n.length<2){document.getElementById('merr_name').textContent='الاسم مطلوب';err=true;}
+  if(!em||!_ve(em)){document.getElementById('merr_email').textContent='بريد صحيح مطلوب';err=true;}
+  if(!sv){document.getElementById('merr_service').textContent='اختار نوع الخدمة';err=true;}
+  if(err)return;
+  const btn=document.getElementById('modalSubmitBtn');
+  btn.disabled=true;btn.textContent='جاري الإرسال...';
+  try{
+    const r=await fetch(_SU,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({name:n,email:em,service:sv,message:ms,source:'modal'})});
+    const d=await r.json();
+    if(d.ok){localStorage.setItem('init_m_last',Date.now().toString());document.getElementById('modalForm').style.display='none';document.getElementById('modalSuccess').style.display='block';}
+    else throw new Error(d.error);
+  }catch(er){btn.disabled=false;btn.innerHTML='<svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M14.5 1.5l-13 5.5 5 2 8-7.5zm-6 6.5l2 5 5.5-13-7.5 8z"/></svg> إرسال';document.getElementById('modalError').textContent='حدث خطأ — حاول مرة ثانية';document.getElementById('modalError').style.display='block';}
+}
+</script>
+</body>
+</html>
