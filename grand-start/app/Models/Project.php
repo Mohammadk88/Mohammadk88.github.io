@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class Project extends Model
@@ -11,10 +12,7 @@ class Project extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title_ar', 'title_en', 'title_tr',
         'slug',
-        'description_ar', 'description_en', 'description_tr',
-        'location_ar', 'location_en', 'location_tr',
         'price_usd', 'price_try', 'price_iqd',
         'area', 'floors', 'units',
         'status', 'type',
@@ -35,64 +33,76 @@ class Project extends Model
         'delivery_date' => 'date',
     ];
 
-    public function images()
+    public function translations(): HasMany
+    {
+        return $this->hasMany(ProjectTranslation::class);
+    }
+
+    public function images(): HasMany
     {
         return $this->hasMany(ProjectImage::class)->orderBy('sort_order');
     }
 
-    public function features()
+    public function features(): HasMany
     {
         return $this->hasMany(ProjectFeature::class);
     }
 
-    public function contacts()
+    public function contacts(): HasMany
     {
         return $this->hasMany(Contact::class);
     }
 
-    public function getTitle(): string
+    protected function getTranslation(string $field): string
     {
         $locale = app()->getLocale();
-        return $this->{"title_{$locale}"} ?? $this->title_ar ?? $this->title_en ?? '';
+        $default = Language::getDefaultCode();
+
+        $translation = $this->translations->firstWhere('locale', $locale);
+        if ($translation && !empty($translation->$field)) {
+            return $translation->$field;
+        }
+
+        $fallback = $this->translations->firstWhere('locale', $default);
+        if ($fallback && !empty($fallback->$field)) {
+            return $fallback->$field;
+        }
+
+        return $this->translations->first()?->$field ?? '';
+    }
+
+    public function getTitle(): string
+    {
+        return $this->getTranslation('title');
     }
 
     public function getDescription(): string
     {
-        $locale = app()->getLocale();
-        return $this->{"description_{$locale}"} ?? $this->description_ar ?? $this->description_en ?? '';
+        return $this->getTranslation('description');
     }
 
     public function getLocation(): string
     {
-        $locale = app()->getLocale();
-        return $this->{"location_{$locale}"} ?? $this->location_ar ?? $this->location_en ?? '';
+        return $this->getTranslation('location');
     }
 
-    public function getPrice(string $currency = 'usd'): string
+    public function getPriceForCountry(string $countryCode = 'TR'): string
     {
-        if ($currency === 'iqd' && $this->price_iqd) {
-            return number_format($this->price_iqd, 0) . ' د.ع';
+        $contact = CountryContact::getForCountry($countryCode) ?? CountryContact::getDefault();
+        if (!$contact) {
+            return $this->price_usd ? '$' . number_format($this->price_usd, 0) : __('app.price_on_request');
         }
-        if ($currency === 'try' && $this->price_try) {
-            return '₺' . number_format($this->price_try, 0);
+
+        $field = $contact->price_field;
+        $value = $this->$field ?? null;
+        if ($value) {
+            return $contact->currency_symbol . number_format($value, 0);
         }
+
         if ($this->price_usd) {
             return '$' . number_format($this->price_usd, 0);
         }
-        return __('app.price_on_request');
-    }
 
-    public function getPriceForCountry(string $countryCode = 'AE'): string
-    {
-        if ($countryCode === 'IQ' && $this->price_iqd) {
-            return number_format($this->price_iqd, 0) . ' د.ع';
-        }
-        if ($countryCode === 'TR' && $this->price_try) {
-            return '₺' . number_format($this->price_try, 0);
-        }
-        if ($this->price_usd) {
-            return '$' . number_format($this->price_usd, 0);
-        }
         return __('app.price_on_request');
     }
 
@@ -107,11 +117,11 @@ class Project extends Model
     public function getStatusLabel(): string
     {
         return match($this->status) {
-            'available'         => __('app.available'),
-            'sold_out'          => __('app.sold_out'),
-            'under_construction'=> __('app.under_construction'),
-            'coming_soon'       => __('app.coming_soon'),
-            default             => __('app.available'),
+            'available'          => __('app.available'),
+            'sold_out'           => __('app.sold_out'),
+            'under_construction' => __('app.under_construction'),
+            'coming_soon'        => __('app.coming_soon'),
+            default              => __('app.available'),
         };
     }
 
@@ -134,7 +144,7 @@ class Project extends Model
 
         static::creating(function ($project) {
             if (empty($project->slug)) {
-                $project->slug = Str::slug($project->title_en ?? $project->title_ar) . '-' . Str::random(6);
+                $project->slug = Str::slug('project') . '-' . Str::random(8);
             }
         });
     }

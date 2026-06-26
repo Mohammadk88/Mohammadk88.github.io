@@ -11,9 +11,6 @@ return new class extends Migration
         Schema::create('project_features', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->constrained()->onDelete('cascade');
-            $table->string('feature_ar');
-            $table->string('feature_en')->nullable();
-            $table->string('feature_tr')->nullable();
             $table->string('icon')->default('fas fa-check');
             $table->timestamps();
         });
