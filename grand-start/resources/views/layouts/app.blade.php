@@ -60,11 +60,11 @@
                     @endif
                 </div>
                 <div class="lang-switcher d-flex gap-2 align-items-center">
-                    @foreach(['ar' => 'العربية', 'en' => 'English', 'tr' => 'Türkçe'] as $locale => $label)
-                        <a href="{{ route('lang.switch', $locale) }}"
-                           class="lang-btn {{ app()->getLocale() === $locale ? 'active' : '' }}">
-                            {{ $label }}
-                        </a>
+                    @foreach(\App\Models\Language::allActive() as $lang)
+                    <a href="{{ route('lang.switch', $lang->code) }}"
+                       class="lang-btn {{ app()->getLocale() === $lang->code ? 'active' : '' }}">
+                        {{ $lang->name_native }}
+                    </a>
                     @endforeach
                 </div>
             </div>

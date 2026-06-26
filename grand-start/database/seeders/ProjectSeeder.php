@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\Project;
 use App\Models\ProjectFeature;
+use App\Models\ProjectFeatureTranslation;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class ProjectSeeder extends Seeder
 {
@@ -12,27 +14,23 @@ class ProjectSeeder extends Seeder
     {
         $projects = [
             [
-                'title_ar' => 'برج بوسفور الفاخر',
-                'title_en' => 'Bosphorus Luxury Tower',
-                'title_tr' => 'Boğaz Lüks Kulesi',
-                'slug' => 'bosphorus-luxury-tower',
-                'description_ar' => 'برج سكني فاخر يتكون من 40 طابقاً بإطلالات خلابة على مضيق البوسفور في إسطنبول. يضم أحدث المرافق والخدمات الفندقية الراقية.',
-                'description_en' => 'A luxury residential tower of 40 floors with stunning views of the Bosphorus Strait in Istanbul. Features the latest facilities and premium hotel services.',
-                'description_tr' => 'İstanbul\'da Boğaz\'a nefes kesen manzarası olan 40 katlı lüks konut kulesi. En son imkânlar ve premium otel hizmetleri sunmaktadır.',
-                'location_ar' => 'بشيكتاش، إسطنبول',
-                'location_en' => 'Beşiktaş, Istanbul',
-                'location_tr' => 'Beşiktaş, İstanbul',
-                'price_usd' => 380000,
-                'price_try' => 11000000,
-                'price_iqd' => 497000000,
-                'area' => '90-280 م²',
-                'floors' => 40,
-                'units' => 160,
-                'status' => 'available',
-                'type' => 'tower',
-                'featured' => true,
-                'active' => true,
+                'slug'       => 'bosphorus-luxury-tower',
+                'price_usd'  => 380000,
+                'price_try'  => 11000000,
+                'price_iqd'  => 497000000,
+                'area'       => '90-280 م²',
+                'floors'     => 40,
+                'units'      => 160,
+                'status'     => 'available',
+                'type'       => 'tower',
+                'featured'   => true,
+                'active'     => true,
                 'sort_order' => 1,
+                'translations' => [
+                    'ar' => ['title' => 'برج بوسفور الفاخر', 'location' => 'بشيكتاش، إسطنبول', 'description' => 'برج سكني فاخر يتكون من 40 طابقاً بإطلالات خلابة على مضيق البوسفور في إسطنبول. يضم أحدث المرافق والخدمات الفندقية الراقية.'],
+                    'en' => ['title' => 'Bosphorus Luxury Tower', 'location' => 'Beşiktaş, Istanbul', 'description' => 'A luxury residential tower of 40 floors with stunning views of the Bosphorus Strait in Istanbul. Features the latest facilities and premium hotel services.'],
+                    'tr' => ['title' => 'Boğaz Lüks Kulesi', 'location' => 'Beşiktaş, İstanbul', 'description' => 'İstanbul\'da Boğaz\'a nefes kesen manzarası olan 40 katlı lüks konut kulesi. En son imkânlar ve premium otel hizmetleri sunmaktadır.'],
+                ],
                 'features' => [
                     ['ar' => 'مسبح مفتوح على السطح', 'en' => 'Rooftop outdoor pool', 'tr' => 'Çatı açık havuzu', 'icon' => 'fas fa-swimming-pool'],
                     ['ar' => 'صالة رياضية مجهزة', 'en' => 'Fully equipped gym', 'tr' => 'Tam donanımlı spor salonu', 'icon' => 'fas fa-dumbbell'],
@@ -43,27 +41,23 @@ class ProjectSeeder extends Seeder
                 ],
             ],
             [
-                'title_ar' => 'فيلا أنطاليا الذهبية',
-                'title_en' => 'Antalya Golden Villa',
-                'title_tr' => 'Antalya Altın Villa',
-                'slug' => 'antalya-golden-villa',
-                'description_ar' => 'فيلا فاخرة مستقلة على ساحل أنطاليا بحديقة خاصة ومسبح ومطبخ مفتوح. تتميز بالتصميم المعماري العصري المتميز.',
-                'description_en' => 'Luxury standalone villa on the Antalya coast with private garden, pool and open kitchen. Features modern contemporary architectural design.',
-                'description_tr' => 'Antalya sahilinde özel bahçe, havuz ve açık mutfaklı lüks müstakil villa. Modern çağdaş mimari tasarımıyla öne çıkmaktadır.',
-                'location_ar' => 'لارا، أنطاليا',
-                'location_en' => 'Lara, Antalya',
-                'location_tr' => 'Lara, Antalya',
-                'price_usd' => 950000,
-                'price_try' => 27500000,
-                'price_iqd' => 1243000000,
-                'area' => '420 م²',
-                'floors' => 2,
-                'units' => 1,
-                'status' => 'available',
-                'type' => 'villa',
-                'featured' => true,
-                'active' => true,
+                'slug'       => 'antalya-golden-villa',
+                'price_usd'  => 950000,
+                'price_try'  => 27500000,
+                'price_iqd'  => 1243000000,
+                'area'       => '420 م²',
+                'floors'     => 2,
+                'units'      => 1,
+                'status'     => 'available',
+                'type'       => 'villa',
+                'featured'   => true,
+                'active'     => true,
                 'sort_order' => 2,
+                'translations' => [
+                    'ar' => ['title' => 'فيلا أنطاليا الذهبية', 'location' => 'لارا، أنطاليا', 'description' => 'فيلا فاخرة مستقلة على ساحل أنطاليا بحديقة خاصة ومسبح ومطبخ مفتوح. تتميز بالتصميم المعماري العصري المتميز.'],
+                    'en' => ['title' => 'Antalya Golden Villa', 'location' => 'Lara, Antalya', 'description' => 'Luxury standalone villa on the Antalya coast with private garden, pool and open kitchen. Features modern contemporary architectural design.'],
+                    'tr' => ['title' => 'Antalya Altın Villa', 'location' => 'Lara, Antalya', 'description' => 'Antalya sahilinde özel bahçe, havuz ve açık mutfaklı lüks müstakil villa. Modern çağdaş mimari tasarımıyla öne çıkmaktadır.'],
+                ],
                 'features' => [
                     ['ar' => '5 غرف نوم', 'en' => '5 Bedrooms', 'tr' => '5 Yatak Odası', 'icon' => 'fas fa-bed'],
                     ['ar' => 'مسبح خاص', 'en' => 'Private pool', 'tr' => 'Özel havuz', 'icon' => 'fas fa-swimming-pool'],
@@ -73,39 +67,36 @@ class ProjectSeeder extends Seeder
                 ],
             ],
             [
-                'title_ar' => 'مجمع إسطنبول التجاري',
-                'title_en' => 'Istanbul Business Complex',
-                'title_tr' => 'İstanbul İş Merkezi Kompleksi',
-                'slug' => 'istanbul-business-complex',
-                'description_ar' => 'مجمع تجاري متكامل يضم مكاتب ومحلات في قلب إسطنبول. استثمار مثالي بعوائد مضمونة في أحد أكثر أسواق العقارات نشاطاً.',
-                'description_en' => 'Integrated commercial complex with offices and retail spaces in the heart of Istanbul. Perfect investment with guaranteed returns in one of the most active real estate markets.',
-                'description_tr' => 'İstanbul\'un kalbinde ofis ve perakende alanları bulunan entegre ticari kompleks. En aktif gayrimenkul piyasalarından birinde garantili getirili mükemmel yatırım.',
-                'location_ar' => 'شيشلي، إسطنبول',
-                'location_en' => 'Şişli, Istanbul',
-                'location_tr' => 'Şişli, İstanbul',
-                'price_usd' => 220000,
-                'price_try' => 6400000,
-                'price_iqd' => 288000000,
-                'area' => '60-180 م²',
-                'floors' => 15,
-                'units' => 80,
-                'status' => 'under_construction',
-                'type' => 'commercial',
-                'featured' => true,
-                'active' => true,
+                'slug'       => 'istanbul-business-complex',
+                'price_usd'  => 220000,
+                'price_try'  => 6400000,
+                'price_iqd'  => 288000000,
+                'area'       => '60-180 م²',
+                'floors'     => 15,
+                'units'      => 80,
+                'status'     => 'under_construction',
+                'type'       => 'commercial',
+                'featured'   => true,
+                'active'     => true,
                 'sort_order' => 3,
+                'translations' => [
+                    'ar' => ['title' => 'مجمع إسطنبول التجاري', 'location' => 'شيشلي، إسطنبول', 'description' => 'مجمع تجاري متكامل يضم مكاتب ومحلات في قلب إسطنبول. استثمار مثالي بعوائد مضمونة.'],
+                    'en' => ['title' => 'Istanbul Business Complex', 'location' => 'Şişli, Istanbul', 'description' => 'Integrated commercial complex with offices and retail spaces in the heart of Istanbul. Perfect investment with guaranteed returns.'],
+                    'tr' => ['title' => 'İstanbul İş Merkezi Kompleksi', 'location' => 'Şişli, İstanbul', 'description' => 'İstanbul\'un kalbinde ofis ve perakende alanları bulunan entegre ticari kompleks. Garantili getirili mükemmel yatırım.'],
+                ],
                 'features' => [
                     ['ar' => 'موقع استراتيجي مركزي', 'en' => 'Central strategic location', 'tr' => 'Merkezi stratejik konum', 'icon' => 'fas fa-map-marker-alt'],
                     ['ar' => 'قاعة مؤتمرات حديثة', 'en' => 'Modern conference hall', 'tr' => 'Modern konferans salonu', 'icon' => 'fas fa-users'],
                     ['ar' => 'كافيه ومطعم', 'en' => 'Cafe & restaurant', 'tr' => 'Kafe ve restoran', 'icon' => 'fas fa-coffee'],
-                    ['ar' => 'عوائد استثمارية مضمونة', 'en' => 'Guaranteed investment returns', 'tr' => 'Garantili yatırım getirileri', 'icon' => 'fas fa-chart-line'],
+                    ['ar' => 'عوائد استثمارية مضمونة', 'en' => 'Guaranteed returns', 'tr' => 'Garantili getiriler', 'icon' => 'fas fa-chart-line'],
                 ],
             ],
         ];
 
         foreach ($projects as $projectData) {
-            $features = $projectData['features'] ?? [];
-            unset($projectData['features']);
+            $translations = $projectData['translations'];
+            $features     = $projectData['features'];
+            unset($projectData['translations'], $projectData['features']);
 
             $project = Project::firstOrCreate(
                 ['slug' => $projectData['slug']],
@@ -113,14 +104,30 @@ class ProjectSeeder extends Seeder
             );
 
             if ($project->wasRecentlyCreated) {
+                foreach ($translations as $locale => $data) {
+                    $project->translations()->create([
+                        'locale'      => $locale,
+                        'title'       => $data['title'],
+                        'location'    => $data['location'],
+                        'description' => $data['description'],
+                    ]);
+                }
+
                 foreach ($features as $feature) {
-                    ProjectFeature::create([
+                    $pf = ProjectFeature::create([
                         'project_id' => $project->id,
-                        'feature_ar' => $feature['ar'],
-                        'feature_en' => $feature['en'],
-                        'feature_tr' => $feature['tr'] ?? null,
                         'icon'       => $feature['icon'] ?? 'fas fa-check',
                     ]);
+
+                    foreach (['ar', 'en', 'tr'] as $locale) {
+                        if (!empty($feature[$locale])) {
+                            ProjectFeatureTranslation::create([
+                                'feature_id' => $pf->id,
+                                'locale'     => $locale,
+                                'text'       => $feature[$locale],
+                            ]);
+                        }
+                    }
                 }
             }
         }

@@ -3,9 +3,15 @@
 @section('title', 'إضافة مشروع')
 @section('page-title', 'إضافة مشروع جديد')
 
-@section('content')
+@push('styles')
+<style>
+.nav-tabs .nav-link { color: #666; }
+.nav-tabs .nav-link.active { color: var(--gold); border-bottom-color: var(--gold); font-weight: 600; }
+</style>
+@endpush
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+@section('content')
+<div class="mb-3">
     <a href="{{ route('admin.projects.index') }}" class="btn btn-outline-secondary btn-sm">
         <i class="fas fa-arrow-right me-1"></i> رجوع
     </a>
@@ -15,317 +21,228 @@
     @csrf
 
     <div class="row g-4">
-        <div class="col-lg-8">
 
-            <!-- Basic Info -->
+        <!-- Language Tabs -->
+        <div class="col-12">
             <div class="form-card">
-                <div class="form-card-title"><i class="fas fa-info-circle"></i> المعلومات الأساسية</div>
+                <div class="form-card-title"><i class="fas fa-language"></i> محتوى المشروع (حسب اللغة)</div>
 
-                <!-- Tabs for Languages -->
-                <ul class="nav nav-tabs mb-3" id="langTabs">
-                    <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-ar">العربية</button></li>
-                    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-en">English</button></li>
-                    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-tr">Türkçe</button></li>
+                <ul class="nav nav-tabs mb-3">
+                    @foreach($languages as $i => $lang)
+                    <li class="nav-item">
+                        <button class="nav-link {{ $i === 0 ? 'active' : '' }}" type="button"
+                            data-bs-toggle="tab" data-bs-target="#tab-{{ $lang->code }}">
+                            {{ $lang->name_native }}
+                            @if($lang->is_default)
+                            <span class="badge ms-1" style="background:var(--gold);color:#000;font-size:0.65em;">افتراضي</span>
+                            @endif
+                        </button>
+                    </li>
+                    @endforeach
                 </ul>
 
                 <div class="tab-content">
-                    <!-- Arabic -->
-                    <div class="tab-pane fade show active" id="tab-ar">
+                    @foreach($languages as $i => $lang)
+                    <div class="tab-pane fade {{ $i === 0 ? 'show active' : '' }}" id="tab-{{ $lang->code }}"
+                        @if($lang->direction === 'rtl') dir="rtl" @endif>
                         <div class="mb-3">
-                            <label class="form-label">اسم المشروع (عربي) <span class="text-danger">*</span></label>
-                            <input type="text" name="title_ar" class="form-control" value="{{ old('title_ar') }}" required>
+                            <label class="form-label">اسم المشروع بـ {{ $lang->name_native }}
+                                @if($lang->is_default)<span class="text-danger">*</span>@endif
+                            </label>
+                            <input type="text" name="translations[{{ $lang->code }}][title]"
+                                class="form-control" {{ $lang->is_default ? 'required' : '' }}
+                                placeholder="أدخل اسم المشروع...">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">الوصف (عربي) <span class="text-danger">*</span></label>
-                            <textarea name="description_ar" class="form-control" rows="5" required>{{ old('description_ar') }}</textarea>
+                            <label class="form-label">الموقع بـ {{ $lang->name_native }}</label>
+                            <input type="text" name="translations[{{ $lang->code }}][location]" class="form-control"
+                                placeholder="المدينة، المنطقة...">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">الموقع (عربي) <span class="text-danger">*</span></label>
-                            <input type="text" name="location_ar" class="form-control" value="{{ old('location_ar') }}" required>
-                        </div>
-                    </div>
-
-                    <!-- English -->
-                    <div class="tab-pane fade" id="tab-en" dir="ltr">
-                        <div class="mb-3">
-                            <label class="form-label">Project Name (English)</label>
-                            <input type="text" name="title_en" class="form-control" value="{{ old('title_en') }}">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Description (English)</label>
-                            <textarea name="description_en" class="form-control" rows="5">{{ old('description_en') }}</textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Location (English)</label>
-                            <input type="text" name="location_en" class="form-control" value="{{ old('location_en') }}">
+                            <label class="form-label">الوصف بـ {{ $lang->name_native }}</label>
+                            <textarea name="translations[{{ $lang->code }}][description]" class="form-control" rows="5"
+                                placeholder="وصف تفصيلي للمشروع..."></textarea>
                         </div>
                     </div>
-
-                    <!-- Turkish -->
-                    <div class="tab-pane fade" id="tab-tr" dir="ltr">
-                        <div class="mb-3">
-                            <label class="form-label">Proje Adı (Türkçe)</label>
-                            <input type="text" name="title_tr" class="form-control" value="{{ old('title_tr') }}">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Açıklama (Türkçe)</label>
-                            <textarea name="description_tr" class="form-control" rows="5">{{ old('description_tr') }}</textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Konum (Türkçe)</label>
-                            <input type="text" name="location_tr" class="form-control" value="{{ old('location_tr') }}">
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
+        </div>
 
-            <!-- Pricing -->
+        <!-- Details -->
+        <div class="col-lg-8">
             <div class="form-card">
-                <div class="form-card-title"><i class="fas fa-dollar-sign"></i> التسعير</div>
+                <div class="form-card-title"><i class="fas fa-info-circle"></i> تفاصيل المشروع</div>
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <label class="form-label">السعر بالدولار (USD)</label>
-                        <div class="input-group">
-                            <span class="input-group-text">$</span>
-                            <input type="number" name="price_usd" class="form-control" value="{{ old('price_usd') }}" min="0" step="0.01">
-                        </div>
+                        <label class="form-label">النوع <span class="text-danger">*</span></label>
+                        <select name="type" class="form-select" required>
+                            <option value="residential">سكني</option>
+                            <option value="commercial">تجاري</option>
+                            <option value="villa">فيلا</option>
+                            <option value="apartment">شقة</option>
+                            <option value="compound">مجمع سكني</option>
+                            <option value="tower">برج</option>
+                        </select>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label">السعر بالليرة التركية (TRY)</label>
-                        <div class="input-group">
-                            <span class="input-group-text">₺</span>
-                            <input type="number" name="price_try" class="form-control" value="{{ old('price_try') }}" min="0">
-                        </div>
+                        <label class="form-label">الحالة <span class="text-danger">*</span></label>
+                        <select name="status" class="form-select" required>
+                            <option value="available">متاح</option>
+                            <option value="under_construction">قيد الإنشاء</option>
+                            <option value="coming_soon">قريباً</option>
+                            <option value="sold_out">مباع بالكامل</option>
+                        </select>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label">السعر بالدينار العراقي (IQD)</label>
-                        <div class="input-group">
-                            <input type="number" name="price_iqd" class="form-control" value="{{ old('price_iqd') }}" min="0">
-                            <span class="input-group-text">د.ع</span>
-                        </div>
+                        <label class="form-label">تاريخ التسليم</label>
+                        <input type="date" name="delivery_date" class="form-control">
                     </div>
-                </div>
-            </div>
-
-            <!-- Details -->
-            <div class="form-card">
-                <div class="form-card-title"><i class="fas fa-info"></i> تفاصيل المشروع</div>
-                <div class="row g-3">
                     <div class="col-md-4">
                         <label class="form-label">المساحة</label>
-                        <input type="text" name="area" class="form-control" value="{{ old('area') }}" placeholder="مثال: 120-350 م²">
+                        <input type="text" name="area" class="form-control" placeholder="2500 م²">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">عدد الطوابق</label>
-                        <input type="number" name="floors" class="form-control" value="{{ old('floors') }}" min="1">
+                        <input type="number" name="floors" class="form-control" min="1">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">عدد الوحدات</label>
-                        <input type="number" name="units" class="form-control" value="{{ old('units') }}" min="1">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">تاريخ التسليم</label>
-                        <input type="date" name="delivery_date" class="form-control" value="{{ old('delivery_date') }}">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">رابط الفيديو</label>
-                        <input type="url" name="video_url" class="form-control" value="{{ old('video_url') }}" placeholder="https://youtube.com/...">
+                        <input type="number" name="units" class="form-control" min="1">
                     </div>
                 </div>
             </div>
 
-            <!-- Features -->
+            <div class="form-card">
+                <div class="form-card-title"><i class="fas fa-dollar-sign"></i> الأسعار</div>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">USD ($)</label>
+                        <input type="number" name="price_usd" class="form-control" step="0.01" min="0">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">TRY (₺)</label>
+                        <input type="number" name="price_try" class="form-control" min="0">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">IQD (د.ع)</label>
+                        <input type="number" name="price_iqd" class="form-control" min="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-card">
+                <div class="form-card-title"><i class="fas fa-map-marker-alt"></i> الموقع الجغرافي</div>
+                <div class="row g-3">
+                    <div class="col-6">
+                        <label class="form-label">خط العرض (Latitude)</label>
+                        <input type="number" name="latitude" class="form-control" step="any" placeholder="41.0082">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">خط الطول (Longitude)</label>
+                        <input type="number" name="longitude" class="form-control" step="any" placeholder="28.9784">
+                    </div>
+                </div>
+            </div>
+
             <div class="form-card">
                 <div class="form-card-title"><i class="fas fa-list-check"></i> مميزات المشروع</div>
-                <div id="features-container">
-                    @if(old('features'))
-                        @foreach(old('features') as $i => $feat)
-                        <div class="feature-row row g-2 mb-2 align-items-center">
-                            <div class="col-md-3">
-                                <input type="text" name="features[{{ $i }}][ar]" class="form-control form-control-sm"
-                                       placeholder="الميزة بالعربية" value="{{ $feat['ar'] ?? '' }}">
-                            </div>
-                            <div class="col-md-3">
-                                <input type="text" name="features[{{ $i }}][en]" class="form-control form-control-sm"
-                                       placeholder="Feature in English" value="{{ $feat['en'] ?? '' }}">
-                            </div>
-                            <div class="col-md-3">
-                                <input type="text" name="features[{{ $i }}][tr]" class="form-control form-control-sm"
-                                       placeholder="Özellik (Türkçe)" value="{{ $feat['tr'] ?? '' }}">
-                            </div>
-                            <div class="col-md-2">
-                                <input type="text" name="features[{{ $i }}][icon]" class="form-control form-control-sm"
-                                       placeholder="fas fa-check" value="{{ $feat['icon'] ?? 'fas fa-check' }}">
-                            </div>
-                            <div class="col-md-1">
-                                <button type="button" class="btn btn-sm btn-outline-danger remove-feature">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                        @endforeach
-                    @else
-                    <div class="feature-row row g-2 mb-2 align-items-center">
-                        <div class="col-md-3">
-                            <input type="text" name="features[0][ar]" class="form-control form-control-sm" placeholder="الميزة بالعربية">
-                        </div>
-                        <div class="col-md-3">
-                            <input type="text" name="features[0][en]" class="form-control form-control-sm" placeholder="Feature in English">
-                        </div>
-                        <div class="col-md-3">
-                            <input type="text" name="features[0][tr]" class="form-control form-control-sm" placeholder="Özellik (Türkçe)">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="text" name="features[0][icon]" class="form-control form-control-sm" placeholder="fas fa-check" value="fas fa-check">
-                        </div>
-                        <div class="col-md-1">
-                            <button type="button" class="btn btn-sm btn-outline-danger remove-feature"><i class="fas fa-times"></i></button>
-                        </div>
-                    </div>
-                    @endif
+                <div class="row g-2 mb-2">
+                    @foreach($languages as $lang)
+                    <div class="col"><small class="text-muted fw-bold">{{ $lang->name_native }}</small></div>
+                    @endforeach
+                    <div class="col-auto"><small class="text-muted fw-bold">أيقونة</small></div>
+                    <div class="col-auto" style="width:40px;"></div>
                 </div>
-                <button type="button" id="addFeature" class="btn btn-sm btn-outline-secondary mt-2">
+                <div id="featuresContainer"></div>
+                <button type="button" class="btn btn-outline-secondary btn-sm mt-2" id="addFeatureBtn">
                     <i class="fas fa-plus me-1"></i> إضافة ميزة
                 </button>
             </div>
+
+            <div class="form-card">
+                <div class="form-card-title"><i class="fas fa-video"></i> رابط الفيديو</div>
+                <input type="url" name="video_url" class="form-control" placeholder="https://youtube.com/embed/...">
+            </div>
         </div>
 
+        <!-- Sidebar -->
         <div class="col-lg-4">
-
-            <!-- Status & Type -->
-            <div class="form-card">
-                <div class="form-card-title"><i class="fas fa-tag"></i> التصنيف</div>
-                <div class="mb-3">
-                    <label class="form-label">نوع العقار <span class="text-danger">*</span></label>
-                    <select name="type" class="form-select" required>
-                        @foreach(['residential' => 'سكني', 'commercial' => 'تجاري', 'villa' => 'فيلا', 'apartment' => 'شقة', 'compound' => 'مجمع سكني', 'tower' => 'برج'] as $val => $label)
-                        <option value="{{ $val }}" {{ old('type') === $val ? 'selected' : '' }}>{{ $label }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">الحالة <span class="text-danger">*</span></label>
-                    <select name="status" class="form-select" required>
-                        @foreach(['available' => 'متاح', 'under_construction' => 'قيد الإنشاء', 'coming_soon' => 'قريباً', 'sold_out' => 'مباع بالكامل'] as $val => $label)
-                        <option value="{{ $val }}" {{ old('status', 'available') === $val ? 'selected' : '' }}>{{ $label }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">ترتيب العرض</label>
-                    <input type="number" name="sort_order" class="form-control" value="{{ old('sort_order', 0) }}">
-                </div>
-                <div class="form-check form-switch mb-2">
-                    <input type="checkbox" class="form-check-input" name="active" id="active" value="1"
-                           {{ old('active', '1') ? 'checked' : '' }}>
-                    <label class="form-check-label" for="active">نشط (مرئي على الموقع)</label>
-                </div>
-                <div class="form-check form-switch">
-                    <input type="checkbox" class="form-check-input" name="featured" id="featured" value="1"
-                           {{ old('featured') ? 'checked' : '' }}>
-                    <label class="form-check-label" for="featured">مشروع مميز</label>
-                </div>
-            </div>
-
-            <!-- Main Image -->
             <div class="form-card">
                 <div class="form-card-title"><i class="fas fa-image"></i> الصورة الرئيسية</div>
-                <div class="upload-area" id="uploadArea">
-                    <div class="upload-placeholder text-center py-3">
-                        <i class="fas fa-cloud-upload-alt fa-2x text-muted mb-2"></i>
-                        <p class="text-muted mb-0 small">انقر لاختيار صورة</p>
-                        <p class="text-muted small">JPG, PNG, WEBP | Max 5MB</p>
-                    </div>
-                    <img id="imagePreview" src="" alt="" style="display:none; max-width:100%; border-radius:8px;">
-                    <input type="file" name="main_image" id="mainImageInput" class="d-none" accept="image/*">
-                </div>
+                <input type="file" name="main_image" class="form-control" accept="image/*" id="mainImageInput">
+                <div class="mt-2" id="imagePreview"></div>
             </div>
 
-            <!-- Location -->
             <div class="form-card">
-                <div class="form-card-title"><i class="fas fa-map-marker-alt"></i> الإحداثيات (اختياري)</div>
-                <div class="row g-2">
-                    <div class="col-6">
-                        <label class="form-label small">خط العرض</label>
-                        <input type="number" name="latitude" class="form-control form-control-sm" step="0.0000001" value="{{ old('latitude') }}">
-                    </div>
-                    <div class="col-6">
-                        <label class="form-label small">خط الطول</label>
-                        <input type="number" name="longitude" class="form-control form-control-sm" step="0.0000001" value="{{ old('longitude') }}">
-                    </div>
+                <div class="form-card-title"><i class="fas fa-toggle-on"></i> الخيارات</div>
+                <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" name="active" value="1" checked>
+                    <label class="form-check-label">مشروع نشط</label>
+                </div>
+                <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" name="featured" value="1">
+                    <label class="form-check-label">مشروع مميز</label>
+                </div>
+                <div class="mt-3">
+                    <label class="form-label">ترتيب العرض</label>
+                    <input type="number" name="sort_order" class="form-control" value="0" min="0">
                 </div>
             </div>
 
-            <!-- Submit -->
-            <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-gold btn-lg">
-                    <i class="fas fa-save me-2"></i> حفظ المشروع
-                </button>
-                <a href="{{ route('admin.projects.index') }}" class="btn btn-outline-secondary">إلغاء</a>
-            </div>
+            <button type="submit" class="btn btn-gold w-100 py-3 fw-bold">
+                <i class="fas fa-save me-2"></i> حفظ المشروع
+            </button>
+            <a href="{{ route('admin.projects.index') }}" class="btn btn-outline-secondary w-100 mt-2">إلغاء</a>
         </div>
     </div>
 </form>
-
 @endsection
-
-@push('styles')
-<style>
-.upload-area {
-    border: 2px dashed #dee2e6;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: border-color 0.2s;
-    overflow: hidden;
-}
-.upload-area:hover { border-color: var(--gold); }
-.nav-tabs .nav-link.active { color: var(--gold); border-bottom-color: var(--gold); font-weight: 600; }
-</style>
-@endpush
 
 @push('scripts')
 <script>
-// Image Preview
-const uploadArea = document.getElementById('uploadArea');
-const mainImageInput = document.getElementById('mainImageInput');
-const imagePreview = document.getElementById('imagePreview');
-
-uploadArea.addEventListener('click', () => mainImageInput.click());
-mainImageInput.addEventListener('change', function() {
-    if (this.files[0]) {
+document.getElementById('mainImageInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
         const reader = new FileReader();
         reader.onload = e => {
-            imagePreview.src = e.target.result;
-            imagePreview.style.display = 'block';
-            uploadArea.querySelector('.upload-placeholder').style.display = 'none';
+            document.getElementById('imagePreview').innerHTML =
+                `<img src="${e.target.result}" class="img-fluid rounded mt-2" style="max-height:200px;">`;
         };
-        reader.readAsDataURL(this.files[0]);
+        reader.readAsDataURL(file);
     }
 });
 
-// Add Feature Row
-let featureCount = document.querySelectorAll('.feature-row').length;
-document.getElementById('addFeature').addEventListener('click', function() {
-    const container = document.getElementById('features-container');
-    const row = document.createElement('div');
-    row.className = 'feature-row row g-2 mb-2 align-items-center';
-    row.innerHTML = `
-        <div class="col-md-3"><input type="text" name="features[${featureCount}][ar]" class="form-control form-control-sm" placeholder="الميزة بالعربية"></div>
-        <div class="col-md-3"><input type="text" name="features[${featureCount}][en]" class="form-control form-control-sm" placeholder="Feature in English"></div>
-        <div class="col-md-3"><input type="text" name="features[${featureCount}][tr]" class="form-control form-control-sm" placeholder="Özellik (Türkçe)"></div>
-        <div class="col-md-2"><input type="text" name="features[${featureCount}][icon]" class="form-control form-control-sm" placeholder="fas fa-check" value="fas fa-check"></div>
-        <div class="col-md-1"><button type="button" class="btn btn-sm btn-outline-danger remove-feature"><i class="fas fa-times"></i></button></div>
-    `;
-    container.appendChild(row);
-    featureCount++;
-    bindRemoveFeature();
+const languages = @json($languages->map(fn($l) => ['code' => $l->code, 'name' => $l->name_native, 'direction' => $l->direction]));
+let featureCount = 0;
+
+function buildFeatureRow(index) {
+    let cols = languages.map(lang =>
+        `<div class="col">
+            <input type="text" name="features[${index}][${lang.code}]" class="form-control form-control-sm"
+                placeholder="${lang.name}" dir="${lang.direction}">
+        </div>`
+    ).join('');
+    return `<div class="feature-row row g-2 mb-2 align-items-center" id="fr${index}">
+        ${cols}
+        <div class="col-auto">
+            <input type="text" name="features[${index}][icon]" class="form-control form-control-sm"
+                value="fas fa-check" style="width:130px;">
+        </div>
+        <div class="col-auto">
+            <button type="button" class="btn btn-sm btn-outline-danger" onclick="document.getElementById('fr${index}').remove()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>`;
+}
+
+document.getElementById('addFeatureBtn').addEventListener('click', function() {
+    document.getElementById('featuresContainer').insertAdjacentHTML('beforeend', buildFeatureRow(featureCount++));
 });
 
-function bindRemoveFeature() {
-    document.querySelectorAll('.remove-feature').forEach(btn => {
-        btn.onclick = function() { this.closest('.feature-row').remove(); };
-    });
+for (let i = 0; i < 3; i++) {
+    document.getElementById('featuresContainer').insertAdjacentHTML('beforeend', buildFeatureRow(featureCount++));
 }
-bindRemoveFeature();
 </script>
 @endpush

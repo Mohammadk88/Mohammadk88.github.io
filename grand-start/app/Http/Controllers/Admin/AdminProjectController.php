@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Language;
 use App\Models\Project;
-use App\Models\ProjectImage;
 use App\Models\ProjectFeature;
+use App\Models\ProjectFeatureTranslation;
+use App\Models\ProjectImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -14,13 +16,12 @@ class AdminProjectController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Project::with('images');
+        $query = Project::with('translations');
 
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('title_ar', 'like', "%{$search}%")
-                  ->orWhere('title_en', 'like', "%{$search}%");
+            $query->whereHas('translations', function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%");
             });
         }
 
@@ -39,7 +40,8 @@ class AdminProjectController extends Controller
 
     public function create()
     {
-        return view('admin.projects.create');
+        $languages = Language::allActive();
+        return view('admin.projects.create', compact('languages'));
     }
 
     public function store(Request $request)
@@ -52,9 +54,11 @@ class AdminProjectController extends Controller
             $project->main_image = $this->uploadImage($request->file('main_image'), 'projects');
         }
 
-        $project->slug = Str::slug($request->title_en ?: $request->title_ar) . '-' . Str::random(6);
+        $project->slug = Str::slug($request->input('translations.en.title', '') ?: $request->input('translations.' . Language::getDefaultCode() . '.title', 'project'))
+            . '-' . Str::random(6);
         $project->save();
 
+        $this->saveTranslations($project, $request->input('translations', []));
         $this->saveFeatures($project, $request->features ?? []);
 
         return redirect()->route('admin.projects.index')
@@ -63,14 +67,16 @@ class AdminProjectController extends Controller
 
     public function show(Project $project)
     {
-        $project->load(['images', 'features', 'contacts']);
-        return view('admin.projects.show', compact('project'));
+        $project->load(['images', 'features.translations', 'contacts', 'translations']);
+        $languages = Language::allActive();
+        return view('admin.projects.show', compact('project', 'languages'));
     }
 
     public function edit(Project $project)
     {
-        $project->load(['images', 'features']);
-        return view('admin.projects.edit', compact('project'));
+        $project->load(['images', 'features.translations', 'translations']);
+        $languages = Language::allActive();
+        return view('admin.projects.edit', compact('project', 'languages'));
     }
 
     public function update(Request $request, Project $project)
@@ -86,6 +92,7 @@ class AdminProjectController extends Controller
 
         $project->update($validated);
 
+        $this->saveTranslations($project, $request->input('translations', []));
         $this->saveFeatures($project, $request->features ?? []);
 
         return redirect()->route('admin.projects.index')
@@ -119,7 +126,7 @@ class AdminProjectController extends Controller
             $path = $this->uploadImage($file, 'projects/gallery');
             ProjectImage::create([
                 'project_id' => $project->id,
-                'image' => $path,
+                'image'      => $path,
                 'sort_order' => $project->images()->count() + 1,
             ]);
             $uploaded++;
@@ -141,7 +148,7 @@ class AdminProjectController extends Controller
         $project->update(['featured' => !$project->featured]);
 
         return response()->json([
-            'success' => true,
+            'success'  => true,
             'featured' => $project->featured,
         ]);
     }
@@ -149,30 +156,21 @@ class AdminProjectController extends Controller
     private function validateProject(Request $request): array
     {
         return $request->validate([
-            'title_ar' => 'required|string|max:255',
-            'title_en' => 'nullable|string|max:255',
-            'title_tr' => 'nullable|string|max:255',
-            'description_ar' => 'required|string',
-            'description_en' => 'nullable|string',
-            'description_tr' => 'nullable|string',
-            'location_ar' => 'required|string|max:255',
-            'location_en' => 'nullable|string|max:255',
-            'location_tr' => 'nullable|string|max:255',
-            'price_usd' => 'nullable|numeric|min:0',
-            'price_try' => 'nullable|numeric|min:0',
-            'price_iqd' => 'nullable|numeric|min:0',
-            'area' => 'nullable|string|max:100',
-            'floors' => 'nullable|integer|min:1',
-            'units' => 'nullable|integer|min:1',
-            'status' => 'required|in:available,sold_out,under_construction,coming_soon',
-            'type' => 'required|in:residential,commercial,villa,apartment,compound,tower',
-            'featured' => 'boolean',
-            'active' => 'boolean',
-            'video_url' => 'nullable|url',
-            'latitude' => 'nullable|numeric',
-            'longitude' => 'nullable|numeric',
+            'price_usd'     => 'nullable|numeric|min:0',
+            'price_try'     => 'nullable|numeric|min:0',
+            'price_iqd'     => 'nullable|numeric|min:0',
+            'area'          => 'nullable|string|max:100',
+            'floors'        => 'nullable|integer|min:1',
+            'units'         => 'nullable|integer|min:1',
+            'status'        => 'required|in:available,sold_out,under_construction,coming_soon',
+            'type'          => 'required|in:residential,commercial,villa,apartment,compound,tower',
+            'featured'      => 'boolean',
+            'active'        => 'boolean',
+            'video_url'     => 'nullable|url',
+            'latitude'      => 'nullable|numeric',
+            'longitude'     => 'nullable|numeric',
             'delivery_date' => 'nullable|date',
-            'sort_order' => 'nullable|integer',
+            'sort_order'    => 'nullable|integer',
         ]);
     }
 
@@ -183,19 +181,53 @@ class AdminProjectController extends Controller
         return "{$folder}/{$filename}";
     }
 
+    private function saveTranslations(Project $project, array $translations): void
+    {
+        foreach ($translations as $locale => $data) {
+            if (empty(trim($data['title'] ?? ''))) {
+                continue;
+            }
+            $project->translations()->updateOrCreate(
+                ['locale' => $locale],
+                [
+                    'title'       => $data['title'],
+                    'description' => $data['description'] ?? null,
+                    'location'    => $data['location'] ?? null,
+                ]
+            );
+        }
+    }
+
     private function saveFeatures(Project $project, array $features): void
     {
         $project->features()->delete();
 
         foreach ($features as $feature) {
-            if (!empty($feature['ar']) || !empty($feature['en'])) {
-                ProjectFeature::create([
-                    'project_id' => $project->id,
-                    'feature_ar' => $feature['ar'] ?? null,
-                    'feature_en' => $feature['en'] ?? null,
-                    'feature_tr' => $feature['tr'] ?? null,
-                    'icon' => $feature['icon'] ?? 'fas fa-check',
-                ]);
+            $hasText = false;
+            foreach ($feature as $key => $val) {
+                if ($key !== 'icon' && !empty(trim($val ?? ''))) {
+                    $hasText = true;
+                    break;
+                }
+            }
+
+            if (!$hasText) {
+                continue;
+            }
+
+            $pf = ProjectFeature::create([
+                'project_id' => $project->id,
+                'icon'       => $feature['icon'] ?? 'fas fa-check',
+            ]);
+
+            foreach ($feature as $key => $val) {
+                if ($key !== 'icon' && !empty(trim($val ?? ''))) {
+                    ProjectFeatureTranslation::create([
+                        'feature_id' => $pf->id,
+                        'locale'     => $key,
+                        'text'       => $val,
+                    ]);
+                }
             }
         }
     }

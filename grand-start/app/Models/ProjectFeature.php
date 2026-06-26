@@ -3,19 +3,38 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProjectFeature extends Model
 {
-    protected $fillable = ['project_id', 'feature_ar', 'feature_en', 'feature_tr', 'icon'];
+    protected $fillable = ['project_id', 'icon'];
 
-    public function project()
+    public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function translations(): HasMany
+    {
+        return $this->hasMany(ProjectFeatureTranslation::class, 'feature_id');
     }
 
     public function getLabel(): string
     {
         $locale = app()->getLocale();
-        return $this->{"feature_{$locale}"} ?? $this->feature_ar ?? $this->feature_en ?? '';
+        $default = Language::getDefaultCode();
+
+        $translation = $this->translations->firstWhere('locale', $locale);
+        if ($translation && !empty($translation->text)) {
+            return $translation->text;
+        }
+
+        $fallback = $this->translations->firstWhere('locale', $default);
+        if ($fallback && !empty($fallback->text)) {
+            return $fallback->text;
+        }
+
+        return $this->translations->first()?->text ?? '';
     }
 }

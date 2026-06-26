@@ -2,51 +2,38 @@
 
 namespace App\Services;
 
-use App\Models\Setting;
+use App\Models\CountryContact;
 
 class CountryContactService
 {
-    private static array $countryMap = [
-        'IQ' => 'iraq',
-        'SY' => 'syria',
-        'SA' => 'ksa',
-        'AE' => 'uae',
-        'KW' => 'kuwait',
-        'QA' => 'qatar',
-        'BH' => 'bahrain',
-        'OM' => 'oman',
-        'JO' => 'jordan',
-        'EG' => 'egypt',
-        'LB' => 'lebanon',
-    ];
-
-    public static function getContact(string $countryCode = 'AE'): array
+    public static function getContact(string $countryCode = 'TR'): array
     {
-        $suffix = self::$countryMap[strtoupper($countryCode)] ?? null;
-        $locale = app()->getLocale();
+        $locale  = app()->getLocale();
+        $code    = strtoupper($countryCode);
+        $contact = CountryContact::getForCountry($code) ?? CountryContact::getDefault();
 
-        if ($suffix) {
-            $phone    = Setting::get("phone_{$suffix}") ?: Setting::get('phone_default');
-            $whatsapp = Setting::get("whatsapp_{$suffix}") ?: Setting::get('whatsapp_default', env('WHATSAPP_DEFAULT'));
-            $email    = Setting::get("email_{$suffix}") ?: Setting::get('email_default');
-            $address  = Setting::get("address_{$suffix}_{$locale}")
-                     ?: Setting::get("address_{$suffix}_ar")
-                     ?: Setting::get("address_default_{$locale}")
-                     ?: Setting::get('address_default_ar');
-        } else {
-            $phone    = Setting::get('phone_default');
-            $whatsapp = Setting::get('whatsapp_default', env('WHATSAPP_DEFAULT'));
-            $email    = Setting::get('email_default');
-            $address  = Setting::get("address_default_{$locale}")
-                     ?: Setting::get('address_default_ar');
+        if (!$contact) {
+            return [
+                'phone'      => '',
+                'whatsapp'   => '',
+                'email'      => '',
+                'address'    => '',
+                'currency'   => 'USD',
+                'symbol'     => '$',
+                'price_field'=> 'price_usd',
+                'has_custom' => false,
+            ];
         }
 
         return [
-            'phone'    => $phone,
-            'whatsapp' => $whatsapp,
-            'email'    => $email,
-            'address'  => $address,
-            'has_custom' => $suffix !== null && Setting::get("phone_{$suffix}") !== null,
+            'phone'      => $contact->phone ?? '',
+            'whatsapp'   => $contact->whatsapp ?? '',
+            'email'      => $contact->email ?? '',
+            'address'    => $contact->getAddress($locale),
+            'currency'   => $contact->currency_code,
+            'symbol'     => $contact->currency_symbol,
+            'price_field'=> $contact->price_field,
+            'has_custom' => $contact->country_code !== null,
         ];
     }
 }

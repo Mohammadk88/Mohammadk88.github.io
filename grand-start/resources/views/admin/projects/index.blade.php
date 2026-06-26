@@ -74,8 +74,8 @@
                             </div>
                             @endif
                             <div>
-                                <div class="fw-bold" style="font-size:0.875rem;">{{ Str::limit($project->title_ar, 30) }}</div>
-                                <small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>{{ $project->location_ar }}</small>
+                                <div class="fw-bold" style="font-size:0.875rem;">{{ Str::limit($project->getTitle(), 30) }}</div>
+                                <small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>{{ $project->getLocation() }}</small>
                             </div>
                         </div>
                     </td>

@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\AdminProjectController;
 use App\Http\Controllers\Admin\AdminContactController;
+use App\Http\Controllers\Admin\AdminLanguageController;
+use App\Http\Controllers\Admin\AdminCountryController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\PageController;
 use Illuminate\Support\Facades\Route;
@@ -56,6 +58,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Contacts / Inquiries
         Route::resource('contacts', AdminContactController::class)->only(['index', 'show', 'destroy']);
         Route::post('contacts/{contact}/mark-read', [AdminContactController::class, 'markRead'])->name('contacts.mark-read');
+
+        // Languages
+        Route::get('/languages', [AdminLanguageController::class, 'index'])->name('languages.index');
+        Route::post('/languages', [AdminLanguageController::class, 'store'])->name('languages.store');
+        Route::put('/languages/{language}', [AdminLanguageController::class, 'update'])->name('languages.update');
+        Route::delete('/languages/{language}', [AdminLanguageController::class, 'destroy'])->name('languages.destroy');
+        Route::post('/languages/{language}/toggle-active', [AdminLanguageController::class, 'toggleActive'])->name('languages.toggle-active');
+        Route::post('/languages/{language}/set-default', [AdminLanguageController::class, 'setDefault'])->name('languages.set-default');
+
+        // Countries / Contacts
+        Route::resource('countries', AdminCountryController::class)->except(['show']);
+        Route::post('countries/{country}/set-default', [AdminCountryController::class, 'setDefault'])->name('countries.set-default');
+        Route::post('countries/{country}/toggle-active', [AdminCountryController::class, 'toggleActive'])->name('countries.toggle-active');
 
         // Settings
         Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');

@@ -188,20 +188,18 @@
                         </div>
                         <div class="price-card-body">
                             <div class="price-display">
-                                @if($countryCode === 'IQ' && $project->price_iqd)
+                                @php
+                                    $priceField = $countryContact?->price_field ?? 'price_usd';
+                                    $priceValue = $project->$priceField ?? null;
+                                    $symbol     = $countryContact?->currency_symbol ?? '$';
+                                    $currency   = $countryContact?->currency_code ?? 'USD';
+                                @endphp
+                                @if($priceValue)
                                 <div class="price-main">
-                                    {{ number_format($project->price_iqd, 0) }}
-                                    <span class="price-currency">د.ع</span>
+                                    {{ $symbol }}{{ number_format($priceValue, 0) }}
+                                    <span class="price-currency">{{ $currency }}</span>
                                 </div>
-                                @if($project->price_usd)
-                                <div class="price-alt">${{ number_format($project->price_usd, 0) }} USD</div>
-                                @endif
-                                @elseif($countryCode === 'TR' && $project->price_try)
-                                <div class="price-main">
-                                    ₺{{ number_format($project->price_try, 0) }}
-                                    <span class="price-currency">TRY</span>
-                                </div>
-                                @if($project->price_usd)
+                                @if($priceField !== 'price_usd' && $project->price_usd)
                                 <div class="price-alt">${{ number_format($project->price_usd, 0) }} USD</div>
                                 @endif
                                 @elseif($project->price_usd)

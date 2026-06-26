@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Language;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -11,10 +12,19 @@ class SetLocale
 {
     public function handle(Request $request, Closure $next)
     {
-        $locale = Session::get('locale', config('app.locale', 'ar'));
+        $locale = Session::get('locale');
 
-        if (!in_array($locale, ['ar', 'en', 'tr'])) {
-            $locale = 'ar';
+        try {
+            $codes   = Language::codes();
+            $default = Language::getDefaultCode();
+        } catch (\Throwable) {
+            // Fallback if languages table doesn't exist yet
+            $codes   = ['ar', 'en', 'tr'];
+            $default = 'ar';
+        }
+
+        if (!$locale || !in_array($locale, $codes)) {
+            $locale = $default;
         }
 
         App::setLocale($locale);

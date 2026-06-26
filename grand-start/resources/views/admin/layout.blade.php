@@ -312,6 +312,12 @@
             <a href="{{ route('admin.settings.index') }}" class="sidebar-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
                 <i class="fas fa-cog"></i> الإعدادات العامة
             </a>
+            <a href="{{ route('admin.languages.index') }}" class="sidebar-link {{ request()->routeIs('admin.languages.*') ? 'active' : '' }}">
+                <i class="fas fa-language"></i> اللغات
+            </a>
+            <a href="{{ route('admin.countries.index') }}" class="sidebar-link {{ request()->routeIs('admin.countries.*') ? 'active' : '' }}">
+                <i class="fas fa-globe"></i> دول التواصل
+            </a>
 
             <div class="nav-section-title mt-2">الموقع</div>
             <a href="{{ route('home') }}" target="_blank" class="sidebar-link">
