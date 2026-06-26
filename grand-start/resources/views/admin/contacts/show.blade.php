@@ -54,7 +54,7 @@
                     <td class="text-muted">المشروع:</td>
                     <td>
                         <a href="{{ route('projects.show', $contact->project->slug) }}" target="_blank">
-                            {{ $contact->project->title_ar }}
+                            {{ $contact->project->getTitle() }}
                         </a>
                     </td>
                 </tr>

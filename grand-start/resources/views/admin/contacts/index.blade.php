@@ -82,7 +82,7 @@
                     <td>
                         @if($contact->project)
                         <a href="{{ route('projects.show', $contact->project->slug) }}" target="_blank" class="text-decoration-none">
-                            <small>{{ Str::limit($contact->project->title_ar, 20) }}</small>
+                            <small>{{ Str::limit($contact->project->getTitle(), 20) }}</small>
                         </a>
                         @else
                         <span class="text-muted small">-</span>

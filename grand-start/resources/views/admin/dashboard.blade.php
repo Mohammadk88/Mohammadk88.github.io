@@ -162,8 +162,8 @@
                         @forelse($recentProjects as $project)
                         <tr>
                             <td>
-                                <div style="font-weight:600; font-size:0.875rem;">{{ Str::limit($project->title_ar, 25) }}</div>
-                                <small class="text-muted">{{ $project->location_ar }}</small>
+                                <div style="font-weight:600; font-size:0.875rem;">{{ Str::limit($project->getTitle(), 25) }}</div>
+                                <small class="text-muted">{{ $project->getLocation() }}</small>
                             </td>
                             <td>
                                 @php
