@@ -10,7 +10,7 @@ class LocaleController extends Controller
 {
     public function switch(Request $request, string $locale)
     {
-        if (!in_array($locale, ['ar', 'en', 'ku'])) {
+        if (!in_array($locale, ['ar', 'en', 'tr'])) {
             $locale = 'ar';
         }
 

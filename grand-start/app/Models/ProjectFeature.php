@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProjectFeature extends Model
 {
-    protected $fillable = ['project_id', 'feature_ar', 'feature_en', 'feature_ku', 'icon'];
+    protected $fillable = ['project_id', 'feature_ar', 'feature_en', 'feature_tr', 'icon'];
 
     public function project()
     {

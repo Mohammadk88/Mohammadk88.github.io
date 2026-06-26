@@ -129,8 +129,10 @@
                         </p>
                         <div class="project-footer">
                             <div class="project-price">
-                                @if($isIraq && $project->price_iqd)
+                                @if($countryCode === 'IQ' && $project->price_iqd)
                                     {{ number_format($project->price_iqd, 0) }} <small>د.ع</small>
+                                @elseif($countryCode === 'TR' && $project->price_try)
+                                    <small>₺</small>{{ number_format($project->price_try, 0) }}
                                 @elseif($project->price_usd)
                                     <small>$</small>{{ number_format($project->price_usd, 0) }}
                                 @else

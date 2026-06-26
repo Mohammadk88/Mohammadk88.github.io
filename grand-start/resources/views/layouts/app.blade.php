@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" dir="{{ in_array(app()->getLocale(), ['ar', 'ku']) ? 'rtl' : 'ltr' }}">
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700&family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <!-- Bootstrap 5 RTL/LTR -->
-    @if(in_array(app()->getLocale(), ['ar', 'ku']))
+    @if(app()->getLocale() === 'ar')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
     @else
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
@@ -34,7 +34,7 @@
 
     @stack('styles')
 </head>
-<body class="{{ in_array(app()->getLocale(), ['ar', 'ku']) ? 'rtl-body' : 'ltr-body' }}">
+<body class="{{ app()->getLocale() === 'ar' ? 'rtl-body' : 'ltr-body' }}">
 
     <!-- Top Bar -->
     <div class="top-bar">
@@ -42,13 +42,11 @@
             <div class="d-flex justify-content-between align-items-center py-2">
                 <div class="top-contact d-none d-md-flex gap-3">
                     @php
-                        $isIraq = request()->get('visitor_country') === 'IQ';
-                        $topPhone = $isIraq
-                            ? \App\Models\Setting::get('phone_iraq')
-                            : \App\Models\Setting::get('phone_default');
-                        $topEmail = $isIraq
-                            ? \App\Models\Setting::get('email_iraq')
-                            : \App\Models\Setting::get('email_default');
+                        $topContact = \App\Services\CountryContactService::getContact(
+                            request()->get('visitor_country', 'AE')
+                        );
+                        $topPhone = $topContact['phone'];
+                        $topEmail = $topContact['email'];
                     @endphp
                     @if($topPhone)
                     <a href="tel:{{ $topPhone }}" class="top-link">
@@ -62,7 +60,7 @@
                     @endif
                 </div>
                 <div class="lang-switcher d-flex gap-2 align-items-center">
-                    @foreach(['ar' => 'العربية', 'en' => 'English', 'ku' => 'کوردی'] as $locale => $label)
+                    @foreach(['ar' => 'العربية', 'en' => 'English', 'tr' => 'Türkçe'] as $locale => $label)
                         <a href="{{ route('lang.switch', $locale) }}"
                            class="lang-btn {{ app()->getLocale() === $locale ? 'active' : '' }}">
                             {{ $label }}
@@ -86,7 +84,7 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav {{ in_array(app()->getLocale(), ['ar', 'ku']) ? 'me-auto' : 'ms-auto' }} align-items-lg-center gap-lg-1">
+                <ul class="navbar-nav {{ app()->getLocale() === 'ar' ? 'me-auto' : 'ms-auto' }} align-items-lg-center gap-lg-1">
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">
                             {{ __('app.home') }}
@@ -165,12 +163,12 @@
                         <h5 class="footer-title">{{ __('app.contact_us') }}</h5>
                         <ul class="footer-contact-list">
                             @php
-                                $isIraq = request()->get('visitor_country') === 'IQ';
-                                $footerPhone = $isIraq ? \App\Models\Setting::get('phone_iraq') : \App\Models\Setting::get('phone_default');
-                                $footerEmail = $isIraq ? \App\Models\Setting::get('email_iraq') : \App\Models\Setting::get('email_default');
-                                $footerAddress = $isIraq
-                                    ? \App\Models\Setting::get('address_iraq_' . app()->getLocale(), \App\Models\Setting::get('address_iraq_ar'))
-                                    : \App\Models\Setting::get('address_default_' . app()->getLocale(), \App\Models\Setting::get('address_default_ar'));
+                                $footerContact = \App\Services\CountryContactService::getContact(
+                                    request()->get('visitor_country', 'AE')
+                                );
+                                $footerPhone   = $footerContact['phone'];
+                                $footerEmail   = $footerContact['email'];
+                                $footerAddress = $footerContact['address'];
                             @endphp
                             @if($footerPhone)
                             <li><i class="fas fa-phone-alt"></i> <a href="tel:{{ $footerPhone }}">{{ $footerPhone }}</a></li>
@@ -219,11 +217,10 @@
 
     <!-- WhatsApp Floating Button -->
     @php
-        $isIraqWa = request()->get('visitor_country') === 'IQ';
-        $waNumber = $isIraqWa
-            ? \App\Models\Setting::get('whatsapp_iraq', env('WHATSAPP_IRAQ'))
-            : \App\Models\Setting::get('whatsapp_default', env('WHATSAPP_DEFAULT'));
-        $waNumber = preg_replace('/[^0-9]/', '', $waNumber);
+        $waContact = \App\Services\CountryContactService::getContact(
+            request()->get('visitor_country', 'AE')
+        );
+        $waNumber = preg_replace('/[^0-9]/', '', $waContact['whatsapp'] ?? '');
     @endphp
     @if($waNumber)
     <a href="https://wa.me/{{ $waNumber }}?text={{ urlencode(__('app.chat_whatsapp')) }}"

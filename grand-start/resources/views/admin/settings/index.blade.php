@@ -24,16 +24,20 @@
                         <input type="text" name="company_name_en" class="form-control" value="{{ $settings['company_name_en'] ?? '' }}">
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label">ناوی کۆمپانیا (کوردی)</label>
-                        <input type="text" name="company_name_ku" class="form-control" value="{{ $settings['company_name_ku'] ?? '' }}">
+                        <label class="form-label">Şirket Adı (Türkçe)</label>
+                        <input type="text" name="company_name_tr" class="form-control" value="{{ $settings['company_name_tr'] ?? '' }}">
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">شعار الشركة (عربي)</label>
                         <input type="text" name="company_tagline_ar" class="form-control" value="{{ $settings['company_tagline_ar'] ?? '' }}">
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">Tagline (English)</label>
                         <input type="text" name="company_tagline_en" class="form-control" value="{{ $settings['company_tagline_en'] ?? '' }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Slogan (Türkçe)</label>
+                        <input type="text" name="company_tagline_tr" class="form-control" value="{{ $settings['company_tagline_tr'] ?? '' }}">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">سنوات الخبرة</label>
@@ -50,9 +54,10 @@
                 </div>
             </div>
 
-            <!-- Contact - Default -->
+            <!-- Contact - Default (Turkey Main Office) -->
             <div class="form-card">
-                <div class="form-card-title"><i class="fas fa-phone"></i> معلومات التواصل الافتراضية (دولية)</div>
+                <div class="form-card-title"><i class="fas fa-phone"></i> معلومات التواصل الرئيسية 🇹🇷 (مكتب تركيا)</div>
+                <p class="text-muted small mb-3">تظهر هذه المعلومات لجميع الزوار الذين لا تتوفر لبلدهم معلومات خاصة</p>
                 <div class="row g-3">
                     <div class="col-md-4">
                         <label class="form-label">رقم الهاتف</label>
@@ -60,19 +65,23 @@
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">واتساب</label>
-                        <input type="text" name="whatsapp_default" class="form-control" value="{{ $settings['whatsapp_default'] ?? '' }}" placeholder="+971501234567">
+                        <input type="text" name="whatsapp_default" class="form-control" value="{{ $settings['whatsapp_default'] ?? '' }}" placeholder="+902121234567">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label">البريد الإلكتروني</label>
                         <input type="email" name="email_default" class="form-control" value="{{ $settings['email_default'] ?? '' }}">
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">العنوان (عربي)</label>
                         <input type="text" name="address_default_ar" class="form-control" value="{{ $settings['address_default_ar'] ?? '' }}">
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">Address (English)</label>
                         <input type="text" name="address_default_en" class="form-control" value="{{ $settings['address_default_en'] ?? '' }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Adres (Türkçe)</label>
+                        <input type="text" name="address_default_tr" class="form-control" value="{{ $settings['address_default_tr'] ?? '' }}">
                     </div>
                 </div>
             </div>
@@ -94,13 +103,17 @@
                         <label class="form-label">البريد (العراق)</label>
                         <input type="email" name="email_iraq" class="form-control" value="{{ $settings['email_iraq'] ?? '' }}">
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">العنوان في العراق (عربي)</label>
                         <input type="text" name="address_iraq_ar" class="form-control" value="{{ $settings['address_iraq_ar'] ?? '' }}">
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">Iraq Address (English)</label>
                         <input type="text" name="address_iraq_en" class="form-control" value="{{ $settings['address_iraq_en'] ?? '' }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Irak Adresi (Türkçe)</label>
+                        <input type="text" name="address_iraq_tr" class="form-control" value="{{ $settings['address_iraq_tr'] ?? '' }}">
                     </div>
                 </div>
             </div>
@@ -116,27 +129,39 @@
                     <label class="form-label">Text (English)</label>
                     <textarea name="about_text_en" class="form-control" rows="4">{{ $settings['about_text_en'] ?? '' }}</textarea>
                 </div>
+                <div class="mb-3">
+                    <label class="form-label">Metin (Türkçe)</label>
+                    <textarea name="about_text_tr" class="form-control" rows="4">{{ $settings['about_text_tr'] ?? '' }}</textarea>
+                </div>
             </div>
 
             <!-- Hero Section -->
             <div class="form-card">
                 <div class="form-card-title"><i class="fas fa-star"></i> قسم الهيرو (الرئيسية)</div>
                 <div class="row g-3">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">العنوان الرئيسي (عربي)</label>
                         <input type="text" name="hero_title_ar" class="form-control" value="{{ $settings['hero_title_ar'] ?? '' }}">
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">Hero Title (English)</label>
                         <input type="text" name="hero_title_en" class="form-control" value="{{ $settings['hero_title_en'] ?? '' }}">
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <label class="form-label">Ana Başlık (Türkçe)</label>
+                        <input type="text" name="hero_title_tr" class="form-control" value="{{ $settings['hero_title_tr'] ?? '' }}">
+                    </div>
+                    <div class="col-md-4">
                         <label class="form-label">العنوان الفرعي (عربي)</label>
                         <textarea name="hero_subtitle_ar" class="form-control" rows="2">{{ $settings['hero_subtitle_ar'] ?? '' }}</textarea>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">Hero Subtitle (English)</label>
                         <textarea name="hero_subtitle_en" class="form-control" rows="2">{{ $settings['hero_subtitle_en'] ?? '' }}</textarea>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Alt Başlık (Türkçe)</label>
+                        <textarea name="hero_subtitle_tr" class="form-control" rows="2">{{ $settings['hero_subtitle_tr'] ?? '' }}</textarea>
                     </div>
                 </div>
             </div>
@@ -185,12 +210,20 @@
                     <input type="text" name="meta_title_en" class="form-control form-control-sm" value="{{ $settings['meta_title_en'] ?? '' }}">
                 </div>
                 <div class="mb-3">
+                    <label class="form-label">Sayfa Başlığı (Türkçe)</label>
+                    <input type="text" name="meta_title_tr" class="form-control form-control-sm" value="{{ $settings['meta_title_tr'] ?? '' }}">
+                </div>
+                <div class="mb-3">
                     <label class="form-label">وصف الصفحة (عربي)</label>
                     <textarea name="meta_description_ar" class="form-control form-control-sm" rows="2">{{ $settings['meta_description_ar'] ?? '' }}</textarea>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Page Description (English)</label>
                     <textarea name="meta_description_en" class="form-control form-control-sm" rows="2">{{ $settings['meta_description_en'] ?? '' }}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Sayfa Açıklaması (Türkçe)</label>
+                    <textarea name="meta_description_tr" class="form-control form-control-sm" rows="2">{{ $settings['meta_description_tr'] ?? '' }}</textarea>
                 </div>
             </div>
 

@@ -11,11 +11,11 @@ class Project extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title_ar', 'title_en', 'title_ku',
+        'title_ar', 'title_en', 'title_tr',
         'slug',
-        'description_ar', 'description_en', 'description_ku',
-        'location_ar', 'location_en', 'location_ku',
-        'price_usd', 'price_iqd',
+        'description_ar', 'description_en', 'description_tr',
+        'location_ar', 'location_en', 'location_tr',
+        'price_usd', 'price_try', 'price_iqd',
         'area', 'floors', 'units',
         'status', 'type',
         'featured', 'active',
@@ -27,9 +27,10 @@ class Project extends Model
     ];
 
     protected $casts = [
-        'featured' => 'boolean',
-        'active' => 'boolean',
+        'featured'  => 'boolean',
+        'active'    => 'boolean',
         'price_usd' => 'decimal:2',
+        'price_try' => 'decimal:0',
         'price_iqd' => 'decimal:0',
         'delivery_date' => 'date',
     ];
@@ -72,6 +73,23 @@ class Project extends Model
         if ($currency === 'iqd' && $this->price_iqd) {
             return number_format($this->price_iqd, 0) . ' د.ع';
         }
+        if ($currency === 'try' && $this->price_try) {
+            return '₺' . number_format($this->price_try, 0);
+        }
+        if ($this->price_usd) {
+            return '$' . number_format($this->price_usd, 0);
+        }
+        return __('app.price_on_request');
+    }
+
+    public function getPriceForCountry(string $countryCode = 'AE'): string
+    {
+        if ($countryCode === 'IQ' && $this->price_iqd) {
+            return number_format($this->price_iqd, 0) . ' د.ع';
+        }
+        if ($countryCode === 'TR' && $this->price_try) {
+            return '₺' . number_format($this->price_try, 0);
+        }
         if ($this->price_usd) {
             return '$' . number_format($this->price_usd, 0);
         }
@@ -89,11 +107,11 @@ class Project extends Model
     public function getStatusLabel(): string
     {
         return match($this->status) {
-            'available' => __('app.available'),
-            'sold_out' => __('app.sold_out'),
-            'under_construction' => __('app.under_construction'),
-            'coming_soon' => __('app.coming_soon'),
-            default => __('app.available'),
+            'available'         => __('app.available'),
+            'sold_out'          => __('app.sold_out'),
+            'under_construction'=> __('app.under_construction'),
+            'coming_soon'       => __('app.coming_soon'),
+            default             => __('app.available'),
         };
     }
 
@@ -101,12 +119,12 @@ class Project extends Model
     {
         return match($this->type) {
             'residential' => __('app.residential'),
-            'commercial' => __('app.commercial'),
-            'villa' => __('app.villa'),
-            'apartment' => __('app.apartment'),
-            'compound' => __('app.compound'),
-            'tower' => __('app.tower'),
-            default => __('app.residential'),
+            'commercial'  => __('app.commercial'),
+            'villa'       => __('app.villa'),
+            'apartment'   => __('app.apartment'),
+            'compound'    => __('app.compound'),
+            'tower'       => __('app.tower'),
+            default       => __('app.residential'),
         };
     }
 

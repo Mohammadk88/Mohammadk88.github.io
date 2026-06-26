@@ -27,7 +27,7 @@
                 <ul class="nav nav-tabs mb-3">
                     <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-ar">العربية</button></li>
                     <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-en">English</button></li>
-                    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-ku">کوردی</button></li>
+                    <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-tr">Türkçe</button></li>
                 </ul>
 
                 <div class="tab-content">
@@ -59,18 +59,18 @@
                             <input type="text" name="location_en" class="form-control" value="{{ old('location_en', $project->location_en) }}">
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="tab-ku">
+                    <div class="tab-pane fade" id="tab-tr" dir="ltr">
                         <div class="mb-3">
-                            <label class="form-label">ناوی پرۆژە (کوردی)</label>
-                            <input type="text" name="title_ku" class="form-control" value="{{ old('title_ku', $project->title_ku) }}">
+                            <label class="form-label">Proje Adı (Türkçe)</label>
+                            <input type="text" name="title_tr" class="form-control" value="{{ old('title_tr', $project->title_tr) }}">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">وەسف (کوردی)</label>
-                            <textarea name="description_ku" class="form-control" rows="5">{{ old('description_ku', $project->description_ku) }}</textarea>
+                            <label class="form-label">Açıklama (Türkçe)</label>
+                            <textarea name="description_tr" class="form-control" rows="5">{{ old('description_tr', $project->description_tr) }}</textarea>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">شوێن (کوردی)</label>
-                            <input type="text" name="location_ku" class="form-control" value="{{ old('location_ku', $project->location_ku) }}">
+                            <label class="form-label">Konum (Türkçe)</label>
+                            <input type="text" name="location_tr" class="form-control" value="{{ old('location_tr', $project->location_tr) }}">
                         </div>
                     </div>
                 </div>
@@ -79,14 +79,21 @@
             <div class="form-card">
                 <div class="form-card-title"><i class="fas fa-dollar-sign"></i> التسعير</div>
                 <div class="row g-3">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label class="form-label">السعر بالدولار (USD)</label>
                         <div class="input-group">
                             <span class="input-group-text">$</span>
                             <input type="number" name="price_usd" class="form-control" value="{{ old('price_usd', $project->price_usd) }}" min="0">
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <label class="form-label">السعر بالليرة التركية (TRY)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">₺</span>
+                            <input type="number" name="price_try" class="form-control" value="{{ old('price_try', $project->price_try) }}" min="0">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
                         <label class="form-label">السعر بالدينار العراقي</label>
                         <div class="input-group">
                             <input type="number" name="price_iqd" class="form-control" value="{{ old('price_iqd', $project->price_iqd) }}" min="0">
@@ -128,13 +135,16 @@
                 <div id="features-container">
                     @foreach($project->features as $i => $feature)
                     <div class="feature-row row g-2 mb-2 align-items-center">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <input type="text" name="features[{{ $i }}][ar]" class="form-control form-control-sm" placeholder="عربي" value="{{ $feature->feature_ar }}">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <input type="text" name="features[{{ $i }}][en]" class="form-control form-control-sm" placeholder="English" value="{{ $feature->feature_en }}">
                         </div>
                         <div class="col-md-3">
+                            <input type="text" name="features[{{ $i }}][tr]" class="form-control form-control-sm" placeholder="Türkçe" value="{{ $feature->feature_tr }}">
+                        </div>
+                        <div class="col-md-2">
                             <input type="text" name="features[{{ $i }}][icon]" class="form-control form-control-sm" placeholder="fas fa-check" value="{{ $feature->icon }}">
                         </div>
                         <div class="col-md-1">
@@ -289,9 +299,10 @@ document.getElementById('addFeature').addEventListener('click', function() {
     const row = document.createElement('div');
     row.className = 'feature-row row g-2 mb-2 align-items-center';
     row.innerHTML = `
-        <div class="col-md-4"><input type="text" name="features[${featureCount}][ar]" class="form-control form-control-sm" placeholder="عربي"></div>
-        <div class="col-md-4"><input type="text" name="features[${featureCount}][en]" class="form-control form-control-sm" placeholder="English"></div>
-        <div class="col-md-3"><input type="text" name="features[${featureCount}][icon]" class="form-control form-control-sm" placeholder="fas fa-check" value="fas fa-check"></div>
+        <div class="col-md-3"><input type="text" name="features[${featureCount}][ar]" class="form-control form-control-sm" placeholder="عربي"></div>
+        <div class="col-md-3"><input type="text" name="features[${featureCount}][en]" class="form-control form-control-sm" placeholder="English"></div>
+        <div class="col-md-3"><input type="text" name="features[${featureCount}][tr]" class="form-control form-control-sm" placeholder="Türkçe"></div>
+        <div class="col-md-2"><input type="text" name="features[${featureCount}][icon]" class="form-control form-control-sm" placeholder="fas fa-check" value="fas fa-check"></div>
         <div class="col-md-1"><button type="button" class="btn btn-sm btn-outline-danger remove-feature"><i class="fas fa-times"></i></button></div>
     `;
     container.appendChild(row);

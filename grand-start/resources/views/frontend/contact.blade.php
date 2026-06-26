@@ -113,10 +113,14 @@
                         {{ app()->getLocale() === 'en' ? 'Get In Touch' : 'تواصل معنا' }}
                     </h3>
 
-                    @if($isIraq)
+                    @if($hasCustom)
                     <div class="iraq-notice">
                         <i class="fas fa-map-marker-alt"></i>
-                        {{ app()->getLocale() === 'en' ? 'Iraq Office Contact' : 'معلومات مكتب العراق' }}
+                        @if($countryCode === 'IQ')
+                            {{ app()->getLocale() === 'en' ? 'Iraq Office Contact' : (app()->getLocale() === 'tr' ? 'Irak Ofisi İletişim' : 'معلومات مكتب العراق') }}
+                        @else
+                            {{ app()->getLocale() === 'en' ? 'Local Office Contact' : (app()->getLocale() === 'tr' ? 'Yerel Ofis İletişim' : 'معلومات المكتب المحلي') }}
+                        @endif
                     </div>
                     @endif
 

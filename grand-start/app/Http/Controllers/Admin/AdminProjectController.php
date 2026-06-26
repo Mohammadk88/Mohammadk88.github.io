@@ -151,14 +151,15 @@ class AdminProjectController extends Controller
         return $request->validate([
             'title_ar' => 'required|string|max:255',
             'title_en' => 'nullable|string|max:255',
-            'title_ku' => 'nullable|string|max:255',
+            'title_tr' => 'nullable|string|max:255',
             'description_ar' => 'required|string',
             'description_en' => 'nullable|string',
-            'description_ku' => 'nullable|string',
+            'description_tr' => 'nullable|string',
             'location_ar' => 'required|string|max:255',
             'location_en' => 'nullable|string|max:255',
-            'location_ku' => 'nullable|string|max:255',
+            'location_tr' => 'nullable|string|max:255',
             'price_usd' => 'nullable|numeric|min:0',
+            'price_try' => 'nullable|numeric|min:0',
             'price_iqd' => 'nullable|numeric|min:0',
             'area' => 'nullable|string|max:100',
             'floors' => 'nullable|integer|min:1',
@@ -192,7 +193,7 @@ class AdminProjectController extends Controller
                     'project_id' => $project->id,
                     'feature_ar' => $feature['ar'] ?? null,
                     'feature_en' => $feature['en'] ?? null,
-                    'feature_ku' => $feature['ku'] ?? null,
+                    'feature_tr' => $feature['tr'] ?? null,
                     'icon' => $feature['icon'] ?? 'fas fa-check',
                 ]);
             }

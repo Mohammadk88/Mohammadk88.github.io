@@ -5,13 +5,15 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\Setting;
+use App\Services\CountryContactService;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $isIraq = $request->get('visitor_country') === 'IQ';
+        $countryCode = $request->get('visitor_country', 'AE');
+        $contact = CountryContactService::getContact($countryCode);
 
         $featuredProjects = Project::active()->featured()
             ->with('images')
@@ -32,15 +34,13 @@ class HomeController extends Controller
             'countries' => Setting::get('countries_count', '5'),
         ];
 
-        $whatsapp = $isIraq
-            ? Setting::get('whatsapp_iraq', env('WHATSAPP_IRAQ'))
-            : Setting::get('whatsapp_default', env('WHATSAPP_DEFAULT'));
+        $whatsapp = $contact['whatsapp'];
 
         return view('frontend.home', compact(
             'featuredProjects',
             'latestProjects',
             'stats',
-            'isIraq',
+            'countryCode',
             'whatsapp'
         ));
     }

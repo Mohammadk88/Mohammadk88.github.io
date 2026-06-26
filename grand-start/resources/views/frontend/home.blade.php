@@ -11,10 +11,10 @@
     <div class="container">
         <div class="row align-items-center min-vh-100">
             <div class="col-lg-8" data-aos="fade-up" data-aos-delay="100">
-                @if($isIraq)
+                @if($countryCode === 'IQ')
                 <div class="iraq-badge mb-3">
                     <i class="fas fa-map-marker-alt"></i>
-                    {{ app()->getLocale() === 'ar' ? 'محتوى خاص للعراق' : 'Iraq Special Content' }}
+                    {{ app()->getLocale() === 'ar' ? 'محتوى خاص للعراق' : (app()->getLocale() === 'tr' ? 'Irak\'a Özel İçerik' : 'Iraq Special Content') }}
                 </div>
                 @endif
                 <h1 class="hero-title">
@@ -117,8 +117,10 @@
                         </p>
                         <div class="project-footer">
                             <div class="project-price">
-                                @if($isIraq && $project->price_iqd)
+                                @if($countryCode === 'IQ' && $project->price_iqd)
                                     {{ number_format($project->price_iqd, 0) }} د.ع
+                                @elseif($countryCode === 'TR' && $project->price_try)
+                                    ₺{{ number_format($project->price_try, 0) }}
                                 @elseif($project->price_usd)
                                     ${{ number_format($project->price_usd, 0) }}
                                 @else
@@ -142,7 +144,7 @@
 
         <div class="text-center mt-5" data-aos="fade-up">
             <a href="{{ route('projects.index') }}" class="btn btn-outline-gold btn-lg">
-                {{ __('app.all_projects') }} <i class="fas fa-arrow-{{ in_array(app()->getLocale(), ['ar', 'ku']) ? 'left' : 'right' }} ms-2"></i>
+                {{ __('app.all_projects') }} <i class="fas fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} ms-2"></i>
             </a>
         </div>
     </div>
@@ -235,7 +237,7 @@
                         </div>
                     </div>
                     <a href="{{ route('about') }}" class="btn btn-gold mt-4">
-                        {{ __('app.our_story') }} <i class="fas fa-arrow-{{ in_array(app()->getLocale(), ['ar', 'ku']) ? 'left' : 'right' }} ms-2"></i>
+                        {{ __('app.our_story') }} <i class="fas fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} ms-2"></i>
                     </a>
                 </div>
             </div>
@@ -274,8 +276,10 @@
                         <p class="project-location"><i class="fas fa-map-marker-alt"></i> {{ $project->getLocation() }}</p>
                         <div class="project-footer">
                             <div class="project-price">
-                                @if($isIraq && $project->price_iqd)
+                                @if($countryCode === 'IQ' && $project->price_iqd)
                                     {{ number_format($project->price_iqd, 0) }} د.ع
+                                @elseif($countryCode === 'TR' && $project->price_try)
+                                    ₺{{ number_format($project->price_try, 0) }}
                                 @elseif($project->price_usd)
                                     ${{ number_format($project->price_usd, 0) }}
                                 @else

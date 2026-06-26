@@ -4,14 +4,15 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
-use App\Models\Setting;
+use App\Services\CountryContactService;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
     public function index(Request $request)
     {
-        $isIraq = $request->get('visitor_country') === 'IQ';
+        $countryCode = $request->get('visitor_country', 'AE');
+        $contact = CountryContactService::getContact($countryCode);
 
         $query = Project::active()->with('images');
 
@@ -28,6 +29,7 @@ class ProjectController extends Controller
             $query->where(function ($q) use ($search) {
                 $q->where('title_ar', 'like', "%{$search}%")
                   ->orWhere('title_en', 'like', "%{$search}%")
+                  ->orWhere('title_tr', 'like', "%{$search}%")
                   ->orWhere('location_ar', 'like', "%{$search}%")
                   ->orWhere('location_en', 'like', "%{$search}%");
             });
@@ -38,17 +40,16 @@ class ProjectController extends Controller
                          ->orderBy('created_at', 'desc')
                          ->paginate(9);
 
-        $whatsapp = $isIraq
-            ? Setting::get('whatsapp_iraq', env('WHATSAPP_IRAQ'))
-            : Setting::get('whatsapp_default', env('WHATSAPP_DEFAULT'));
+        $whatsapp = $contact['whatsapp'];
 
-        return view('frontend.projects.index', compact('projects', 'isIraq', 'whatsapp'));
+        return view('frontend.projects.index', compact('projects', 'countryCode', 'whatsapp'));
     }
 
     public function show(Request $request, string $slug)
     {
         $project = Project::where('slug', $slug)->active()->with(['images', 'features'])->firstOrFail();
-        $isIraq = $request->get('visitor_country') === 'IQ';
+        $countryCode = $request->get('visitor_country', 'AE');
+        $contact = CountryContactService::getContact($countryCode);
 
         $relatedProjects = Project::active()
             ->where('id', '!=', $project->id)
@@ -57,18 +58,13 @@ class ProjectController extends Controller
             ->take(3)
             ->get();
 
-        $whatsapp = $isIraq
-            ? Setting::get('whatsapp_iraq', env('WHATSAPP_IRAQ'))
-            : Setting::get('whatsapp_default', env('WHATSAPP_DEFAULT'));
-
-        $phone = $isIraq
-            ? Setting::get('phone_iraq', Setting::get('phone_default'))
-            : Setting::get('phone_default');
+        $whatsapp = $contact['whatsapp'];
+        $phone = $contact['phone'];
 
         return view('frontend.projects.show', compact(
             'project',
             'relatedProjects',
-            'isIraq',
+            'countryCode',
             'whatsapp',
             'phone'
         ));

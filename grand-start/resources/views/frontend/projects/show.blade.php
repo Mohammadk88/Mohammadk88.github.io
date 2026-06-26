@@ -188,10 +188,18 @@
                         </div>
                         <div class="price-card-body">
                             <div class="price-display">
-                                @if($isIraq && $project->price_iqd)
+                                @if($countryCode === 'IQ' && $project->price_iqd)
                                 <div class="price-main">
                                     {{ number_format($project->price_iqd, 0) }}
                                     <span class="price-currency">د.ع</span>
+                                </div>
+                                @if($project->price_usd)
+                                <div class="price-alt">${{ number_format($project->price_usd, 0) }} USD</div>
+                                @endif
+                                @elseif($countryCode === 'TR' && $project->price_try)
+                                <div class="price-main">
+                                    ₺{{ number_format($project->price_try, 0) }}
+                                    <span class="price-currency">TRY</span>
                                 </div>
                                 @if($project->price_usd)
                                 <div class="price-alt">${{ number_format($project->price_usd, 0) }} USD</div>

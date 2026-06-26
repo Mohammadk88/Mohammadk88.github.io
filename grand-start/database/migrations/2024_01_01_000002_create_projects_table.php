@@ -15,21 +15,22 @@ return new class extends Migration
             // Multilingual titles
             $table->string('title_ar');
             $table->string('title_en')->nullable();
-            $table->string('title_ku')->nullable();
+            $table->string('title_tr')->nullable();
 
             // Multilingual descriptions
             $table->longText('description_ar');
             $table->longText('description_en')->nullable();
-            $table->longText('description_ku')->nullable();
+            $table->longText('description_tr')->nullable();
 
             // Multilingual locations
             $table->string('location_ar');
             $table->string('location_en')->nullable();
-            $table->string('location_ku')->nullable();
+            $table->string('location_tr')->nullable();
 
             // Pricing
             $table->decimal('price_usd', 15, 2)->nullable();
-            $table->decimal('price_iqd', 15, 0)->nullable();
+            $table->decimal('price_try', 15, 0)->nullable(); // Turkish Lira
+            $table->decimal('price_iqd', 15, 0)->nullable(); // Iraqi Dinar
 
             // Project details
             $table->string('area')->nullable();

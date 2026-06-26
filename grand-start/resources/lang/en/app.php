@@ -99,6 +99,7 @@ return [
     'success' => 'Success',
     'iraq_content' => 'Iraq-specific content',
     'price_iqd' => 'Price in IQD',
+    'price_try' => 'Price in TRY',
     'price_usd' => 'Price in USD',
     'area' => 'Area',
     'floors' => 'Floors',
